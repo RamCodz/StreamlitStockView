@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import yfinance as yf
 import plotly.graph_objs as go
+from pathlib import Path
 
 # Function to download stock data
 def get_stock_data(ticker, period="1y", interval="1d"):
