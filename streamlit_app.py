@@ -76,7 +76,7 @@ except Exception as e:
 cherries_df = df
 
 # Stock filtering for Fallen Gems
-gems_d = df
+gems_df = df
 
 # Logo
 st.image(str(logo_path), width=100, use_column_width=False)
@@ -133,7 +133,7 @@ with tabs[0]:
 
 # Fallen Gems tab
 with tabs[1]:
-    if not cherries_df.empty:
+    if not gems_df.empty:
         for index, row in cherries_df.iterrows():
             ticker = row['Security Id']
             tick = row['Security Name']
@@ -144,7 +144,7 @@ with tabs[1]:
             show_plot = st.checkbox(f"**{tick}** - {sector} - {industry}", key="Gems-"+tick)
 
             if show_plot:
-                cherries_stock = get_stock_data(ticker)
+                gems_stock = get_stock_data(ticker)
                 if not cherries_stock.empty:
 
                     ### Add your details to be displayed when a stck is selected
@@ -154,12 +154,12 @@ with tabs[1]:
 
                     # Add trace for Close Price
                     fig.add_trace(
-                        go.Scatter(x=cherries_stock.index, y=cherries_stock['Close'], mode='lines', name='Close Price',
+                        go.Scatter(x=gems_stock.index, y=gems_stock['Close'], mode='lines', name='Close Price',
                                    yaxis='y', marker=dict(color='blue')))
 
                     # Add trace for Volume Change
                     fig.add_trace(
-                        go.Bar(x=cherries_stock.index, y=cherries_stock['Volume'], name='Volume Change', yaxis='y2',
+                        go.Bar(x=gems_stock.index, y=gems_stock['Volume'], name='Volume Change', yaxis='y2',
                                marker=dict(color='orange')))
 
                     fig.update_layout(
