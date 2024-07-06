@@ -62,17 +62,15 @@ st.markdown(custom_css, unsafe_allow_html=True)
 
 # Read stock data from file
 file_path = Path(__file__).parent / 'data/Bse_Equity.csv'
+logo_path = Path(__file__).parent / "data/logo.png"
 try:
     df = pd.read_csv(file_path)
 except Exception as e:
     st.error(f"Error reading the file: {e}")
     df = pd.DataFrame()
 
-# Display stock information
-st.header("Stock Information")
-
-# Logo (Replace 'https://example.com/logo.png' with your actual logo URL)
-st.markdown('<div class="logo-container"><img class="logo" src="https://example.com/logo.png"></div>', unsafe_allow_html=True)
+# Logo
+st.image(str(logo_path), width=100, use_column_width=False)
 
 # Create tabs for "Early Cherries" and "Fallen Gems"
 tabs = st.tabs(["Early Cherries", "Fallen Gems"])
@@ -96,16 +94,12 @@ with tabs[0]:
                     fig = go.Figure()
 
                     # Add trace for Close Price
-                    fig.add_trace(go.Scatter(x=df_stock.index, y=df_stock['Close'], mode='lines', name='Close Price',
-                                             yaxis='y', marker=dict(color='blue')))
+                    fig.add_trace(go.Scatter(x=df_stock.index, y=df_stock['Close'], mode='lines', name='Close Price', yaxis='y', marker=dict(color='blue')))
 
                     # Add trace for Volume Change
-                    fig.add_trace(go.Bar(x=df_stock.index, y=df_stock['Volume'], name='Volume Change', yaxis='y2',
-                                         marker=dict(color='orange')))  # Change color here
+                    fig.add_trace(go.Bar(x=df_stock.index, y=df_stock['Volume'], name='Volume Change', yaxis='y2', marker=dict(color='orange')))
 
                     fig.update_layout(
-                        xaxis_title="Date",
-                        yaxis_title="Price",
                         yaxis2=dict(
                             title='Volume',
                             overlaying='y',
