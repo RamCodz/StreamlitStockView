@@ -143,24 +143,23 @@ with tabs[0]:
 with tabs[1]:
     Cherry_tabs = st.tabs(["5 year", "1 year", "6 Month", "3 Month",  "1 Month"])
     with Cherry_tabs[0]:
-        if not cherries_df.empty:
+        if not cherries_5y.empty:
             display_stock_data_from_df(cherries_5y, key_prefix="Cherries5Y")
     with Cherry_tabs[1]:
-        if not cherries_df.empty:
+        if not cherries_1y.empty:
             display_stock_data_from_df(cherries_1y, key_prefix="Cherries1Y")
     with Cherry_tabs[2]:
-        if not cherries_df.empty:
+        if not cherries_6m.empty:
             display_stock_data_from_df(cherries_6m, key_prefix="Cherries6M")
     with Cherry_tabs[3]:
-        if not cherries_df.empty:
+        if not cherries_3m.empty:
             display_stock_data_from_df(cherries_3m, key_prefix="Cherries3M")
     with Cherry_tabs[4]:
-        if not cherries_df.empty:
+        if not cherries_1m.empty:
             display_stock_data_from_df(cherries_1m, key_prefix="Cherries1M")
 # Fallen Gems tab
 with tabs[2]:
-    if not gems_df.empty:
-        display_stock_data_from_df(cherries_df, key_prefix="Gems")
+    st.write("Coming soon...")
 # Early Cherries tab
 with tabs[3]:
     st.write("Coming soon...")
