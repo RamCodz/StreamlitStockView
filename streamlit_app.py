@@ -121,7 +121,11 @@ except Exception as e:
     df = pd.DataFrame()
 
 # Stock filtering for Early Cherries
-cherries_df = filter_stocks(df, "1y")
+cherries_5y = filter_stocks(df, "5y")
+cherries_1y = filter_stocks(df, "1y")
+cherries_6m = filter_stocks(df, "6m")
+cherries_3m = filter_stocks(df, "3m")
+cherries_1m = filter_stocks(df, "1m")
 
 # Stock filtering for Fallen Gems
 gems_df = df
@@ -140,19 +144,19 @@ with tabs[1]:
     Cherry_tabs = st.tabs(["5 year", "1 year", "6 Month", "3 Month",  "1 Month"])
     with Cherry_tabs[0]:
         if not cherries_df.empty:
-            display_stock_data_from_df(cherries_df, key_prefix="Cherries5Y")
+            display_stock_data_from_df(cherries_5y, key_prefix="Cherries5Y")
     with Cherry_tabs[1]:
         if not cherries_df.empty:
-            display_stock_data_from_df(cherries_df, key_prefix="Cherries1Y")
+            display_stock_data_from_df(cherries_1y, key_prefix="Cherries1Y")
     with Cherry_tabs[2]:
         if not cherries_df.empty:
-            display_stock_data_from_df(cherries_df, key_prefix="Cherries6M")
+            display_stock_data_from_df(cherries_6m, key_prefix="Cherries6M")
     with Cherry_tabs[3]:
         if not cherries_df.empty:
-            display_stock_data_from_df(cherries_df, key_prefix="Cherries3M")
+            display_stock_data_from_df(cherries_3m, key_prefix="Cherries3M")
     with Cherry_tabs[4]:
         if not cherries_df.empty:
-            display_stock_data_from_df(cherries_df, key_prefix="Cherries1M")
+            display_stock_data_from_df(cherries_1m, key_prefix="Cherries1M")
 # Fallen Gems tab
 with tabs[2]:
     if not gems_df.empty:
