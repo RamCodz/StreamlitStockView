@@ -6,7 +6,9 @@ import datetime
 def get_stock_data(ticker, period):
     try:
         end_date = datetime.date.today()
-        if period == "1y":
+        if period == "5y":
+            start_date = end_date - datetime.timedelta(days=1825)
+        elif period == "1y":
             start_date = end_date - datetime.timedelta(days=365)
         elif period == "6m":
             start_date = end_date - datetime.timedelta(days=182)
