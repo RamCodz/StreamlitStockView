@@ -1,8 +1,8 @@
 from yahoo_fin import stock_info as si
 import pandas as pd
 from datetime import datetime, timedelta
-import globals
-from debug import debug
+import Utils.globals
+from Utils.debug import debug
 
 def dbg(msg):
     debug("fetch_all_ticker_data-->"+str(msg))
