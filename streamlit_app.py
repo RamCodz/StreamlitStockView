@@ -111,8 +111,9 @@ st.set_page_config(layout="wide")
 st.markdown(custom_css, unsafe_allow_html=True)
 
 # Read stock data from file
-file_path = Path(__file__).parent / 'data/Bse_Equity.csv'
+file_path = Path(__file__).parent / 'Data/Outbound/StockMe_2024-07-22.xlsx'
 logo_path = Path(__file__).parent / "data/logo.png"
+
 
 try:
     df = pd.read_csv(file_path)
@@ -120,12 +121,15 @@ except Exception as e:
     st.error(f"Error reading the file: {e}")
     df = pd.DataFrame()
 
+
+
 # Stock filtering for Early Cherries
-cherries_5y = filter_stocks(df, "5y")
+cherries_5y = 
+'''cherries_5y = filter_stocks(df, "5y")
 cherries_1y = filter_stocks(df, "1y")
 cherries_6m = filter_stocks(df, "6m")
 cherries_3m = filter_stocks(df, "3m")
-cherries_1m = filter_stocks(df, "1m")
+cherries_1m = filter_stocks(df, "1m")'''
 
 # Stock filtering for Fallen Gems
 gems_df = df
