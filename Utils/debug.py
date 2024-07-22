@@ -1,6 +1,6 @@
 import os 
 from datetime import datetime
-import globals
+import Utils.globals
 
 def debug(msg):
     dbg_file = os.path.join(globals.dbg_filepath, str(globals.dbg_filename)) 
