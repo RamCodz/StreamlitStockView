@@ -1,7 +1,7 @@
 import pandas as pd
 from datetime import datetime, timedelta
-from debug import debug
-import globals
+from Utils.debug import debug
+import Utils.globals
 
 def dbg(msg):
     debug("gen_file-->"+str(msg))
