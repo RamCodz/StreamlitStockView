@@ -1,7 +1,7 @@
 import pandas as pd
 from datetime import datetime, timedelta
-import globals
-from debug import debug
+import Utils.globals
+from Utils.debug import debug
 
 def dbg(msg):
     debug("early_cherries-->"+str(msg))
