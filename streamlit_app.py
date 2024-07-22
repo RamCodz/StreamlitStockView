@@ -4,6 +4,7 @@ import yfinance as yf
 import plotly.graph_objs as go
 from pathlib import Path
 from EarlyCherries.Cherries import filter_stocks
+from main import main_run
 
 # Function to get the stock data
 def get_stock_data(ticker, period="1y", interval="1d"):
@@ -136,7 +137,8 @@ gems_df = df
 
 # Logo
 st.image(str(logo_path), width=100, use_column_width=False)
-
+st.image(str(logo_path), width=100, use_column_width=False)
+run_report = st.button("Run Report")
 # Create tabs for "Early Cherries" and "Fallen Gems"
 tabs = st.tabs(["Dashboard", "Early Cherries", "Fallen Gems", "Sector Stars"])
 
