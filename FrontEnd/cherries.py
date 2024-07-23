@@ -5,7 +5,7 @@ import yfinance as yf
 import plotly.graph_objs as go
 
 # Read stock data from file
-stock_list = Path(__file__).parent / 'Data/Inbound/Bse_Equity.csv'
+stock_list = Path(__file__).parent / 'Data/Bse_Equity.csv'
 
 try:
     stock_list_df = pd.read_csv(stock_list)
