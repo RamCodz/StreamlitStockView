@@ -1,7 +1,7 @@
 from yahoo_fin import stock_info as si
 import pandas as pd
 from datetime import datetime, timedelta
-import Utils.globals
+from Utils import globals
 from Utils.debug import debug
 
 def dbg(msg):
