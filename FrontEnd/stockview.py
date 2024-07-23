@@ -1,8 +1,4 @@
 import streamlit as st
-import base64
-
-from altair.utils import display
-from fontTools.cffLib import width
 
 # ---Page setup
 dashboard_page = st.Page(
@@ -28,24 +24,6 @@ sectors_page = st.Page(
 )
 
 st.set_page_config(layout="wide")
-
-# Load your image
-image_path = "F:\Python_projects\StreamlitStockView\FrontEnd\logo_1.jpg"
-with open(image_path, "rb") as image_file:
-    base64_image = base64.b64encode(image_file.read()).decode('utf-8')
-
-# Embed the image in HTML
-st.sidebar.markdown(
-    f"""
-    <style>
-
-    </style>
-    <div class="logo-container">
-        <img src="data:image/png;base64,{base64_image}" alt="Logo">
-    </div>
-    """,
-    unsafe_allow_html=True
-)
 
 # --Navigation setup
 pg = st.navigation(pages=[dashboard_page, cherries_page, gems_page, sectors_page])
