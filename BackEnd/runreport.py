@@ -29,6 +29,7 @@ def main():
     all_data = all_data.rename_axis('Date').reset_index()  # assigning first col name in df and make it as column
     all_data['Date'] = pd.to_datetime(all_data['Date'])
 
+
     dbg("lets find Early cherries ")
     cherries_ticker_dtls = find_cherries(all_data, stocklist)
     dbg("Early cherries completed ")

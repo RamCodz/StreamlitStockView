@@ -78,7 +78,6 @@ def display_stock_data_from_df(df, key_prefix=""):
     else:
         st.warning("No data available to display.")
 
-
 Gems_tabs = st.tabs(["Fall in 1 week", "Fall in 1 month", "Fall in 3 months", "Fall in 6 months", "Fall in 1 year"])
 with Gems_tabs[0]:
     display_stock_data_from_df(stock_list_df, key_prefix="Gems1w")

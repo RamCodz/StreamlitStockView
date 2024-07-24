@@ -23,6 +23,7 @@ sectors_page = st.Page(
     icon=":material/account_circle:"
 )
 
+
 st.set_page_config(layout="wide")
 
 # --Navigation setup
