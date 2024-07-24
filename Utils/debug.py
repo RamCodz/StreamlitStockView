@@ -8,8 +8,6 @@ project_root = Path(__file__).resolve().parent
 # Construct the log file path
 file_nm = project_root / globals.dbg_filepath / globals.dbg_filename
 
-# Ensure the directory for the log file exists
-file_nm.parent.mkdir(parents=True, exist_ok=True)
 
 # Configure logging
 logging.basicConfig(
