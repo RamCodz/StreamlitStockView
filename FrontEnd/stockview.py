@@ -1,5 +1,5 @@
 import streamlit as st
-
+from BackEnd import runreport
 # ---Page setup
 dashboard_page = st.Page(
     page="dashboard.py",
@@ -32,6 +32,7 @@ pg = st.navigation(pages=[dashboard_page, cherries_page, gems_page, sectors_page
 
 if st.sidebar.button("Run Report"):
     st.write("running report..")
-
+    runreport.main()
+    st.write("Report generated")
 # --Run navigation
 pg.run()
