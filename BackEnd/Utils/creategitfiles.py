@@ -25,9 +25,5 @@ def create_or_update_file(path, content, message="Update file via Streamlit", br
     }
     if sha:
         data["sha"] = sha
-    st.write(url)
+    
     response = requests.put(url, json=data, headers=headers)
-    if response.status_code in [200, 201]:
-        st.success("File created/updated successfully")
-    else:
-        st.error(f"Failed to create/update file: {response.json()}")
