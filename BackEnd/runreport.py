@@ -23,9 +23,9 @@ def main():
     globals.data_filename = globals.data_filename.replace("*",str(globals.today))
 
     #clear dbg file if exists
-    if os.path.exists(str(globals.dbg_filepath) + str(globals.dbg_filename)):
-        with open(str(globals.dbg_filepath) + str(globals.dbg_filename), 'w') as file:
-            pass  
+    #if os.path.exists(str(globals.dbg_filepath) + str(globals.dbg_filename)):
+        #with open(str(globals.dbg_filepath) + str(globals.dbg_filename), 'w') as file:
+            #pass  
 
     dbg("*********************STARTED**************************")
     dbg("in main module")
