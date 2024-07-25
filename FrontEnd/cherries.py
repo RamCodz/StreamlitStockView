@@ -80,6 +80,7 @@ def display_stock_data_from_df(df, key_prefix=""):
 
 Cherry_tabs = st.tabs(["5 Year Breakout", "1 Year Breakout", "6 Month Breakout", "3 Month Breakout", "1 Month Breakout"])
 with Cherry_tabs[0]:
+    st.write(stock_list_df)
     display_stock_data_from_df(stock_list_df, key_prefix="Cherries5Y")
 with Cherry_tabs[1]:
     display_stock_data_from_df(stock_list_df, key_prefix="Cherries1Y")
