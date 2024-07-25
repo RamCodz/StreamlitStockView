@@ -8,4 +8,5 @@ def debug(msg):
     #dbg_file = os.path.join(globals.dbg_filepath, str(globals.dbg_filename)) 
     #with open(dbg_file, 'a') as file:
         #file.write(str(datetime.now().strftime(globals.dt_time_format))+"--"+ str(msg) + '\n')
-    create_or_update_file(str(Path(__file__).parent / 'debug_log.log'),msg)
+    file_path = Path(__file__).parent / 'debug_log.log'
+    create_or_update_file(str(file_path),msg)
