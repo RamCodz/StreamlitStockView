@@ -1,3 +1,4 @@
+import streamlit as st
 import requests
 import os
 from base64 import b64encode
@@ -24,5 +25,6 @@ def create_or_update_file(path, content, message="Update file via Streamlit", br
     }
     if sha:
         data["sha"] = sha
-
+    st.write(url)
     response = requests.put(url, json=data, headers=headers)
+    st.write(response)
