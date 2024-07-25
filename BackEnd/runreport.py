@@ -22,11 +22,6 @@ def main():
     globals.dbg_filename = str(globals.dbg_filename).replace("*", str(globals.today))
     globals.data_filename = globals.data_filename.replace("*",str(globals.today))
 
-    #clear dbg file if exists
-    #if os.path.exists(str(globals.dbg_filepath) + str(globals.dbg_filename)):
-        #with open(str(globals.dbg_filepath) + str(globals.dbg_filename), 'w') as file:
-            #pass  
-
     dbg("*********************STARTED**************************")
     dbg("in main module")
     dbg("Current Directory:"+str(current_directory))
@@ -34,7 +29,7 @@ def main():
     dbg("dbg filename "+globals.dbg_filename)
     dbg("excel "+str(globals.equity_list_path) + str(globals.equity_list_filename))
 
-    all_data = pd.DataFrame()
+    '''all_data = pd.DataFrame()
     dbg("reading stocklist from csv")
     StockList = pd.DataFrame()
     #StockList = pd.read_csv(str(globals.equity_list_path) + str(globals.equity_list_filename))
@@ -59,5 +54,5 @@ def main():
 
     dbg("*********************COMPLETED**************************")
 
-
+'''
 main()
