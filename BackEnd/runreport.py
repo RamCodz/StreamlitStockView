@@ -3,10 +3,10 @@ from datetime import datetime, timedelta
 import os
 ##from predict_stk import filter_stocks  --
 from BackEnd.Utils.debug import debug
-from Utils import globals
-from Utils.fetch_all_ticker_data import get_all_data
-from Scripts.early_cherries import find_cherries
-from Utils.gen_file import create_file
+from BackEnd.Utils import globals
+from BackEnd.Utils.fetch_all_ticker_data import get_all_data
+from BackEnd.Scripts.early_cherries import find_cherries
+from BackEnd.Utils.gen_file import create_file
 
 def dbg(msg):
     debug("main-->"+str(msg))
