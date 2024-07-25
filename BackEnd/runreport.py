@@ -2,7 +2,7 @@ import pandas as pd
 from datetime import datetime, timedelta
 import os
 ##from predict_stk import filter_stocks  --
-from Utils.debug import debug
+from BackEnd.Utils.debug import debug
 from Utils import globals
 from Utils.fetch_all_ticker_data import get_all_data
 from Scripts.early_cherries import find_cherries
