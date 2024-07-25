@@ -1,6 +1,6 @@
 curr_dir = None
 #dbg_filepath = 'G:/python/Stock_prediction/App_core/Logs/'
-dbg_filepath = 'Logs/'
+dbg_filepath = 'BackEnd/Logs/'
 dbg_filename = 'Log_stockMe_*.txt'
 #equity_list_path = 'G:/python/Stock_prediction/App_core/'
 equity_list_path = 'Data/Inbound/'
