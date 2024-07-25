@@ -1,0 +1,127 @@
+2024/07/25 21:15:04--main-->*********************STARTED**************************
+2024/07/25 21:15:04--main-->in main module
+2024/07/25 21:15:04--main-->Current Directory:G:\python\StreamlitStockView\StreamlitStockView\BackEnd
+2024/07/25 21:15:04--main-->dbg filepathG:\python\StreamlitStockView\StreamlitStockView\BackEnd/Logs/
+2024/07/25 21:15:04--main-->dbg filename Log_stockMe_2024-07-25.txt
+2024/07/25 21:15:04--main-->excel G:\python\StreamlitStockView\StreamlitStockView\BackEnd/Data/Inbound/Equity.csv
+2024/07/25 21:15:04--main-->reading stocklist from csv
+2024/07/25 21:15:04--main-->before fetching all tickers data 
+2024/07/25 21:15:04--fetch_all_ticker_data-->in get_all_data 
+2024/07/25 21:15:04--fetch_all_ticker_data-->ABB
+2024/07/25 21:15:05--fetch_all_ticker_data-->AEGISLOG
+2024/07/25 21:15:07--fetch_all_ticker_data-->ARE&M
+2024/07/25 21:15:08--fetch_all_ticker_data-->AMBALALSA
+2024/07/25 21:15:09--fetch_all_ticker_data-->Could not retrieve data for AMBALALSA.NS: {'chart': {'result': None, 'error': {'code': 'Not Found', 'description': 'No data found, symbol may be delisted'}}}
+2024/07/25 21:15:09--fetch_all_ticker_data-->ANDHRAPET
+2024/07/25 21:15:10--fetch_all_ticker_data-->Could not retrieve data for ANDHRAPET.NS: {'chart': {'result': None, 'error': {'code': 'Not Found', 'description': 'No data found, symbol may be delisted'}}}
+2024/07/25 21:15:10--main-->after fetching all tickers data 
+2024/07/25 21:15:10--main-->lets find Early cherries 
+2024/07/25 21:15:10--early_cherries-->in find_cherries 
+2024/07/25 21:15:10--early_cherries-->ticker ABB.NS
+2024/07/25 21:15:10--early_cherries-->in analyze_stock
+2024/07/25 21:15:10--early_cherries-->           Date         open         high          low        close     adjclose    volume  ticker
+0    2019-07-29  1261.923584  1289.159302  1243.766357  1266.054321  1232.354858  164411.0  ABB.NS
+1    2019-07-30  1269.186401  1275.269165  1228.287476  1233.144409  1200.321045  320587.0  ABB.NS
+2    2019-07-31  1235.595703  1247.397827  1214.624146  1237.502197  1204.562988   58743.0  ABB.NS
+3    2019-08-01  1233.780029  1263.693970  1218.754883  1228.015015  1195.328125   56036.0  ABB.NS
+4    2019-08-02  1230.602417  1261.923584  1216.530640  1241.769165  1208.716431   50578.0  ABB.NS
+...         ...          ...          ...          ...          ...          ...       ...     ...
+1228 2024-07-19  7900.000000  7909.700195  7600.000000  7620.500000  7620.500000  355166.0  ABB.NS
+1229 2024-07-22  7525.149902  7759.850098  7425.000000  7716.950195  7716.950195  363722.0  ABB.NS
+1230 2024-07-23  7766.950195  7812.049805  7053.200195  7503.049805  7503.049805  714300.0  ABB.NS
+1231 2024-07-24  7549.950195  7637.950195  7435.000000  7522.600098  7522.600098  388681.0  ABB.NS
+1232 2024-07-25  7450.000000  7766.000000  7410.049805  7623.799805  7623.799805  304810.0  ABB.NS
+
+[1233 rows x 8 columns]
+2024/07/25 21:15:10--early_cherries-->Index(['Column labels:Date', 'Column labels:open', 'Column labels:high',
+       'Column labels:low', 'Column labels:close', 'Column labels:adjclose',
+       'Column labels:volume', 'Column labels:ticker'],
+      dtype='object')
+2024/07/25 21:15:10--early_cherries-->avg_volume_one_year 378740.5843621399
+2024/07/25 21:15:10--early_cherries-->avg_volume_last_week 425335.8
+2024/07/25 21:15:10--early_cherries-->avg_close_one_year 5613.732723283179
+2024/07/25 21:15:10--early_cherries-->avg_close_last_week 7597.37998046875
+2024/07/25 21:15:10--early_cherries-->ticker stocklist    Security Code        Issuer Name Security Id  ... Industry New Name           Igroup Name              ISubgroup Name
+0         500002  ABB India Limited         ABB  ...     Capital Goods  Electrical Equipment  Heavy Electrical Equipment
+
+[1 rows x 14 columns]
+2024/07/25 21:15:10--early_cherries-->ticker AEGISLOG.NS
+2024/07/25 21:15:10--early_cherries-->in analyze_stock
+2024/07/25 21:15:10--early_cherries-->           Date        open        high         low       close    adjclose     volume       ticker
+1233 2024-05-30  740.099976  753.299988  695.000000  700.950012  699.243286  1394718.0  AEGISLOG.NS
+1234 2024-05-31  702.700012  723.650024  681.750000  706.849976  705.128906  1725934.0  AEGISLOG.NS
+1235 2024-06-03  723.000000  734.950012  702.400024  718.950012  717.199463   755260.0  AEGISLOG.NS
+1236 2024-06-04  718.950012  719.400024  625.000000  702.700012  700.989014  1335076.0  AEGISLOG.NS
+1237 2024-06-05  700.000000  730.099976  664.750000  705.450012  703.732361  1122766.0  AEGISLOG.NS
+1238 2024-06-06  730.000000  833.000000  720.299988  791.150024  789.223694  4231419.0  AEGISLOG.NS
+1239 2024-06-07  795.299988  869.500000  766.450012  777.849976  775.956055  2956850.0  AEGISLOG.NS
+1240 2024-06-10  780.000000  786.000000  745.250000  760.650024  758.797974  1032616.0  AEGISLOG.NS
+1241 2024-06-11  760.000000  797.299988  751.049988  771.099976  769.222473   897864.0  AEGISLOG.NS
+1242 2024-06-12  762.549988  775.849976  756.000000  766.900024  765.032715   257860.0  AEGISLOG.NS
+1243 2024-06-13  774.950012  887.650024  767.150024  841.099976  839.052002  4967272.0  AEGISLOG.NS
+1244 2024-06-14  839.000000  839.500000  814.000000  816.650024  814.661621   736333.0  AEGISLOG.NS
+1245 2024-06-18  828.700012  845.000000  820.000000  833.400024  831.370850   659470.0  AEGISLOG.NS
+1246 2024-06-19  840.000000  840.000000  791.000000  804.450012  802.491272   632587.0  AEGISLOG.NS
+1247 2024-06-20  805.849976  844.950012  805.849976  818.599976  816.606812   508890.0  AEGISLOG.NS
+1248 2024-06-21  821.250000  827.150024  802.000000  806.599976  804.636047   223821.0  AEGISLOG.NS
+1249 2024-06-24  800.000000  825.000000  761.200012  805.400024  803.439026   904632.0  AEGISLOG.NS
+1250 2024-06-25  810.599976  847.400024  810.599976  821.400024  819.400024   765002.0  AEGISLOG.NS
+1251 2024-06-26  816.049988  857.299988  812.500000  827.450012  827.450012   575791.0  AEGISLOG.NS
+1252 2024-06-27  830.750000  876.000000  830.750000  854.099976  854.099976   731038.0  AEGISLOG.NS
+1253 2024-06-28  870.000000  914.000000  865.000000  872.849976  872.849976  1364525.0  AEGISLOG.NS
+1254 2024-07-01  878.000000  884.500000  848.049988  855.099976  855.099976   402110.0  AEGISLOG.NS
+1255 2024-07-02  859.950012  872.500000  844.299988  853.049988  853.049988   243505.0  AEGISLOG.NS
+1256 2024-07-03  859.299988  871.900024  845.950012  866.299988  866.299988   314124.0  AEGISLOG.NS
+1257 2024-07-04  872.599976  900.000000  867.000000  890.799988  890.799988   375972.0  AEGISLOG.NS
+1258 2024-07-05  890.049988  925.000000  885.599976  922.000000  922.000000   466700.0  AEGISLOG.NS
+1259 2024-07-08  927.950012  937.500000  895.299988  926.750000  926.750000   388471.0  AEGISLOG.NS
+1260 2024-07-09  926.750000  970.000000  926.750000  937.099976  937.099976   450958.0  AEGISLOG.NS
+1261 2024-07-10  940.099976  946.450012  903.700012  909.299988  909.299988   520735.0  AEGISLOG.NS
+1262 2024-07-11  916.200012  919.650024  860.049988  880.650024  880.650024   398302.0  AEGISLOG.NS
+1263 2024-07-12  888.299988  897.200012  840.000000  845.849976  845.849976  2195707.0  AEGISLOG.NS
+1264 2024-07-15  852.950012  880.000000  822.000000  866.650024  866.650024  1107489.0  AEGISLOG.NS
+1265 2024-07-16  854.000000  900.000000  854.000000  897.450012  897.450012   356225.0  AEGISLOG.NS
+1266 2024-07-18  904.599976  904.599976  880.000000  885.650024  885.650024   182047.0  AEGISLOG.NS
+1267 2024-07-19  883.900024  883.900024  831.049988  854.400024  854.400024   308921.0  AEGISLOG.NS
+1268 2024-07-22  839.049988  851.750000  824.150024  846.200012  846.200012   137628.0  AEGISLOG.NS
+1269 2024-07-23  852.000000  852.000000  811.000000  834.200012  834.200012   292090.0  AEGISLOG.NS
+1270 2024-07-24  835.000000  880.000000  835.000000  874.950012  874.950012   285510.0  AEGISLOG.NS
+1271 2024-07-25  879.950012  896.599976  869.950012  885.299988  885.299988   352240.0  AEGISLOG.NS
+2024/07/25 21:15:10--early_cherries-->Index(['Column labels:Date', 'Column labels:open', 'Column labels:high',
+       'Column labels:low', 'Column labels:close', 'Column labels:adjclose',
+       'Column labels:volume', 'Column labels:ticker'],
+      dtype='object')
+2024/07/25 21:15:10--early_cherries-->avg_volume_one_year 937396.358974359
+2024/07/25 21:15:10--early_cherries-->avg_volume_last_week 275277.8
+2024/07/25 21:15:10--early_cherries-->avg_close_one_year 829.1346169496194
+2024/07/25 21:15:10--early_cherries-->avg_close_last_week 859.010009765625
+2024/07/25 21:15:10--early_cherries-->ticker ARE&M.NS
+2024/07/25 21:15:10--early_cherries-->in analyze_stock
+2024/07/25 21:15:10--early_cherries-->           Date         open         high          low        close     adjclose     volume    ticker
+1272 2023-10-18   644.950012   647.799988   639.000000   641.099976   634.157227   308332.0  ARE&M.NS
+1273 2023-10-19   640.299988   641.099976   636.099976   637.500000   630.596252   175886.0  ARE&M.NS
+1274 2023-10-20   636.049988   638.099976   624.400024   628.049988   621.248596   361065.0  ARE&M.NS
+1275 2023-10-23   628.099976   630.000000   615.500000   617.200012   610.516113   335280.0  ARE&M.NS
+1276 2023-10-25   617.200012   623.000000   605.049988   610.700012   604.086487   351799.0  ARE&M.NS
+...         ...          ...          ...          ...          ...          ...        ...       ...
+1454 2024-07-19  1585.750000  1595.250000  1520.000000  1540.849976  1540.849976   839208.0  ARE&M.NS
+1455 2024-07-22  1550.000000  1560.250000  1500.000000  1530.900024  1530.900024   624468.0  ARE&M.NS
+1456 2024-07-23  1540.000000  1575.000000  1404.000000  1545.949951  1545.949951  1340455.0  ARE&M.NS
+1457 2024-07-24  1545.000000  1606.000000  1531.900024  1573.699951  1573.699951  1336287.0  ARE&M.NS
+1458 2024-07-25  1572.000000  1587.650024  1552.000000  1565.800049  1565.800049   409175.0  ARE&M.NS
+
+[187 rows x 8 columns]
+2024/07/25 21:15:10--early_cherries-->Index(['Column labels:Date', 'Column labels:open', 'Column labels:high',
+       'Column labels:low', 'Column labels:close', 'Column labels:adjclose',
+       'Column labels:volume', 'Column labels:ticker'],
+      dtype='object')
+2024/07/25 21:15:10--early_cherries-->avg_volume_one_year 1625077.005376344
+2024/07/25 21:15:10--early_cherries-->avg_volume_last_week 909918.6
+2024/07/25 21:15:10--early_cherries-->avg_close_one_year 977.8548410066994
+2024/07/25 21:15:10--early_cherries-->avg_close_last_week 1551.439990234375
+2024/07/25 21:15:10--main-->Early cherries completed 
+2024/07/25 21:15:10--main-->Lets find Fallen Gems
+2024/07/25 21:15:10--main-->Fallen Gems Completed
+2024/07/25 21:15:10--gen_file-->Creating file at: G:\python\StreamlitStockView\StreamlitStockView\BackEnd\Data\Outbound\StockMe_2024-07-25.xlsx
+2024/07/25 21:15:11--gen_file-->File created successfully: G:\python\StreamlitStockView\StreamlitStockView\BackEnd\Data\Outbound\StockMe_2024-07-25.xlsx
+2024/07/25 21:15:11--main-->*********************COMPLETED**************************
