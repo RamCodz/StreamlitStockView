@@ -1,6 +1,6 @@
 import pandas as pd
-from Utils.debug import debug
-from Utils import globals
+from BackEnd.Utils.debug import debug
+from BackEnd.Utils import globals
 from pathlib import Path
 
 
