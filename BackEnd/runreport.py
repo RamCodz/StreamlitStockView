@@ -7,6 +7,7 @@ from BackEnd.Utils import globals
 from BackEnd.Utils.fetch_all_ticker_data import get_all_data
 from BackEnd.Scripts.early_cherries import find_cherries
 from BackEnd.Utils.creategitfiles import create_or_update_file
+import streamlit as st
 
 def dbg(msg):
     debug("main-->"+str(msg))
@@ -17,7 +18,7 @@ def main():
     globals.dbg_filepath = str(globals.curr_dir) + str(globals.dbg_filepath)
     globals.equity_list_path = str(globals.curr_dir) + str(globals.equity_list_path)
     globals.data_filepath = str(globals.curr_dir) + str(globals.data_filepath)
-    
+    st.write("Test print")
     globals.today = datetime.now().strftime(globals.dt_format)
     globals.dbg_filename = str(globals.dbg_filename).replace("*", str(globals.today))
     globals.data_filename = globals.data_filename.replace("*",str(globals.today))
