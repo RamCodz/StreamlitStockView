@@ -30,7 +30,6 @@ def main():
     ##gems_ticker_dtls = fallen_gems(all_data, StockList)
 
     ##new dataframes can be added and the same needs to be handled in gen_file module'''
-    st.write("outout path - "+str(globals.data_filepath))
     create_or_update_file(str(globals.data_filepath) + "output.csv" ,StockList)
 
 main()
