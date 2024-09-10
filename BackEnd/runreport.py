@@ -16,7 +16,7 @@ def main():
     current_directory = os.getcwd()
     globals.curr_dir = current_directory +"/"
     globals.today = datetime.now().strftime(globals.dt_format)
-    globals.data_filename = globals.data_filename.replace("*",str(globals.today))
+    globals.cherries_filename = globals.cherries_filename.replace("*",str(globals.today))
     all_data = pd.DataFrame()
     StockList = pd.DataFrame()
     StockList = pd.read_csv(str(globals.equity_list_path) + str(globals.equity_list_filename))
@@ -30,6 +30,7 @@ def main():
     ##gems_ticker_dtls = fallen_gems(all_data, StockList)
 
     ##new dataframes can be added and the same needs to be handled in gen_file module
-    create_or_update_file(str(globals.data_filepath) + "Cherries.csv" ,cherries_ticker_dtls)
+    ##create_or_update_file(str(globals.data_filepath) + "Cherries.csv" ,cherries_ticker_dtls)
+    create_or_update_file(str(globals.cherries_filename) + "Cherries.csv" ,cherries_ticker_dtls)
 
 main()
