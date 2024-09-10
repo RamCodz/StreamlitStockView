@@ -6,7 +6,7 @@ from BackEnd.Utils.debug import debug
 from BackEnd.Utils import globals
 from BackEnd.Utils.fetch_all_ticker_data import get_all_data
 from BackEnd.Scripts.early_cherries import find_cherries
-from BackEnd.Utils.creategitfiles import create_file
+from BackEnd.Utils.creategitfiles import create_or_update_file
 
 def dbg(msg):
     debug("main-->"+str(msg))
@@ -17,7 +17,7 @@ def main():
     globals.dbg_filepath = str(globals.curr_dir) + str(globals.dbg_filepath)
     globals.equity_list_path = str(globals.curr_dir) + str(globals.equity_list_path)
     globals.data_filepath = str(globals.curr_dir) + str(globals.data_filepath)
-
+    
     globals.today = datetime.now().strftime(globals.dt_format)
     globals.dbg_filename = str(globals.dbg_filename).replace("*", str(globals.today))
     globals.data_filename = globals.data_filename.replace("*",str(globals.today))
@@ -50,7 +50,7 @@ def main():
 
 
     ##new dataframes can be added and the same needs to be handled in gen_file module
-    create_file(cherries_ticker_dtls)
+    create_or_update_file(globals.data_filepath,cherries_ticker_dtls)
 
     dbg("*********************COMPLETED**************************")
 
