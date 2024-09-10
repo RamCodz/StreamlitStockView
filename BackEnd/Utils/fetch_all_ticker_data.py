@@ -17,7 +17,6 @@ def get_stock_data(ticker, start_date, end_date):
         return pd.DataFrame()
 
 def get_all_data(StockList):
-    dbg("in get_all_data ")
     all_data = pd.DataFrame()
     today = datetime.today()
     five_year_ago = today - timedelta(days=365*globals.noy)
@@ -25,7 +24,6 @@ def get_all_data(StockList):
     ##StockList = pd.read_csv(str(globals.equity_list_path) + str(globals.equity_list_filename))
     i=1
     for index, row in StockList.iterrows():
-        dbg(row['Security Id'])
         stkSymbol = row['Security Id']+'.NS'
         
         five_year_data = get_stock_data(stkSymbol, five_year_ago, today)
@@ -35,8 +33,6 @@ def get_all_data(StockList):
                 ##five_year_data[DListLbl[k]] = row[DListLbl[k]]
             all_data = pd.concat([all_data, five_year_data])
         
-        if i==5:
-            break;
         i=i+1
         ##dbg(all_data)
     return all_data
