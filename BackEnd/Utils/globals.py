@@ -9,7 +9,7 @@ equity_list_filename = 'Equity.csv'
 data_filepath = 'BackEnd/Data/Outbound/'
 data_filename = 'StockMe_*.xlsx'
 
-noy = 5 ## no of years to get data from Yahoo fin
+noy = 1 ## no of years to get data from Yahoo fin
 dt_format = '%Y-%m-%d'
 dt_time_format = '%Y/%m/%d %H:%M:%S'
 today = None  ##today in '%Y-%m-%d' format
