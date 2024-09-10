@@ -15,7 +15,6 @@ def dbg(msg):
 def main():
     current_directory = os.getcwd()
     globals.curr_dir = current_directory +"/"
-    globals.data_filepath = str(globals.curr_dir) + str(globals.data_filepath)
     globals.today = datetime.now().strftime(globals.dt_format)
     globals.data_filename = globals.data_filename.replace("*",str(globals.today))
     all_data = pd.DataFrame()
