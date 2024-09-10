@@ -23,7 +23,7 @@ def create_or_update_file(path, content, message="Update file via Streamlit", br
     csv_buffer = StringIO()
     content.to_csv(csv_buffer, index=False)
     csv_content = csv_buffer.getvalue()
-    st.write(csv_content)
+    st.write("test print")
     data = {
         "message": message,
         "content": b64encode(csv_content.encode("utf-8")).decode("utf-8"),
