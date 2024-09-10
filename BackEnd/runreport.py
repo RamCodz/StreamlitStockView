@@ -15,20 +15,14 @@ def dbg(msg):
 def main():
     current_directory = os.getcwd()
     globals.curr_dir = current_directory +"/"
-    st.write("globals.curr_dir "+str(globals.curr_dir))
-    st.write("globals.equity_list_path "+str(globals.equity_list_path))
-    globals.equity_list_path = str(globals.curr_dir) + str(globals.equity_list_path)
-    st.write("globals.equity_list_path "+str(globals.equity_list_path))
     globals.data_filepath = str(globals.curr_dir) + str(globals.data_filepath)
-    st.write("globals.data_filepath "+str(globals.data_filepath))
     globals.today = datetime.now().strftime(globals.dt_format)
     globals.data_filename = globals.data_filename.replace("*",str(globals.today))
-    st.write("globals.data_filename "+str(globals.data_filename))
     all_data = pd.DataFrame()
     StockList = pd.DataFrame()
-    '''StockList = pd.read_csv(str(globals.equity_list_path) + str(globals.equity_list_filename))
-
-    dbg("before fetching all tickers data ")
+    StockList = pd.read_csv(str(globals.equity_list_path) + str(globals.equity_list_filename))
+    st.write(StockList)
+    '''dbg("before fetching all tickers data ")
     all_data = get_all_data(StockList)
     dbg("after fetching all tickers data ")
     all_data = all_data.rename_axis('Date').reset_index()## assigning first col name in df and make it as column
