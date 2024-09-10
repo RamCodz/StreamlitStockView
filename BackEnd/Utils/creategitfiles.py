@@ -2,6 +2,7 @@ import streamlit as st
 import requests
 import os
 from base64 import b64encode
+from io import StringIO
 
 # Get the GitHub token from environment variables
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
@@ -17,10 +18,15 @@ def create_or_update_file(path, content, message="Update file via Streamlit", br
     # Check if the file already exists to get the SHA
     response = requests.get(url, headers=headers)
     sha = response.json().get("sha") if response.status_code == 200 else None
-
+    
+    # Convert DataFrame to CSV
+    csv_buffer = StringIO()
+    content.to_csv(csv_buffer, index=False)
+    csv_content = csv_buffer.getvalue()
+    
     data = {
         "message": message,
-        "content": b64encode(content.encode("utf-8")).decode("utf-8"),
+        "content": b64encode(csv_content.encode("utf-8")).decode("utf-8"),
         "branch": branch
     }
     if sha:
