@@ -16,6 +16,7 @@ def main():
     current_directory = os.getcwd()
     globals.curr_dir = current_directory +"/"
     st.write("globals.curr_dir "+str(globals.curr_dir))
+    st.write("globals.equity_list_path "+str(globals.equity_list_path))
     globals.equity_list_path = str(globals.curr_dir) + str(globals.equity_list_path)
     st.write("globals.equity_list_path "+str(globals.equity_list_path))
     globals.data_filepath = str(globals.curr_dir) + str(globals.data_filepath)
