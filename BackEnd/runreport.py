@@ -15,25 +15,16 @@ def dbg(msg):
 def main():
     current_directory = os.getcwd()
     globals.curr_dir = current_directory +"/"
-    globals.dbg_filepath = str(globals.curr_dir) + str(globals.dbg_filepath)
+    st.write("globals.curr_dir "+str(globals.curr_dir))
     globals.equity_list_path = str(globals.curr_dir) + str(globals.equity_list_path)
+    st.write("globals.equity_list_path "+str(globals.equity_list_path))
     globals.data_filepath = str(globals.curr_dir) + str(globals.data_filepath)
-    st.write("full path - "+str(globals.curr_dir) +" and "+ str(globals.equity_list_path))
+    st.write("globals.data_filepath "+str(globals.data_filepath))
     globals.today = datetime.now().strftime(globals.dt_format)
-    globals.dbg_filename = str(globals.dbg_filename).replace("*", str(globals.today))
     globals.data_filename = globals.data_filename.replace("*",str(globals.today))
-
-    dbg("*********************STARTED**************************")
-    dbg("in main module")
-    dbg("Current Directory:"+str(current_directory))
-    dbg("dbg filepath" +globals.dbg_filepath)
-    dbg("dbg filename "+globals.dbg_filename)
-    dbg("excel "+str(globals.equity_list_path) + str(globals.equity_list_filename))
-
+    st.write("globals.data_filename "+str(globals.data_filename))
     all_data = pd.DataFrame()
-    dbg("reading stocklist from csv")
     StockList = pd.DataFrame()
-    st.write(str(globals.equity_list_path) + str(globals.equity_list_filename))
     '''StockList = pd.read_csv(str(globals.equity_list_path) + str(globals.equity_list_filename))
 
     dbg("before fetching all tickers data ")
