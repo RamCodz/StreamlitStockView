@@ -32,7 +32,7 @@ def get_all_data(StockList):
             ##for k in range(len(DListLbl)):
                 ##five_year_data[DListLbl[k]] = row[DListLbl[k]]
             all_data = pd.concat([all_data, five_year_data])
-        if i==500:
+        if i==100:
             break
             
         i=i+1
