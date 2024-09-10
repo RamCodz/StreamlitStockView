@@ -6,7 +6,7 @@ from BackEnd.Utils.debug import debug
 from BackEnd.Utils import globals
 from BackEnd.Utils.fetch_all_ticker_data import get_all_data
 from BackEnd.Scripts.early_cherries import find_cherries
-from BackEnd.Utils.gen_file import create_file
+from BackEnd.Utils.creategitfiles import create_file
 
 def dbg(msg):
     debug("main-->"+str(msg))
@@ -50,7 +50,7 @@ def main():
 
 
     ##new dataframes can be added and the same needs to be handled in gen_file module
-    create_file(cherries_ticker_dtls)  
+    create_file(cherries_ticker_dtls)
 
     dbg("*********************COMPLETED**************************")
 
