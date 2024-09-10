@@ -34,7 +34,7 @@ def main():
     dbg("reading stocklist from csv")
     StockList = pd.DataFrame()
     st.write(str(globals.equity_list_path) + str(globals.equity_list_filename))
-    StockList = pd.read_csv(str(globals.equity_list_path) + str(globals.equity_list_filename))
+    '''StockList = pd.read_csv(str(globals.equity_list_path) + str(globals.equity_list_filename))
 
     dbg("before fetching all tickers data ")
     all_data = get_all_data(StockList)
