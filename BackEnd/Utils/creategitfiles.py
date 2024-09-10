@@ -23,7 +23,7 @@ def create_or_update_file(path, content, message="Update file via Streamlit", br
     csv_buffer = StringIO()
     content.to_csv(csv_buffer, index=False)
     csv_content = csv_buffer.getvalue()
-    
+    st.writecsv_content)
     data = {
         "message": message,
         "content": b64encode(csv_content.encode("utf-8")).decode("utf-8"),
@@ -33,3 +33,4 @@ def create_or_update_file(path, content, message="Update file via Streamlit", br
         data["sha"] = sha
     
     response = requests.put(url, json=data, headers=headers)
+    
