@@ -21,25 +21,16 @@ def main():
     all_data = pd.DataFrame()
     StockList = pd.DataFrame()
     StockList = pd.read_csv(str(globals.equity_list_path) + str(globals.equity_list_filename))
-    st.write(StockList)
-    '''dbg("before fetching all tickers data ")
-    all_data = get_all_data(StockList)
-    dbg("after fetching all tickers data ")
+  
+    '''all_data = get_all_data(StockList)
     all_data = all_data.rename_axis('Date').reset_index()## assigning first col name in df and make it as column
     all_data['Date'] = pd.to_datetime(all_data['Date'])  
 
-    dbg("lets find Early cherries ")
     cherries_ticker_dtls = find_cherries(all_data, StockList)
-    dbg("Early cherries completed ")
 
-    dbg("Lets find Fallen Gems")
     ##gems_ticker_dtls = fallen_gems(all_data, StockList)
-    dbg("Fallen Gems Completed")
 
-
-    ##new dataframes can be added and the same needs to be handled in gen_file module
-    #create_or_update_file(globals.data_filepath,cherries_ticker_dtls)
-
-    dbg("*********************COMPLETED**************************")'''
+    ##new dataframes can be added and the same needs to be handled in gen_file module'''
+    create_or_update_file(str(globals.data_filepath) + "output.csv" ,StockList)
 
 main()
