@@ -23,7 +23,7 @@ def main():
     globals.dbg_filename = str(globals.dbg_filename).replace("*", str(globals.today))
     globals.data_filename = globals.data_filename.replace("*",str(globals.today))
 
-    dbg("*********************STARTED**************************")
+   ''' dbg("*********************STARTED**************************")
     dbg("in main module")
     dbg("Current Directory:"+str(current_directory))
     dbg("dbg filepath" +globals.dbg_filepath)
@@ -53,6 +53,6 @@ def main():
     ##new dataframes can be added and the same needs to be handled in gen_file module
     #create_or_update_file(globals.data_filepath,cherries_ticker_dtls)
 
-    dbg("*********************COMPLETED**************************")
+    dbg("*********************COMPLETED**************************")'''
 
 main()
