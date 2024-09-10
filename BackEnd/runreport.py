@@ -51,7 +51,7 @@ def main():
 
 
     ##new dataframes can be added and the same needs to be handled in gen_file module
-    create_or_update_file(globals.data_filepath,cherries_ticker_dtls)
+    #create_or_update_file(globals.data_filepath,cherries_ticker_dtls)
 
     dbg("*********************COMPLETED**************************")
 
