@@ -18,7 +18,7 @@ def main():
     globals.dbg_filepath = str(globals.curr_dir) + str(globals.dbg_filepath)
     globals.equity_list_path = str(globals.curr_dir) + str(globals.equity_list_path)
     globals.data_filepath = str(globals.curr_dir) + str(globals.data_filepath)
-    st.write("Test print")
+    st.write("globals.curr_dir"+str(globals.curr_dir))
     globals.today = datetime.now().strftime(globals.dt_format)
     globals.dbg_filename = str(globals.dbg_filename).replace("*", str(globals.today))
     globals.data_filename = globals.data_filename.replace("*",str(globals.today))
