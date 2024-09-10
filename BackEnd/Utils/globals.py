@@ -7,7 +7,7 @@ equity_list_path = 'BackEnd/Data/Inbound/'
 equity_list_filename = 'Equity.csv'
 #data_filepath = 'G:/python/Stock_prediction/App_core/Data/'
 data_filepath = 'BackEnd/Data/Outbound/'
-data_filename = 'Cherries_*.csv'
+cherries_filename = 'Cherries_*.csv'
 
 noy = 1 ## no of years to get data from Yahoo fin
 dt_format = '%Y-%m-%d'
