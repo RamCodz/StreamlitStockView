@@ -2,10 +2,11 @@ import streamlit as st
 from pathlib import Path
 import pandas as pd
 import yfinance as yf
+from BackEnd.Utils import globals
 import plotly.graph_objs as go
 
 # Read stock data from file
-stock_list = Path(__file__).parent / 'data/Bse_Equity.csv'
+stock_list = str(globals.data_filepath) + "Cherries.csv"
 
 try:
     stock_list_df = pd.read_csv(stock_list)
