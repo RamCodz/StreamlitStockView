@@ -1,8 +1,8 @@
 import pandas as pd
 import warnings
 from datetime import datetime, timedelta
-from Utils import globals
-from Utils.debug import debug
+from BackEnd.Utils import globals
+from BackEnd.Utils.debug import debug
 
 #pct_change = 0;
 def dbg(msg):
