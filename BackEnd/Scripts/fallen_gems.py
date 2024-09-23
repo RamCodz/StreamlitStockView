@@ -44,7 +44,7 @@ def get_pct_change(ticker_data, breakout):
     return pct_change
 
 
-def find_gems(all_data, StockList, HolidayList):
+def find_gems(all_data, StockList):
     dbg("in find_gems ")
     gems_ticker_dtls = pd.DataFrame()
     '''DListLbl = ['Security Code', 'Issuer Name', 'Security Id', 'Security Name', 'Status', 'Group', 'Face Value',
