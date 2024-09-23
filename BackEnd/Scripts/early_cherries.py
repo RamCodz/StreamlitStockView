@@ -48,7 +48,7 @@ def analyze_stock(ticker_data,breakout_days):
     return pct_change
 
 
-def find_cherries(all_data, StockList, HolidayList):
+def find_cherries(all_data, StockList):
     dbg("in find_cherries ")
     cherries_ticker_dtls = pd.DataFrame()
     ticker_stklist_dtls  = pd.DataFrame()
