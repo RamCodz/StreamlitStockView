@@ -6,6 +6,7 @@ from BackEnd.Utils.debug import debug
 from BackEnd.Utils import globals
 from BackEnd.Utils.fetch_all_ticker_data import get_all_data
 from BackEnd.Scripts.early_cherries import find_cherries
+from BackEnd.Scripts.fallen_gems import find_gems
 from BackEnd.Utils.creategitfiles import create_or_update_file
 import streamlit as st
 
@@ -26,12 +27,14 @@ def main():
     all_data['Date'] = pd.to_datetime(all_data['Date'])  
 
     cherries_ticker_dtls = find_cherries(all_data, StockList)
-
-    ##gems_ticker_dtls = fallen_gems(all_data, StockList)
+    gems_ticker_dtls = find_gems(all_data, StockList)
+    final_df = pd.DataFrame()
+    final_df = pd.concat([final_df, cherries_ticker_dtls])
+    final_df = pd.concat([final_df, gems_ticker_dtls])
 
     ##new dataframes can be added and the same needs to be handled in gen_file module
     ##create_or_update_file(str(globals.data_filepath) + "Cherries.csv" ,cherries_ticker_dtls)
     ##st.write("cherries path**** "+globals.data_filepath) + str(globals.cherries_filename))
-    create_or_update_file((str(globals.data_filepath) + str(globals.stockview_filename)),cherries_ticker_dtls)
+    create_or_update_file((str(globals.data_filepath) + str(globals.stockview_filename)),final_df)
 
 main()
