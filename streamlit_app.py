@@ -28,7 +28,7 @@ sectors_page = st.Page(
 st.set_page_config(layout="wide")
 
 # --Add logo to the sidebar
-st.sidebar.logo("FrontEnd/logo_2.jpg", use_column_width=True)
+st.logo("FrontEnd/logo_2.jpg", use_column_width=True)
 
 # --Navigation setup
 pg = st.navigation(pages=[dashboard_page, cherries_page, gems_page, sectors_page])
