@@ -24,11 +24,7 @@ sectors_page = st.Page(
     icon=":material/account_circle:"
 )
 
-
 st.set_page_config(layout="wide")
-
-# --Add logo to the sidebar
-st.image("FrontEnd/logo_2.jpg")
 
 # --Navigation setup
 pg = st.navigation(pages=[dashboard_page, cherries_page, gems_page, sectors_page])
