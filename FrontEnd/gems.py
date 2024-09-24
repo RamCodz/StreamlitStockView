@@ -33,7 +33,7 @@ def display_stock_data_from_df(df, key_prefix=""):
             variation = round(row['Variation'])
 
             # Create a checkbox to toggle plot display
-            show_plot = st.checkbox(f"**{tick}** >>> {variation}% - {sector} - {industry}", key=f"{key_prefix}-{tick}")
+            show_plot = st.checkbox(f"**{tick}** >>> ***{variation}%*** - {sector} - {industry}", key=f"{key_prefix}-{tick}")
 
             if show_plot:
                 cherries_stock = get_stock_data(ticker)
