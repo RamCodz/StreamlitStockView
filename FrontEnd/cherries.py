@@ -3,10 +3,13 @@ from pathlib import Path
 import pandas as pd
 import yfinance as yf
 from BackEnd.Utils import globals
+from FrontEnd.Utils import get_latest_report_data
 import plotly.graph_objs as go
 
 # Read stock data from file
-stock_list = str(globals.data_filepath) + "Cherries.csv"
+latest_file_name = get_latest_report_data.get_latest_file(str(globals.data_filepath)
+st.write(latest_file_name)
+stock_list = str(globals.data_filepath) + latest_file_name
 
 try:
     stock_list_df = pd.read_csv(stock_list)
