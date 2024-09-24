@@ -7,7 +7,7 @@ from FrontEnd.Utils import get_latest_report_data
 import plotly.graph_objs as go
 
 # Read stock data from file
-latest_file_name = get_latest_report_data.get_latest_file(str(globals.data_filepath)
+latest_file_name = get_latest_report_data.get_latest_file(str(globals.data_filepath))
 st.write(latest_file_name)
 stock_list = str(globals.data_filepath) + latest_file_name
 
