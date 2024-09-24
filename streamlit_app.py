@@ -5,7 +5,7 @@ from BackEnd import runreport
 st.set_page_config(layout="wide")
 
 # --Add logo to the sidebar
-st.sidebar.image("logo.png", use_column_width=True)
+st.sidebar.image("FrontEnd/logo.png", use_column_width=True)
 
 # --Navigation setup
 pages = {
