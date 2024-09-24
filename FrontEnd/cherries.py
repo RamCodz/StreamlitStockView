@@ -82,12 +82,12 @@ def display_stock_data_from_df(df, key_prefix=""):
 
 Cherry_tabs = st.tabs(["5 Year Breakout", "1 Year Breakout", "6 Month Breakout", "3 Month Breakout", "1 Month Breakout"])
 with Cherry_tabs[0]:
-    display_stock_data_from_df(stock_list_df[(stock_list_df['Report'] == 'C') & (stock_list_df['Break Out'] = '5Y')], key_prefix="Cherries5Y")
+    display_stock_data_from_df(stock_list_df[(stock_list_df['Report'] == 'C') & (stock_list_df['Break Out'] == '5Y')], key_prefix="Cherries5Y")
 with Cherry_tabs[1]:
-    display_stock_data_from_df(stock_list_df[(stock_list_df['Report'] == 'C') & (stock_list_df['Break Out'] = '1Y')], key_prefix="Cherries1Y")
+    display_stock_data_from_df(stock_list_df[(stock_list_df['Report'] == 'C') & (stock_list_df['Break Out'] == '1Y')], key_prefix="Cherries1Y")
 with Cherry_tabs[2]:
-    display_stock_data_from_df(stock_list_df[(stock_list_df['Report'] == 'C') & (stock_list_df['Break Out'] = '6M')], key_prefix="Cherries6M")
+    display_stock_data_from_df(stock_list_df[(stock_list_df['Report'] == 'C') & (stock_list_df['Break Out'] == '6M')], key_prefix="Cherries6M")
 with Cherry_tabs[3]:
-    display_stock_data_from_df(stock_list_df[(stock_list_df['Report'] == 'C') & (stock_list_df['Break Out'] = '3M')], key_prefix="Cherries3M")
+    display_stock_data_from_df(stock_list_df[(stock_list_df['Report'] == 'C') & (stock_list_df['Break Out'] == '3M')], key_prefix="Cherries3M")
 with Cherry_tabs[4]:
-    display_stock_data_from_df(stock_list_df[(stock_list_df['Report'] == 'C') & (stock_list_df['Break Out'] = '1M')], key_prefix="Cherries1M")
+    display_stock_data_from_df(stock_list_df[(stock_list_df['Report'] == 'C') & (stock_list_df['Break Out'] == '1M')], key_prefix="Cherries1M")
