@@ -2,39 +2,25 @@ import streamlit as st
 from BackEnd import runreport
 
 # ---Page setup
-dashboard_page = st.Page(
-    page="FrontEnd/dashboard.py",
-    title="Dashboard",
-    icon=":material/dashboard:",
-    default=True
-)
-cherries_page = st.Page(
-    page="FrontEnd/cherries.py",
-    title="Early Cherries",
-    icon=":material/account_circle:"
-)
-gems_page = st.Page(
-    page="FrontEnd/gems.py",
-    title="Fallen Gems",
-    icon=":material/account_circle:"
-)
-sectors_page = st.Page(
-    page="FrontEnd/sectors.py",
-    title="Sector Stars",
-    icon=":material/account_circle:"
-)
-
-
 st.set_page_config(layout="wide")
 
 # --Navigation setup
-pg = st.navigation(pages=[dashboard_page, cherries_page, gems_page, sectors_page])
+pages = {
+    "Dashboard": "FrontEnd/dashboard.py",
+    "Early Cherries": "FrontEnd/cherries.py",
+    "Fallen Gems": "FrontEnd/gems.py",
+    "Sector Stars": "FrontEnd/sectors.py"
+}
+
+# --Sidebar for navigation
+selection = st.sidebar.selectbox("Select a page", list(pages.keys()))
 
 # --Shared on all pages
-
 if st.sidebar.button("Run Report"):
     st.sidebar.write("running report..")
     runreport.main()
     st.sidebar.write("Report generated")
-# --Run navigation
-pg.run()
+
+# --Run selected page
+page = pages[selection]
+exec(open(page).read())
