@@ -28,12 +28,7 @@ sectors_page = st.Page(
 st.set_page_config(layout="wide")
 
 # --Add logo to the sidebar
-col1, col2 = st.sidebar.columns([1, 3])
-with col1:
-    st.image("FrontEnd/logo_2.jpg", use_column_width=True)
-with col2:
-    st.write("Your App Title")
-
+st.image("FrontEnd/logo_2.jpg")
 
 # --Navigation setup
 pg = st.navigation(pages=[dashboard_page, cherries_page, gems_page, sectors_page])
