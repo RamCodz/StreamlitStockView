@@ -2,8 +2,9 @@ import streamlit as st
 from pathlib import Path
 import pandas as pd
 import yfinance as yf
-import plotly.graph_objs as go
+from BackEnd.Utils import globals
 from FrontEnd.Utils import get_latest_report_data
+import plotly.graph_objs as go
 
 # Read stock data from latest file
 stock_list = str(globals.data_filepath) + get_latest_report_data.get_latest_file(str(globals.data_filepath))
@@ -81,12 +82,12 @@ def display_stock_data_from_df(df, key_prefix=""):
 
 Gems_tabs = st.tabs(["Fall in 1 week", "Fall in 1 month", "Fall in 3 months", "Fall in 6 months", "Fall in 1 year"])
 with Gems_tabs[0]:
-    display_stock_data_from_df(stock_list_df[(stock_list_df['Report'] == 'G') & (stock_list_df['Break Out'] == '1W')], key_prefix="Gems1w")
+    display_stock_data_from_df(stock_list_df[(stock_list_df['Report'] == 'G') & (stock_list_df['Break Out'] == '1W')].sort_values(by='Variation',ascending=False), key_prefix="Gems1w")
 with Gems_tabs[1]:
-    display_stock_data_from_df(stock_list_df[(stock_list_df['Report'] == 'G') & (stock_list_df['Break Out'] == '1M')], key_prefix="Gems1m")
+    display_stock_data_from_df(stock_list_df[(stock_list_df['Report'] == 'G') & (stock_list_df['Break Out'] == '1M')].sort_values(by='Variation',ascending=False), key_prefix="Gems1m")
 with Gems_tabs[2]:
-    display_stock_data_from_df(stock_list_df[(stock_list_df['Report'] == 'G') & (stock_list_df['Break Out'] == '3M')], key_prefix="Gems3m")
+    display_stock_data_from_df(stock_list_df[(stock_list_df['Report'] == 'G') & (stock_list_df['Break Out'] == '3M')].sort_values(by='Variation',ascending=False), key_prefix="Gems3m")
 with Gems_tabs[3]:
-    display_stock_data_from_df(stock_list_df[(stock_list_df['Report'] == 'G') & (stock_list_df['Break Out'] == '6M')], key_prefix="Gems6m")
+    display_stock_data_from_df(stock_list_df[(stock_list_df['Report'] == 'G') & (stock_list_df['Break Out'] == '6M')].sort_values(by='Variation',ascending=False), key_prefix="Gems6m")
 with Gems_tabs[4]:
-    display_stock_data_from_df(stock_list_df[(stock_list_df['Report'] == 'G') & (stock_list_df['Break Out'] == '1Y')], key_prefix="Gems1y")
+    display_stock_data_from_df(stock_list_df[(stock_list_df['Report'] == 'G') & (stock_list_df['Break Out'] == '1Y')].sort_values(by='Variation',ascending=False), key_prefix="Gems1y")
