@@ -36,12 +36,16 @@ gems_6m = stock_list_df[(stock_list_df['Report'] == 'G') & (stock_list_df['Break
 gems_3m = stock_list_df[(stock_list_df['Report'] == 'G') & (stock_list_df['Break Out'] == '6M')]
 gems_1m = stock_list_df[(stock_list_df['Report'] == 'G') & (stock_list_df['Break Out'] == '1Y')]
 
-common_gems = gems_5y
-for gems in [gems_1y, gems_6m, gems_3m, gems_1m]:
-    common_gems = pd.merge(common_gems, gems, how='inner', on=['Security Code'])
+cherries = [cherries_5y, cherries_1y, cherries_6m, cherries_3m, cherries_1m]
+
+# Filter out empty dataframes
+non_empty_cherries = [df for df in cherries if not df.empty]
+
+if non_empty_dfs:
+    # Perform successive merges
+    common_cherries = reduce(lambda left, right: pd.merge(left, right, on=['Security Code']), non_empty_cherries)
 
 st.write('Dash Board')
 if not common_cherries.empty:
     st.write('Common Cherries')
-if not common_gems.empty:
-    st.write('Common Gems')
+    st.write(non_empty_cherries)
