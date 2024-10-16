@@ -32,4 +32,4 @@ common_cherries = cherries_5y[cherries_5y['Security Code'].isin(cherries_1y['Sec
 st.write('Dash Board')
 if not common_cherries.empty:
     st.write('Common Cherries')
-    st.write(non_empty_cherries)
+    st.write(common_cherries)
