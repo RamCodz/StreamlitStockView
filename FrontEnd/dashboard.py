@@ -16,15 +16,10 @@ except Exception as e:
     stock_list_df = pd.DataFrame()
 
 cherries_5y = stock_list_df[(stock_list_df['Report'] == 'C') & (stock_list_df['Break Out'] == '5Y')]
-cherries_5y = cherries_5y.drop(['Break Out', 'Variation'], axis=1)
 cherries_1y = stock_list_df[(stock_list_df['Report'] == 'C') & (stock_list_df['Break Out'] == '1Y')]
-cherries_1y = cherries_1y.drop(['Break Out', 'Variation'], axis=1)
 cherries_6m = stock_list_df[(stock_list_df['Report'] == 'C') & (stock_list_df['Break Out'] == '6M')]
-cherries_6m = cherries_6m.drop(['Break Out', 'Variation'], axis=1)
 cherries_3m = stock_list_df[(stock_list_df['Report'] == 'C') & (stock_list_df['Break Out'] == '3M')]
-cherries_3m = cherries_3m.drop(['Break Out', 'Variation'], axis=1)
 cherries_1m = stock_list_df[(stock_list_df['Report'] == 'C') & (stock_list_df['Break Out'] == '1M')]
-cherries_1m = cherries_1m.drop(['Break Out', 'Variation'], axis=1)
 
 gems_5y = stock_list_df[(stock_list_df['Report'] == 'G') & (stock_list_df['Break Out'] == '1W')]
 gems_1y = stock_list_df[(stock_list_df['Report'] == 'G') & (stock_list_df['Break Out'] == '1M')]
@@ -32,14 +27,7 @@ gems_6m = stock_list_df[(stock_list_df['Report'] == 'G') & (stock_list_df['Break
 gems_3m = stock_list_df[(stock_list_df['Report'] == 'G') & (stock_list_df['Break Out'] == '6M')]
 gems_1m = stock_list_df[(stock_list_df['Report'] == 'G') & (stock_list_df['Break Out'] == '1Y')]
 
-cherries = [cherries_5y, cherries_1y, cherries_6m, cherries_3m, cherries_1m]
-
-# Filter out empty dataframes
-non_empty_cherries = [df for df in cherries if not df.empty]
-
-if non_empty_dfs:
-    # Perform successive merges
-    common_cherries = reduce(lambda left, right: pd.merge(left, right, on=['Security Code']), non_empty_cherries)
+common_cherries = cherries_5y[cherries_5y.['Security Code'].isin([cherries_1y'Security Code'])]
 
 st.write('Dash Board')
 if not common_cherries.empty:
