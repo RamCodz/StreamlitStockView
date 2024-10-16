@@ -23,6 +23,6 @@ cherries_1m = stock_list_df[(stock_list_df['Report'] == 'C') & (stock_list_df['B
 
 common_cherries = cherries_5y
 for cherries in [cherries_1y, cherries_6m, cherries_3m, cherries_1m]:
-    common_cherries = pd.merge(common_cherries, cherries, how='inner', on=['Security Code'])
+    common_cherries = pd.merge(common_cherries, cherries, how='inner')
 
 st.write(common_cherries)
