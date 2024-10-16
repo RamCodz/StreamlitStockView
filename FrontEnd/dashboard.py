@@ -42,4 +42,4 @@ if not common_cherries.empty:
     st.write(common_cherries)
 if not common_gems.empty:
     st.write('Common Gems')
-    st.write(common_gems)
+    st.write(gems_1y)
