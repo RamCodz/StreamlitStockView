@@ -36,5 +36,7 @@ for gems in [gems_1y, gems_6m, gems_3m, gems_1m]:
     common_gems = pd.merge(common_gems, gems, how='inner')
 
 st.write('Dash Board')
-if common_cherries:
+if not common_cherries.empty:
     st.write('Common Cherries')
+if not common_gems.empty:
+    st.write('Common Gems')
