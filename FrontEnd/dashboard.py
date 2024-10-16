@@ -37,8 +37,6 @@ common_gems = gems_3m[gems_3m['Security Code'].isin(common_gems['Security Code']
 common_gems = gems_1m[gems_1m['Security Code'].isin(common_gems['Security Code'])]
 common_gems = gems_1w[gems_1w['Security Code'].isin(common_gems['Security Code'])]
 
-'''if not common_cherries.empty:
-    st.write('Common Cherries')
-    st.write(common_cherries)'''
+
 st.write('Common Gems')
 st.write(gems_1y)
