@@ -27,7 +27,7 @@ gems_6m = stock_list_df[(stock_list_df['Report'] == 'G') & (stock_list_df['Break
 gems_3m = stock_list_df[(stock_list_df['Report'] == 'G') & (stock_list_df['Break Out'] == '6M')]
 gems_1m = stock_list_df[(stock_list_df['Report'] == 'G') & (stock_list_df['Break Out'] == '1Y')]
 
-common_cherries = cherries_5y[cherries_5y.['Security Code'].isin([cherries_1y'Security Code'])]
+common_cherries = cherries_5y[cherries_5y.['Security Code'].isin([cherries_1y.['Security Code'])]
 
 st.write('Dash Board')
 if not common_cherries.empty:
