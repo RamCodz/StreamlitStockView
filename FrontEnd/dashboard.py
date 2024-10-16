@@ -21,19 +21,25 @@ cherries_6m = stock_list_df[(stock_list_df['Report'] == 'C') & (stock_list_df['B
 cherries_3m = stock_list_df[(stock_list_df['Report'] == 'C') & (stock_list_df['Break Out'] == '3M')]
 cherries_1m = stock_list_df[(stock_list_df['Report'] == 'C') & (stock_list_df['Break Out'] == '1M')]
 
-gems_5y = stock_list_df[(stock_list_df['Report'] == 'G') & (stock_list_df['Break Out'] == '1W')]
-gems_1y = stock_list_df[(stock_list_df['Report'] == 'G') & (stock_list_df['Break Out'] == '1M')]
-gems_6m = stock_list_df[(stock_list_df['Report'] == 'G') & (stock_list_df['Break Out'] == '3M')]
-gems_3m = stock_list_df[(stock_list_df['Report'] == 'G') & (stock_list_df['Break Out'] == '6M')]
-gems_1m = stock_list_df[(stock_list_df['Report'] == 'G') & (stock_list_df['Break Out'] == '1Y')]
+gems_1w = stock_list_df[(stock_list_df['Report'] == 'G') & (stock_list_df['Break Out'] == '1W')]
+gems_1m = stock_list_df[(stock_list_df['Report'] == 'G') & (stock_list_df['Break Out'] == '1M')]
+gems_3m = stock_list_df[(stock_list_df['Report'] == 'G') & (stock_list_df['Break Out'] == '3M')]
+gems_6m = stock_list_df[(stock_list_df['Report'] == 'G') & (stock_list_df['Break Out'] == '6M')]
+gems_1y = stock_list_df[(stock_list_df['Report'] == 'G') & (stock_list_df['Break Out'] == '1Y')]
 
 common_cherries = cherries_3m[cherries_3m['Security Code'].isin(cherries_1m['Security Code'])]
 common_cherries = cherries_6m[cherries_6m['Security Code'].isin(common_cherries['Security Code'])]
 common_cherries = cherries_1y[cherries_1y['Security Code'].isin(common_cherries['Security Code'])]
 common_cherries = cherries_5y[cherries_5y['Security Code'].isin(common_cherries['Security Code'])]
 
+common_gems = gems_6m[gems_6m['Security Code'].isin(gems_1y['Security Code'])]
+common_gems = gems_3m[gems_3m['Security Code'].isin(common_gems['Security Code'])]
+common_gems = gems_1m[gems_1m['Security Code'].isin(common_gems['Security Code'])]
+common_gems = gems_1w[gems_1w['Security Code'].isin(common_gems['Security Code'])]
 
-st.write('Dash Board')
+if not common_cherries.empty:
+    st.write('Common Cherries')
+    st.write(common_cherries)
 if not common_cherries.empty:
     st.write('Common Cherries')
     st.write(common_cherries)
