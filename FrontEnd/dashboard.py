@@ -38,8 +38,3 @@ for gems in [gems_1y, gems_6m, gems_3m, gems_1m]:
 st.write('Dash Board')
 if common_cherries:
     st.write('Common Cherries')
-    st.write(common_cherries)
-
-if common_gems:
-    st.write('Common Gems')
-    st.write(common_gems)
