@@ -56,9 +56,11 @@ def find_cherries(all_data, StockList):
                         ticker_stklist_dtls.loc[:,'Variation'] = pct_change #add logic to get % growth
                         ticker_stklist_dtls.loc[:,'Report'] = 'C'
                     except SettingWithCopyWarning:
+                        pass
                         
                     finally:
                         # Display any warnings caught
+                        pass
                     cherries_ticker_dtls = pd.concat([cherries_ticker_dtls, ticker_stklist_dtls])
     
     return cherries_ticker_dtls
