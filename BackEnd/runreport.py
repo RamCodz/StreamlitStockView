@@ -31,7 +31,7 @@ def main():
     final_df = pd.DataFrame()
     final_df = pd.concat([final_df, cherries_ticker_dtls])
     final_df = pd.concat([final_df, gems_ticker_dtls])
-
+    final_df = all_data
     ##new dataframes can be added and the same needs to be handled in gen_file module
     ##create_or_update_file(str(globals.data_filepath) + "Cherries.csv" ,cherries_ticker_dtls)
     ##st.write("cherries path**** "+globals.data_filepath) + str(globals.cherries_filename))
