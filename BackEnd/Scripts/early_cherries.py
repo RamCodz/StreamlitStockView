@@ -15,14 +15,14 @@ def analyze_stock(ticker_data,breakout_days):
     last_week_data = ticker_data[(ticker_data['Date'] >= start_date_one_week) & (ticker_data['Date'] <= end_date)]
     if last_year_data is not None and last_week_data is not None:
         # Calculate the percentage change over the last year
-        year_start_price = data['Close'].iloc[0]
-        year_end_price = data['Close'].iloc[-1]
+        year_start_price = last_year_data['Close'].iloc[0]
+        year_end_price = last_year_data['Close'].iloc[-1]
         year_change = ((year_end_price - year_start_price) / year_start_price) * 100
         
         # Calculate the recent performance (last 30 days)
     
-        recent_start_price = recent_data['Close'].iloc[0]
-        recent_end_price = recent_data['Close'].iloc[-1]
+        recent_start_price = last_week_data['Close'].iloc[0]
+        recent_end_price = last_week_data['Close'].iloc[-1]
         recent_change = ((recent_end_price - recent_start_price) / recent_start_price) * 100
         
         # Criteria for identifying underperformers that recently rallied
