@@ -26,7 +26,7 @@ def analyze_stock(ticker_data,breakout_days):
         recent_change = ((recent_end_price - recent_start_price) / recent_start_price) * 100
         
         # Criteria for identifying underperformers that recently rallied
-        if year_change < 0 and recent_change > 5:  # Adjust the thresholds as needed
+        if year_change < 100 and recent_change > 10:  # Adjust the thresholds as needed
             return pct_change
     return pct_change
        
