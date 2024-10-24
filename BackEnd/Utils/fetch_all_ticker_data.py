@@ -24,7 +24,7 @@ def get_all_data(StockList):
     ##StockList = pd.read_csv(str(globals.equity_list_path) + str(globals.equity_list_filename))
     i=1
     for index, row in StockList.iterrows():
-        stkSymbol = row['Security Id']+'.NS'
+        stkSymbol = row['Security Code']+'.BO'
         
         five_year_data = get_stock_data(stkSymbol, five_year_ago, today)
         if not five_year_data.empty:
