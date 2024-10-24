@@ -59,8 +59,6 @@ def find_cherries(all_data, StockList):
                         
                     finally:
                         # Display any warnings caught
-                        for warning in w:
-                        #print(f"Warning: {warning.message}")
                     cherries_ticker_dtls = pd.concat([cherries_ticker_dtls, ticker_stklist_dtls])
     
     return cherries_ticker_dtls
