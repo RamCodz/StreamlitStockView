@@ -32,12 +32,7 @@ else:
 def calculate_percentage_change(ticker):
     stock = yf.Ticker(f"{ticker}.BO")  # Use .BO suffix for BSE stocks
     data = stock.history(period="1y", interval="1d")  # Get 1-year data
-
-    # Check if sufficient data exists
-    if len(data) < 252:
-        st.warning(f"Insufficient data for {ticker}")
-        return {}
-
+    st.write(data)
     changes = {}
     periods = {
         "1 Week": 5,
@@ -59,7 +54,7 @@ def calculate_percentage_change(ticker):
 changes_data = {}
 for ticker in tickers:
     changes_data[ticker] = calculate_percentage_change(ticker)
-
+    st.write(changes_data)
 changes_df = pd.DataFrame(changes_data).transpose()
 
 # Display heatmap
