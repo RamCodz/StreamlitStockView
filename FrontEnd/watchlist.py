@@ -58,8 +58,9 @@ def calculate_percentage_change(ticker_data):
 
 # Fetch and process data for each ticker
 all_data = get_all_data(tickers)  # Assuming this function fetches data for all tickers at once
-all_data['Date'] = pd.to_datetime(all_data['Date'])  # Ensure Date is in datetime format
 st.write(all_data)
+all_data['Date'] = pd.to_datetime(all_data['Date'])  # Ensure Date is in datetime format
+
 # Create a DataFrame to store percentage changes for each ticker
 changes_data = {}
 for ticker in tickers:
