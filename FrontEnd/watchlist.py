@@ -64,4 +64,21 @@ if tickers:
 
     # Create a DataFrame to store percentage changes for each ticker
     changes_data = {}
-    for ti
+    for ticker in tickers:
+        ticker_data = all_data[all_data['Ticker'] == ticker]  # Filter data for each ticker
+        changes_data[ticker] = calculate_percentage_change(ticker_data)
+    st.write(changes_data)
+    
+    # Convert the dictionary to a DataFrame
+    changes_df = pd.DataFrame(changes_data).transpose()
+
+    # Display heatmap
+    if not changes_df.empty:
+        st.write("### Stock Price Change Heatmap (in %)")
+        plt.figure(figsize=(10, 6))
+        sns.heatmap(changes_df, annot=True, fmt=".2f", cmap="coolwarm", center=0)
+        st.pyplot(plt.gcf())
+    else:
+        st.write("No data to display.")
+else:
+    st.write("No tickers available for data fetching.")
