@@ -36,7 +36,7 @@ def get_all_data(StockList):
             break
             
         i=i+1
-        ##dbg(all_data)
+        st.write(all_data)
     return all_data
         
 ##get_all_data()
