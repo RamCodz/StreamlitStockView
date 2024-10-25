@@ -21,7 +21,7 @@ stock_list_path = get_stock_list_filepath(str(globals.data_filepath))
 if stock_list_path and stock_list_path.exists():
     try:
         ticker_df = pd.read_csv(stock_list_path)
-        tickers = ticker_df['Ticker'].tolist()  # Assumes ticker names are in a column named 'Ticker'
+        tickers = ticker_df['Security Code'].tolist()  # Assumes ticker names are in a column named 'Ticker'
     except Exception as e:
         st.error(f"Error reading the ticker data file: {e}")
         tickers = []  # Initialize as empty list
