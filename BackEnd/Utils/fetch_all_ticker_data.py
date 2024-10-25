@@ -36,7 +36,6 @@ def get_all_data(StockList):
             break
             
         i=i+1
-        st.write(all_data)
     return all_data
         
 ##get_all_data()
