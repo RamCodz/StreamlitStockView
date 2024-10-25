@@ -21,10 +21,11 @@ def get_stock_list_filepath(base_path):
 stock_list_path = get_stock_list_filepath(str(globals.data_filepath))
 if stock_list_path and stock_list_path.exists():
     try:
-        tickers = pd.read_csv(stock_list_path)
+        tickers_df = pd.read_csv(stock_list_path)
+        tickers = tickers_df['Security Code'].tolist()  # Assumes ticker names are in 'Security Code' column
     except Exception as e:
         st.error(f"Error reading the ticker data file: {e}")
-        tickers = []  # Initialize as empty list
+        tickers = []
 else:
     tickers = []
 
@@ -56,25 +57,11 @@ def calculate_percentage_change(ticker_data):
 
     return changes
 
-# Fetch and process data for each ticker
-all_data = get_all_data(tickers)  # Assuming this function fetches data for all tickers at once
-st.write(all_data)
-all_data['Date'] = pd.to_datetime(all_data['Date'])  # Ensure Date is in datetime format
+# Fetch and process data for each ticker if tickers list is not empty
+if tickers:
+    all_data = get_all_data(tickers)  # Assuming this function fetches data for all tickers at once
+    all_data['Date'] = pd.to_datetime(all_data['Date'])  # Ensure Date is in datetime format
 
-# Create a DataFrame to store percentage changes for each ticker
-changes_data = {}
-for ticker in tickers:
-    ticker_data = all_data[all_data['Ticker'] == ticker]  # Filter data for each ticker
-    changes_data[ticker] = calculate_percentage_change(ticker_data)
-st.write(changes_data)
-# Convert the dictionary to a DataFrame
-changes_df = pd.DataFrame(changes_data).transpose()
-
-# Display heatmap
-if not changes_df.empty:
-    st.write("### Stock Price Change Heatmap (in %)")
-    plt.figure(figsize=(10, 6))
-    sns.heatmap(changes_df, annot=True, fmt=".2f", cmap="coolwarm", center=0)
-    st.pyplot(plt.gcf())
-else:
-    st.write("No data to display.")
+    # Create a DataFrame to store percentage changes for each ticker
+    changes_data = {}
+    for ti
