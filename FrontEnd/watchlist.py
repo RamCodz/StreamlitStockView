@@ -19,16 +19,17 @@ def get_stock_list_filepath(base_path):
 
 # Load ticker list data
 stock_list_path = get_stock_list_filepath(str(globals.data_filepath))
+st.write(stock_list_path )
 if stock_list_path and stock_list_path.exists():
     try:
         ticker_df = pd.read_csv(stock_list_path)
-        tickers = ticker_df['Security Code'].tolist()  # Assumes ticker names are in a column named 'Security Code'
+        tickers = ticker_df['Security Id'].tolist()  # Assumes ticker names are in a column named 'Security Code'
     except Exception as e:
         st.error(f"Error reading the ticker data file: {e}")
         tickers = []  # Initialize as empty list
 else:
     tickers = []
-
+st.write(tickers)
 # Define a function to get percentage change over specific periods
 def calculate_percentage_change(ticker_data):
     changes = {}
@@ -60,13 +61,13 @@ def calculate_percentage_change(ticker_data):
 # Fetch and process data for each ticker
 all_data = get_all_data(tickers)  # Assuming this function fetches data for all tickers at once
 all_data['Date'] = pd.to_datetime(all_data['Date'])  # Ensure Date is in datetime format
-
+st.write(all_data)
 # Create a DataFrame to store percentage changes for each ticker
 changes_data = {}
 for ticker in tickers:
     ticker_data = all_data[all_data['Ticker'] == ticker]  # Filter data for each ticker
     changes_data[ticker] = calculate_percentage_change(ticker_data)
-
+st.write(changes_data)
 # Convert the dictionary to a DataFrame
 changes_df = pd.DataFrame(changes_data).transpose()
 
