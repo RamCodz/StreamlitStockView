@@ -9,7 +9,7 @@ def analyze_stock(ticker_data,breakout_days):
     pct_change = 0
     end_date = datetime.now()
     start_date_one_year = end_date - timedelta(days=breakout_days)
-    start_date_one_week = end_date - timedelta(days=7)
+    start_date_one_week = end_date - timedelta(days=21)
 
     last_year_data = ticker_data[(ticker_data['Date'] >= start_date_one_year) & (ticker_data['Date'] <= end_date)]
     last_week_data = ticker_data[(ticker_data['Date'] >= start_date_one_week) & (ticker_data['Date'] <= end_date)]
@@ -26,7 +26,7 @@ def analyze_stock(ticker_data,breakout_days):
         recent_change = ((recent_end_price - recent_start_price) / recent_start_price) * 100
         
         # Criteria for identifying underperformers that recently rallied
-        if year_change < 100 and recent_change > 10:  # Adjust the thresholds as needed
+        if year_change < 200 and recent_change > 15:  # Adjust the thresholds as needed
             return pct_change
     return pct_change
        
