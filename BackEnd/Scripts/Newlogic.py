@@ -1,51 +1,45 @@
-import yfinance as yf
 import pandas as pd
-import datetime
+import numpy as np
+import seaborn as sns
+import matplotlib.pyplot as plt
+import yfinance as yf  # Library to pull stock data
 
-# Function to fetch stock data and analyze performance
-def analyze_stocks(stock_symbols):
-    results = []
-    
-    # Calculate dates
-    end_date = datetime.datetime.now()
-    start_date = end_date - datetime.timedelta(days=365)
-    
-    for symbol in stock_symbols:
-        # Fetch historical data
-        data = yf.download(symbol, start=start_date, end=end_date)
-        
-        if data.empty:
-            continue
-        
-        # Calculate the percentage change over the last year
-        year_start_price = data['Close'].iloc[0]
-        year_end_price = data['Close'].iloc[-1]
-        year_change = ((year_end_price - year_start_price) / year_start_price) * 100
-        
-        # Calculate the recent performance (last 30 days)
-        recent_data = yf.download(symbol, start=end_date - datetime.timedelta(days=30), end=end_date)
-        
-        if recent_data.empty:
-            continue
-        
-        recent_start_price = recent_data['Close'].iloc[0]
-        recent_end_price = recent_data['Close'].iloc[-1]
-        recent_change = ((recent_end_price - recent_start_price) / recent_start_price) * 100
-        
-        # Criteria for identifying underperformers that recently rallied
-        if year_change < 0 and recent_change > 5:  # Adjust the thresholds as needed
-            results.append({
-                'Symbol': symbol,
-                'Year Change (%)': year_change,
-                'Recent Change (%)': recent_change
-            })
-    
-    return results
+# Define the stocks you want to analyze
+stocks = ['AAPL', 'MSFT', 'GOOGL', 'AMZN', 'TSLA']  # Example stock tickers
 
-# List of stock symbols to analyze
-stock_symbols = ['AAPL', 'MSFT', 'GOOGL', 'AMZN', 'TSLA']  # Add more symbols as needed
-underperformers = analyze_stocks(stock_symbols)
+# Define time periods for analysis
+time_frames = {
+    '1 Week': 5,   # 5 trading days
+    '1 Month': 21, # Approx 21 trading days
+    '3 Months': 63, # Approx 63 trading days
+    '6 Months': 126, # Approx 126 trading days
+    '1 Year': 252   # Approx 252 trading days
+}
 
-# Display results
-for stock in underperformers:
-    print(stock)
+# Create an empty DataFrame to store percentage losses
+percentage_loss = pd.DataFrame(index=stocks, columns=time_frames.keys())
+
+# Fetch data and calculate percentage losses
+for stock in stocks:
+    data = yf.download(stock, period='1y')['Adj Close']
+    
+    for period, days in time_frames.items():
+        try:
+            recent_price = data.iloc[-1]  # Most recent closing price
+            past_price = data.iloc[-days]  # Price 'days' days ago
+            percent_change = ((recent_price - past_price) / past_price) * 100
+            percentage_loss.loc[stock, period] = percent_change
+        except IndexError:
+            percentage_loss.loc[stock, period] = np.nan  # In case data is missing
+
+# Convert values to negative to represent losses (optional)
+percentage_loss = percentage_loss.apply(lambda x: -x)
+
+# Plot the heatmap
+plt.figure(figsize=(10, 8))
+sns.heatmap(percentage_loss, annot=True, cmap='coolwarm', fmt=".2f",
+            linewidths=0.5, cbar_kws={'label': 'Percentage Loss (%)'})
+plt.title('Stock Percentage Loss Heatmap')
+plt.xlabel('Time Frame')
+plt.ylabel('Stock Ticker')
+plt.show()
