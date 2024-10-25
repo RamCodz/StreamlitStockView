@@ -1,11 +1,12 @@
 import streamlit as st
 from pathlib import Path
 import pandas as pd
-import yfinance as yf
 import seaborn as sns
 import matplotlib.pyplot as plt
+from datetime import datetime, timedelta
 from BackEnd.Utils import globals
 from FrontEnd.Utils import get_latest_report_data
+from BackEnd.Utils.fetch_all_ticker_data import get_all_data
 
 # Define a function to get the latest ticker file path
 def get_stock_list_filepath(base_path):
@@ -21,7 +22,7 @@ stock_list_path = get_stock_list_filepath(str(globals.data_filepath))
 if stock_list_path and stock_list_path.exists():
     try:
         ticker_df = pd.read_csv(stock_list_path)
-        tickers = ticker_df['Security Code'].tolist()  # Assumes ticker names are in a column named 'Ticker'
+        tickers = ticker_df['Security Code'].tolist()  # Assumes ticker names are in a column named 'Security Code'
     except Exception as e:
         st.error(f"Error reading the ticker data file: {e}")
         tickers = []  # Initialize as empty list
@@ -29,10 +30,7 @@ else:
     tickers = []
 
 # Define a function to get percentage change over specific periods
-def calculate_percentage_change(ticker):
-    stock = yf.Ticker(f"{ticker}.BO")  # Use .BO suffix for BSE stocks
-    data = stock.history(period="1y", interval="1d")  # Get 1-year data
-    st.write(data)
+def calculate_percentage_change(ticker_data):
     changes = {}
     periods = {
         "1 Week": 5,
@@ -41,20 +39,35 @@ def calculate_percentage_change(ticker):
         "6 Months": 126,
         "1 Year": 252
     }
+    end_date = ticker_data['Date'].max()  # Get the latest date in data
 
     for period_name, period_days in periods.items():
-        if len(data) > period_days:
-            changes[period_name] = ((data['Close'][-1] - data['Close'][-period_days]) / data['Close'][-period_days]) * 100
+        start_date = end_date - timedelta(days=period_days)
+        date_data = ticker_data[(ticker_data['Date'] >= start_date) & (ticker_data['Date'] <= end_date)]
+
+        if len(date_data) > 0:
+            try:
+                # Calculate the percentage change over the specified period
+                pct_change = ((date_data['Close'].iloc[-1] - date_data['Close'].iloc[0]) / date_data['Close'].iloc[0]) * 100
+                changes[period_name] = pct_change
+            except IndexError:
+                changes[period_name] = None  # Not enough data for the period
         else:
-            changes[period_name] = None  # Not enough data for the period
+            changes[period_name] = None  # No data for the period
 
     return changes
+
+# Fetch and process data for each ticker
+all_data = get_all_data(tickers)  # Assuming this function fetches data for all tickers at once
+all_data['Date'] = pd.to_datetime(all_data['Date'])  # Ensure Date is in datetime format
 
 # Create a DataFrame to store percentage changes for each ticker
 changes_data = {}
 for ticker in tickers:
-    changes_data[ticker] = calculate_percentage_change(ticker)
-    st.write(changes_data)
+    ticker_data = all_data[all_data['Ticker'] == ticker]  # Filter data for each ticker
+    changes_data[ticker] = calculate_percentage_change(ticker_data)
+
+# Convert the dictionary to a DataFrame
 changes_df = pd.DataFrame(changes_data).transpose()
 
 # Display heatmap
