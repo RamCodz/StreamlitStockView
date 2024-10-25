@@ -23,7 +23,11 @@ sectors_page = st.Page(
     title="Sector Stars",
     icon=":material/account_circle:"
 )
-
+watchlist_page = st.Page(
+    page="FrontEnd/watchlist.py",
+    title="Watchlist",
+    icon=":material/account_circle:"
+)
 st.set_page_config(layout="wide")
 
 # --Navigation setup
