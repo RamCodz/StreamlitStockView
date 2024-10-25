@@ -31,7 +31,7 @@ watchlist_page = st.Page(
 st.set_page_config(layout="wide")
 
 # --Navigation setup
-pg = st.navigation(pages=[dashboard_page, cherries_page, gems_page, sectors_page])
+pg = st.navigation(pages=[dashboard_page, cherries_page, gems_page, sectors_page, watchlist_page])
 
 # --Shared on all pages
 
