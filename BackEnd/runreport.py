@@ -39,5 +39,3 @@ def main(gv_sys_date):
     ##create_or_update_file(str(globals.data_filepath) + "Cherries.csv" ,cherries_ticker_dtls)
     ##st.write("cherries path**** "+globals.data_filepath) + str(globals.cherries_filename))
     create_or_update_file((str(globals.data_filepath) + str(globals.stockview_filename)),final_df)
-
-main()
