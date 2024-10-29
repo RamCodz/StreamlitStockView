@@ -1,7 +1,6 @@
 import pandas as pd
 from datetime import datetime
 import os
-import streamlit as st
 from BackEnd.Utils.debug import debug
 from BackEnd.Utils import globals
 from BackEnd.Utils.fetch_all_ticker_data import get_all_data
@@ -39,9 +38,3 @@ def process_stock_data(gv_sys_date):
     
     # Create or update the output file
     create_or_update_file((str(globals.data_filepath) + str(globals.stockview_filename)), final_df)
-
-# Sidebar date input
-gv_sys_date = st.sidebar.date_input("Select Date", datetime.now())
-
-# Call the function to execute the logic
-process_stock_data(gv_sys_date)
