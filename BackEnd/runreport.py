@@ -13,7 +13,10 @@ import streamlit as st
 def dbg(msg):
     debug("main-->"+str(msg))
 
-def main():
+def main(gv_sys_date):
+    if gv_sys_date is null:
+       gv_sys_date = datetime.now()
+
     current_directory = os.getcwd()
     globals.curr_dir = current_directory +"/"
     globals.today = datetime.now().strftime(globals.dt_format)
