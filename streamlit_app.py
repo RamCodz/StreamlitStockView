@@ -1,5 +1,6 @@
 import streamlit as st
 from BackEnd import runreport
+from datetime import datetime
 
 # ---Page setup
 dashboard_page = st.Page(
@@ -33,11 +34,14 @@ st.set_page_config(layout="wide")
 # --Navigation setup
 pg = st.navigation(pages=[dashboard_page, cherries_page, gems_page, sectors_page, watchlist_page])
 
-# --Shared on all pages
+# Sidebar calendar input
+selected_date = st.sidebar.date_input("Pick a date", datetime.now())
+
 
 if st.sidebar.button("Run Report"):
     st.sidebar.write("running report..")
     runreport.main()
-    st.sidebar.write("Report generated")
+    st.sidebar.write(f"Report generated for:  {selected_date}")
+
 # --Run navigation
 pg.run()
