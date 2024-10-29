@@ -40,7 +40,7 @@ selected_date = st.sidebar.date_input("Pick a date", datetime.now())
 
 if st.sidebar.button("Run Report"):
     st.sidebar.write("running report..")
-    runreport.main(selected_date)
+    runreport.process_stock_data(selected_date)
     st.sidebar.write(f"Report generated for:  {selected_date}")
 
 # --Run navigation
