@@ -6,7 +6,7 @@ from io import StringIO
 
 # Get the GitHub token from environment variables
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
-
+print("GITHUB_TOKEN"+str(GITHUB_TOKEN))
 # Function to create or update a file in a GitHub repository
 def create_or_update_file(path, content, message="Update file via Streamlit", branch="main"):
     print("Starting create_or_update_file...")
