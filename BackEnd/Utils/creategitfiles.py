@@ -11,6 +11,7 @@ GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
 def create_or_update_file(path, content, message="Update file via Streamlit", branch="main"):
     print("Starting create_or_update_file...")
     print(f"GITHUB_TOKEN is : {bool(GITHUB_TOKEN)}")
+    st.sidebar.write(GITHUB_TOKEN)
     url = f"https://api.github.com/repos/RamCodz/StreamlitStockView/contents/{path}"
     headers = {
         "Authorization": f"token {GITHUB_TOKEN}",
