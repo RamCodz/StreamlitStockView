@@ -2,33 +2,39 @@ name: run runreport.py
 
 on:
   workflow_dispatch:
-  #schedule:
-   # - cron: '* * * * *' # At every minute
+  # schedule:
+  #   - cron: '* * * * *' # Uncomment to schedule it as needed
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
+      - name: Checkout repo content
+        uses: actions/checkout@v3  # Checkout the repository content to GitHub runner
 
-      - name: checkout repo content
-        uses: actions/checkout@v3 # checkout the repository content to github runner
-
-      - name: setup python
+      - name: Setup Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.11' # install the python version needed
+          python-version: '3.11'  # Install the Python version needed
           
-      - name: install python packages
+      - name: Install Python packages
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
       
       - name: Run process_stock_data function
-        run: python -c "from BackEnd.runreport import process_stock_data; from datetime import datetime; process_stock_data(datetime.now())"
-
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python -c "from BackEnd.runreport import process_stock_data; from datetime import datetime; process_stock_data(datetime.now())"
+      
       - name: Check output
         run: |
-          if [ $? -ne 0 ]; then
-            echo "The previous command failed!"
+          echo "Checking if the previous step completed successfully"
+          if [ $? -eq 0 ]; then
+            echo "Process completed successfully."
+          else
+            echo "The process failed."
             exit 1
           fi
