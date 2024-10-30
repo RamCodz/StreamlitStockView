@@ -45,7 +45,7 @@ def get_pct_change(ticker_data, breakout):
 
 
 def find_gems(all_data, StockList):
-    dbg("in find_gems ")
+    print("Starting find_gems...")
     gems_ticker_dtls = pd.DataFrame()
     '''DListLbl = ['Security Code', 'Issuer Name', 'Security Id', 'Security Name', 'Status', 'Group', 'Face Value',
                 'ISIN No', 'Industry', 'Instrument', 'Sector Name', 'Industry New Name', 'Igroup Name',
@@ -85,4 +85,5 @@ def find_gems(all_data, StockList):
                             dbg('SettingWithCopyWarning')
                         #print(f"Warning: {warning.message}")
                     gems_ticker_dtls = pd.concat([gems_ticker_dtls, ticker_stklist_dtls])
+    print("Completed find_gems...")
     return gems_ticker_dtls
