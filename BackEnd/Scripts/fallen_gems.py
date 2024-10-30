@@ -71,6 +71,7 @@ def find_gems(all_data, StockList):
                         ticker_stklist_dtls.loc[:,'Report'] = 'G'
                         
                     except SettingWithCopyWarning:
+                        pass
 
                     finally:
                         # Display any warnings caught
