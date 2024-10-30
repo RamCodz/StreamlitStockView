@@ -24,7 +24,6 @@ jobs:
         run: |
           python -c "
 import sys
-import traceback
 from BackEnd.runreport import process_stock_data
 from datetime import datetime
 
@@ -33,6 +32,5 @@ try:
     print('Process completed successfully.')
 except Exception as e:
     print(f'An error occurred: {e}')
-    traceback.print_exc()
     sys.exit(1)
           "
