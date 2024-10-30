@@ -5,7 +5,7 @@ from base64 import b64encode
 from io import StringIO
 
 # Get the GitHub token from environment variables
-GITHUB_TOKEN = os.getenv("GITHUB_TOKEN") or os.getenv("FILE_TOKEN")
+GITHUB_TOKEN = os.getenv("GITHUB_TOKEN") or os.environ("GITHUB_TOKEN")
 
 # Function to create or update a file in a GitHub repository
 def create_or_update_file(path, content, message="Update file via Streamlit", branch="main"):
