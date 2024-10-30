@@ -1,8 +1,7 @@
 name: run runreport.py
 
 on:
-  schedule:
-    - cron: '* * * * *' # At every minute
+  workflow_dispatch:
 
 jobs:
   build:
