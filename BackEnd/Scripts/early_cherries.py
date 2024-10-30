@@ -31,6 +31,7 @@ def analyze_stock(ticker_data,breakout_days):
     return pct_change
        
 def find_cherries(all_data, StockList):
+    print("Starting find_cherries...")
     cherries_ticker_dtls = pd.DataFrame()
     ticker_stklist_dtls  = pd.DataFrame()
     '''DListLbl = ['Security Code', 'Issuer Name', 'Security Id', 'Security Name', 'Status', 'Group', 'Face Value',
@@ -62,5 +63,5 @@ def find_cherries(all_data, StockList):
                         # Display any warnings caught
                         pass
                     cherries_ticker_dtls = pd.concat([cherries_ticker_dtls, ticker_stklist_dtls])
-    
+    print("Completed find_cherries...")
     return cherries_ticker_dtls
