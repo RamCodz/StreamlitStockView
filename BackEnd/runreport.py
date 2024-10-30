@@ -8,13 +8,12 @@ from BackEnd.Scripts.early_cherries import find_cherries
 from BackEnd.Scripts.fallen_gems import find_gems
 from BackEnd.Utils.creategitfiles import create_or_update_file
 
-def dbg(msg):
-    debug("process_stock_data--> " + str(msg))
 
 def process_stock_data(gv_sys_date):
+    print("Starting process_stock_data...")
     # Convert date to the appropriate format
     gv_sys_date = pd.to_datetime(gv_sys_date)
-    print("Starting process_stock_data...")
+    
     current_directory = os.getcwd()
     globals.curr_dir = current_directory + "/"
     globals.today = datetime.now().strftime(globals.dt_format)
@@ -38,3 +37,4 @@ def process_stock_data(gv_sys_date):
     
     # Create or update the output file
     create_or_update_file((str(globals.data_filepath) + str(globals.stockview_filename)), final_df)
+    print("Completed process_stock_data...")
