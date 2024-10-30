@@ -24,7 +24,7 @@ jobs:
           pip install -r requirements.txt
       
       - name: Run process_stock_data function
-        run: python -c "from Backend.runreport import process_stock_data; from datetime import datetime; process_stock_data(datetime.now())"
+        run: python -c "from BackEnd.runreport import process_stock_data; from datetime import datetime; process_stock_data(datetime.now())"
 
       - name: Check output
         run: |
