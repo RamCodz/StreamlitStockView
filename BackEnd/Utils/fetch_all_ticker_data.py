@@ -17,6 +17,7 @@ def get_stock_data(ticker, start_date, end_date):
         return pd.DataFrame()
 
 def get_all_data(StockList):
+    print("Starting get_all_data...")
     all_data = pd.DataFrame()
     today = datetime.today()
     five_year_ago = today - timedelta(days=365*globals.noy)
@@ -36,6 +37,7 @@ def get_all_data(StockList):
             break
             
         i=i+1
+    print("Completed get_all_data...")    
     return all_data
         
 ##get_all_data()
