@@ -34,7 +34,4 @@ jobs:
                        except Exception as e:
                            print(f'An error occurred: {e}')
                            sys.exit(1)  # Exit with a non-zero status to indicate failure
-"
-
-"
-
+                      "
