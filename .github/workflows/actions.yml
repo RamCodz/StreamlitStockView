@@ -8,8 +8,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Expose GITHUB_TOKEN to the Python script
 
     steps:
       - name: Checkout repo content
@@ -27,7 +25,9 @@ jobs:
       
       - name: Run Backend code
         run: python -c "from BackEnd.runreport import process_stock_data; from datetime import datetime; process_stock_data(datetime.now())"
-          
+        env:
+         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Expose GITHUB_TOKEN to the Python script
+
       - name: Check output
         run: |
           echo "Checking if the previous step completed successfully"
