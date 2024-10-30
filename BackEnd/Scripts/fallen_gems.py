@@ -76,7 +76,7 @@ def find_gems(all_data, StockList):
                     finally:
                         # Display any warnings caught
                         for warning in w:
-                            print(f"Warning: {warning.message}")
+                            pass
                     gems_ticker_dtls = pd.concat([gems_ticker_dtls, ticker_stklist_dtls])
     print("Completed find_gems...")
   
