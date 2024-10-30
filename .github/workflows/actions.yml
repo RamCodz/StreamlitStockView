@@ -23,11 +23,8 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
       
-      - name: Run process_stock_data function
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          python -c "from BackEnd.runreport import process_stock_data; from datetime import datetime; process_stock_data(datetime.now())"
+      - name: Run Backend code
+        run: python -c "from BackEnd.runreport import process_stock_data; from datetime import datetime; process_stock_data(datetime.now())"
       
       - name: Check output
         run: |
