@@ -27,14 +27,6 @@ jobs:
       
       - name: Run Backend code
         run: python -c "from BackEnd.runreport import process_stock_data; from datetime import datetime; process_stock_data(datetime.now())"
-
-      - name: Commit and push output file
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add BackEnd/Data/Outbound/StockView_2024-10-30.csv  # Add the generated CSV file
-          git commit -m "BackEnd/Data/Outbound/StockView_2024-10-30.csv"
-          git push
           
       - name: Check output
         run: |
