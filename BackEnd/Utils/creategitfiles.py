@@ -31,8 +31,6 @@ def create_or_update_file(path, content, message="Update file via Streamlit", br
     }
     if sha:
         data["sha"] = sha
-    print(csv_content)
-    print(data)
-    print(headers)
+
     response = requests.put(url, json=data, headers=headers)
     print("Completed create_or_update_file...")
