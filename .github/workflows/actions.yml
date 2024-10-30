@@ -22,5 +22,6 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
       
-      - name: Run Python script
-        run: python trigger_report.py
+      - name: Run process_stock_data function
+        run: python -c "from Backend.runreport import process_stock_data; from datetime import datetime; process_stock_data(datetime.now())"
+
