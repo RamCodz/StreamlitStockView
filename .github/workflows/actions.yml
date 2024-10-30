@@ -8,6 +8,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Expose GITHUB_TOKEN to the Python script
 
     steps:
       - name: Checkout repo content
