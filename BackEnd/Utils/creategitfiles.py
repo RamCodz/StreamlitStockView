@@ -20,7 +20,6 @@ def list_files_in_repo(url):
     
     if response.status_code == 200:
         # Print the response for debugging
-        print("Files in repo:", response.json())
         return response.json()  # Returns a list of files and folders
     else:
         print(f"Error fetching files: {response.status_code} - {response.json()}")
@@ -64,7 +63,6 @@ def delete_old_csv_files(base_url):
 # Function to create or update a file in a GitHub repository
 def create_or_update_file(path, content, message="Update file via Streamlit", branch="main"):
     print("Starting create_or_update_file...")
-    print(f"GITHUB_TOKEN is : {bool(GITHUB_TOKEN)}")
     
     url = f"https://api.github.com/repos/RamCodz/StreamlitStockView/contents/{path}"
     headers = {
@@ -96,7 +94,7 @@ def create_or_update_file(path, content, message="Update file via Streamlit", br
         print(f"Error creating/updating file: {response.status_code} - {response.json()}")
     
     # Call the function to delete old CSV files after updating the file
-    delete_old_csv_files(url)
+    delete_old_csv_files(path)
 
     print("Completed create_or_update_file...")
 
