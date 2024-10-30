@@ -1,22 +1,21 @@
-name: run runreport.py
+name: Run runreport.py
 
 on:
   workflow_dispatch:
 
 jobs:
-  build:
+  run_process_stock_data:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repository content
+        uses: actions/checkout@v3
 
-      - name: checkout repo content
-        uses: actions/checkout@v3 # checkout the repository content to github runner
-
-      - name: setup python
+      - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.11' # install the python version needed
+          python-version: '3.11'
           
-      - name: install python packages
+      - name: Install Python packages
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
@@ -24,14 +23,14 @@ jobs:
       - name: Run process_stock_data function
         run: |
             python -c "
-                       import sys
-                       from BackEnd.runreport import process_stock_data
-                       from datetime import datetime
-      
-                       try:
-                           process_stock_data(datetime.now())
-                           print('Process completed successfully.')
-                       except Exception as e:
-                           print(f'An error occurred: {e}')
-                           sys.exit(1)  # Exit with a non-zero status to indicate failure
-                      "
+import sys
+from BackEnd.runreport import process_stock_data
+from datetime import datetime
+
+try:
+    process_stock_data(datetime.now())
+    print('Process completed successfully.')
+except Exception as e:
+    print(f'An error occurred: {e}')
+    sys.exit(1)
+            "
