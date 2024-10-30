@@ -39,28 +39,25 @@ def get_pct_change(ticker_data, breakout):
 
 
 def find_gems(all_data, StockList):
-    print("Starting find_gems...")
-    print(all_data[0:2])
+
     gems_ticker_dtls = pd.DataFrame()
     '''DListLbl = ['Security Code', 'Issuer Name', 'Security Id', 'Security Name', 'Status', 'Group', 'Face Value',
                 'ISIN No', 'Industry', 'Instrument', 'Sector Name', 'Industry New Name', 'Igroup Name',
                 'ISubgroup Name']'''
     unique_tickers = all_data['ticker'].unique()
-    print(unique_tickers)
+
     for ticker in unique_tickers:
-        print("ticker " + ticker)
+
         ticker_data = all_data[all_data['ticker'] == ticker]
         
         for break_out in globals.gems_breakout:
-            print('Y/M '+break_out[-1])
-            print('val '+break_out[:-1])
+
             if break_out[-1] == 'Y':
                 breakout_days = int(break_out[:-1])*365
             elif break_out[-1] == 'M':
                 breakout_days = int(break_out[:-1])*30
             elif break_out[-1] == 'W':
                 breakout_days = int(break_out[:-1])*7
-            print('breakout days '+str(breakout_days))
             
             pct_change=get_pct_change(ticker_data, breakout_days)
             
@@ -74,13 +71,12 @@ def find_gems(all_data, StockList):
                         ticker_stklist_dtls.loc[:,'Report'] = 'G'
                         
                     except SettingWithCopyWarning:
-                        print('SettingWithCopyWarning')
+
                     finally:
                         # Display any warnings caught
                         for warning in w:
-                            print('SettingWithCopyWarning')
                         #print(f"Warning: {warning.message}")
                     gems_ticker_dtls = pd.concat([gems_ticker_dtls, ticker_stklist_dtls])
     print("Completed find_gems...")
-    print(gems_ticker_dtls)
+  
     return gems_ticker_dtls
