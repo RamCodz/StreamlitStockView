@@ -26,7 +26,7 @@ def analyze_stock(ticker_data,breakout_days):
         recent_change = ((recent_end_price - recent_start_price) / recent_start_price) * 100
         
         # Criteria for identifying underperformers that recently rallied
-        if year_change < 200 and recent_change > 15:  # Adjust the thresholds as needed
+        if year_change < 500 and recent_change > 3:  # Adjust the thresholds as needed
             return pct_change
     return pct_change
        
@@ -64,4 +64,5 @@ def find_cherries(all_data, StockList):
                         pass
                     cherries_ticker_dtls = pd.concat([cherries_ticker_dtls, ticker_stklist_dtls])
     print("Completed find_cherries...")
+    print(cherries_ticker_dtls)
     return cherries_ticker_dtls
