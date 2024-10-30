@@ -40,7 +40,7 @@ def get_pct_change(ticker_data, breakout):
 
 def find_gems(all_data, StockList):
     print("Starting find_gems...")
-    print(all_data[0:2)
+    print(all_data[0:2])
     gems_ticker_dtls = pd.DataFrame()
     '''DListLbl = ['Security Code', 'Issuer Name', 'Security Id', 'Security Name', 'Status', 'Group', 'Face Value',
                 'ISIN No', 'Industry', 'Instrument', 'Sector Name', 'Industry New Name', 'Igroup Name',
