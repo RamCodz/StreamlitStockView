@@ -14,7 +14,7 @@ def dbg(msg):
 def process_stock_data(gv_sys_date):
     # Convert date to the appropriate format
     gv_sys_date = pd.to_datetime(gv_sys_date)
-
+    print("Starting process_stock_data...")
     current_directory = os.getcwd()
     globals.curr_dir = current_directory + "/"
     globals.today = datetime.now().strftime(globals.dt_format)
