@@ -37,7 +37,8 @@ def get_all_data(StockList):
             break
             
         i=i+1
-    print("Completed get_all_data...")    
+    print("Completed get_all_data...")  
+    print(all_data[0:5])
     return all_data
         
 ##get_all_data()
