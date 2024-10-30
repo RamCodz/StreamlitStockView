@@ -11,6 +11,9 @@ from BackEnd.Utils.creategitfiles import create_or_update_file
 
 def process_stock_data(gv_sys_date):
     print("Starting process_stock_data...")
+    print("gv_sys_date : "+gv_sys_date)
+    if gv_sys_date.empty:
+        gv_sys_date = datetime.now()
     # Convert date to the appropriate format
     gv_sys_date = pd.to_datetime(gv_sys_date)
     
