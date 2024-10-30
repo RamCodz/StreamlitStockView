@@ -9,6 +9,7 @@ GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
 
 # Function to create or update a file in a GitHub repository
 def create_or_update_file(path, content, message="Update file via Streamlit", branch="main"):
+    print("Starting create_or_update_file...")
     url = f"https://api.github.com/repos/RamCodz/StreamlitStockView/contents/{path}"
     headers = {
         "Authorization": f"token {GITHUB_TOKEN}",
@@ -32,4 +33,4 @@ def create_or_update_file(path, content, message="Update file via Streamlit", br
         data["sha"] = sha
     
     response = requests.put(url, json=data, headers=headers)
-    
+    print("Completed create_or_update_file...")
