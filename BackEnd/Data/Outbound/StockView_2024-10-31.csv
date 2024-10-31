@@ -19,6 +19,11 @@ Security Code,Issuer Name,Security Id,Security Name,Status,Group,Face Value,ISIN
 500020,Bombay Dyeing & Mfg. Co. Ltd.,BOMDYEING,BOMBAY DYEING & MFG.CO.LTD.,Active,A ,2.0,INE032A01023,Other Textile Products,Equity,Consumer Discretionary,Textiles,Textiles & Apparels,Other Textile Products,3M,0,G
 500020,Bombay Dyeing & Mfg. Co. Ltd.,BOMDYEING,BOMBAY DYEING & MFG.CO.LTD.,Active,A ,2.0,INE032A01023,Other Textile Products,Equity,Consumer Discretionary,Textiles,Textiles & Apparels,Other Textile Products,6M,0,G
 500020,Bombay Dyeing & Mfg. Co. Ltd.,BOMDYEING,BOMBAY DYEING & MFG.CO.LTD.,Active,A ,2.0,INE032A01023,Other Textile Products,Equity,Consumer Discretionary,Textiles,Textiles & Apparels,Other Textile Products,1Y,0,G
+500023,Asian Hotels (North) Limited,ASIANHOTNR,Asian Hotels (North) Limited,Active,B ,10.0,INE363A01022,Hotels & Resorts,Equity,Consumer Discretionary,Consumer Services,Leisure Services,Hotels & Resorts,1W,0,G
+500023,Asian Hotels (North) Limited,ASIANHOTNR,Asian Hotels (North) Limited,Active,B ,10.0,INE363A01022,Hotels & Resorts,Equity,Consumer Discretionary,Consumer Services,Leisure Services,Hotels & Resorts,1M,0,G
+500023,Asian Hotels (North) Limited,ASIANHOTNR,Asian Hotels (North) Limited,Active,B ,10.0,INE363A01022,Hotels & Resorts,Equity,Consumer Discretionary,Consumer Services,Leisure Services,Hotels & Resorts,3M,0,G
+500023,Asian Hotels (North) Limited,ASIANHOTNR,Asian Hotels (North) Limited,Active,B ,10.0,INE363A01022,Hotels & Resorts,Equity,Consumer Discretionary,Consumer Services,Leisure Services,Hotels & Resorts,6M,0,G
+500023,Asian Hotels (North) Limited,ASIANHOTNR,Asian Hotels (North) Limited,Active,B ,10.0,INE363A01022,Hotels & Resorts,Equity,Consumer Discretionary,Consumer Services,Leisure Services,Hotels & Resorts,1Y,0,G
 500027,Atul Limited.,ATUL,ATUL LTD.,Active,A ,10.0,INE100A01010,Specialty Chemicals,Equity,Commodities,Chemicals,Chemicals & Petrochemicals,Specialty Chemicals,1W,0,G
 500027,Atul Limited.,ATUL,ATUL LTD.,Active,A ,10.0,INE100A01010,Specialty Chemicals,Equity,Commodities,Chemicals,Chemicals & Petrochemicals,Specialty Chemicals,1M,0,G
 500027,Atul Limited.,ATUL,ATUL LTD.,Active,A ,10.0,INE100A01010,Specialty Chemicals,Equity,Commodities,Chemicals,Chemicals & Petrochemicals,Specialty Chemicals,3M,0,G
@@ -179,11 +184,6 @@ Security Code,Issuer Name,Security Id,Security Name,Status,Group,Face Value,ISIN
 500104,Hindustan Petroleum Corporation Ltd,HINDPETRO,HINDUSTAN PETROLEUM CORPORATION LTD.,Active,A ,10.0,INE094A01015,Refineries & Marketing,Equity,Energy,"Oil, Gas & Consumable Fuels",Petroleum Products,Refineries & Marketing,3M,0,G
 500104,Hindustan Petroleum Corporation Ltd,HINDPETRO,HINDUSTAN PETROLEUM CORPORATION LTD.,Active,A ,10.0,INE094A01015,Refineries & Marketing,Equity,Energy,"Oil, Gas & Consumable Fuels",Petroleum Products,Refineries & Marketing,6M,0,G
 500104,Hindustan Petroleum Corporation Ltd,HINDPETRO,HINDUSTAN PETROLEUM CORPORATION LTD.,Active,A ,10.0,INE094A01015,Refineries & Marketing,Equity,Energy,"Oil, Gas & Consumable Fuels",Petroleum Products,Refineries & Marketing,1Y,0,G
-500106,IFCI Ltd.,IFCI,IFCI LTD.,Active,A ,10.0,INE039A01010,Financial Institution,Equity,Financial Services,Financial Services,Finance,Financial Institution,1W,0,G
-500106,IFCI Ltd.,IFCI,IFCI LTD.,Active,A ,10.0,INE039A01010,Financial Institution,Equity,Financial Services,Financial Services,Finance,Financial Institution,1M,0,G
-500106,IFCI Ltd.,IFCI,IFCI LTD.,Active,A ,10.0,INE039A01010,Financial Institution,Equity,Financial Services,Financial Services,Finance,Financial Institution,3M,0,G
-500106,IFCI Ltd.,IFCI,IFCI LTD.,Active,A ,10.0,INE039A01010,Financial Institution,Equity,Financial Services,Financial Services,Finance,Financial Institution,6M,0,G
-500106,IFCI Ltd.,IFCI,IFCI LTD.,Active,A ,10.0,INE039A01010,Financial Institution,Equity,Financial Services,Financial Services,Finance,Financial Institution,1Y,0,G
 500108,Mahanagar Telephone Nigam Ltd.,MTNL,MAHANAGAR TELEPHONE NIGAM LTD.,Active,A ,10.0,INE153A01019,Telecom - Cellular & Fixed line services,Equity,Telecommunication,Telecommunication,Telecom - Services,Telecom - Cellular & Fixed line services,1W,0,G
 500108,Mahanagar Telephone Nigam Ltd.,MTNL,MAHANAGAR TELEPHONE NIGAM LTD.,Active,A ,10.0,INE153A01019,Telecom - Cellular & Fixed line services,Equity,Telecommunication,Telecommunication,Telecom - Services,Telecom - Cellular & Fixed line services,1M,0,G
 500108,Mahanagar Telephone Nigam Ltd.,MTNL,MAHANAGAR TELEPHONE NIGAM LTD.,Active,A ,10.0,INE153A01019,Telecom - Cellular & Fixed line services,Equity,Telecommunication,Telecommunication,Telecom - Services,Telecom - Cellular & Fixed line services,3M,0,G
