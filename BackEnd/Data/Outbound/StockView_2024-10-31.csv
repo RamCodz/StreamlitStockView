@@ -184,6 +184,11 @@ Security Code,Issuer Name,Security Id,Security Name,Status,Group,Face Value,ISIN
 500104,Hindustan Petroleum Corporation Ltd,HINDPETRO,HINDUSTAN PETROLEUM CORPORATION LTD.,Active,A ,10.0,INE094A01015,Refineries & Marketing,Equity,Energy,"Oil, Gas & Consumable Fuels",Petroleum Products,Refineries & Marketing,3M,0,G
 500104,Hindustan Petroleum Corporation Ltd,HINDPETRO,HINDUSTAN PETROLEUM CORPORATION LTD.,Active,A ,10.0,INE094A01015,Refineries & Marketing,Equity,Energy,"Oil, Gas & Consumable Fuels",Petroleum Products,Refineries & Marketing,6M,0,G
 500104,Hindustan Petroleum Corporation Ltd,HINDPETRO,HINDUSTAN PETROLEUM CORPORATION LTD.,Active,A ,10.0,INE094A01015,Refineries & Marketing,Equity,Energy,"Oil, Gas & Consumable Fuels",Petroleum Products,Refineries & Marketing,1Y,0,G
+500106,IFCI Ltd.,IFCI,IFCI LTD.,Active,A ,10.0,INE039A01010,Financial Institution,Equity,Financial Services,Financial Services,Finance,Financial Institution,1W,0,G
+500106,IFCI Ltd.,IFCI,IFCI LTD.,Active,A ,10.0,INE039A01010,Financial Institution,Equity,Financial Services,Financial Services,Finance,Financial Institution,1M,0,G
+500106,IFCI Ltd.,IFCI,IFCI LTD.,Active,A ,10.0,INE039A01010,Financial Institution,Equity,Financial Services,Financial Services,Finance,Financial Institution,3M,0,G
+500106,IFCI Ltd.,IFCI,IFCI LTD.,Active,A ,10.0,INE039A01010,Financial Institution,Equity,Financial Services,Financial Services,Finance,Financial Institution,6M,0,G
+500106,IFCI Ltd.,IFCI,IFCI LTD.,Active,A ,10.0,INE039A01010,Financial Institution,Equity,Financial Services,Financial Services,Finance,Financial Institution,1Y,0,G
 500108,Mahanagar Telephone Nigam Ltd.,MTNL,MAHANAGAR TELEPHONE NIGAM LTD.,Active,A ,10.0,INE153A01019,Telecom - Cellular & Fixed line services,Equity,Telecommunication,Telecommunication,Telecom - Services,Telecom - Cellular & Fixed line services,1W,0,G
 500108,Mahanagar Telephone Nigam Ltd.,MTNL,MAHANAGAR TELEPHONE NIGAM LTD.,Active,A ,10.0,INE153A01019,Telecom - Cellular & Fixed line services,Equity,Telecommunication,Telecommunication,Telecom - Services,Telecom - Cellular & Fixed line services,1M,0,G
 500108,Mahanagar Telephone Nigam Ltd.,MTNL,MAHANAGAR TELEPHONE NIGAM LTD.,Active,A ,10.0,INE153A01019,Telecom - Cellular & Fixed line services,Equity,Telecommunication,Telecommunication,Telecom - Services,Telecom - Cellular & Fixed line services,3M,0,G
@@ -324,6 +329,11 @@ Security Code,Issuer Name,Security Id,Security Name,Status,Group,Face Value,ISIN
 500173,GFL LIMITED,GFLLIMITED,GFL Ltd,Active,B ,1.0,INE538A01037,Holding Company,Equity,Financial Services,Financial Services,Finance,Holding Company,3M,0,G
 500173,GFL LIMITED,GFLLIMITED,GFL Ltd,Active,B ,1.0,INE538A01037,Holding Company,Equity,Financial Services,Financial Services,Finance,Holding Company,6M,0,G
 500173,GFL LIMITED,GFLLIMITED,GFL Ltd,Active,B ,1.0,INE538A01037,Holding Company,Equity,Financial Services,Financial Services,Finance,Holding Company,1Y,0,G
+500174,Gujarat Lease Financing Limited,GLFL,GUJARAT LEASE FINANCING LTD.,Active,T ,10.0,INE540A01017,Other Financial Services,Equity,Financial Services,Financial Services,Finance,Other Financial Services,1W,0,G
+500174,Gujarat Lease Financing Limited,GLFL,GUJARAT LEASE FINANCING LTD.,Active,T ,10.0,INE540A01017,Other Financial Services,Equity,Financial Services,Financial Services,Finance,Other Financial Services,1M,0,G
+500174,Gujarat Lease Financing Limited,GLFL,GUJARAT LEASE FINANCING LTD.,Active,T ,10.0,INE540A01017,Other Financial Services,Equity,Financial Services,Financial Services,Finance,Other Financial Services,3M,0,G
+500174,Gujarat Lease Financing Limited,GLFL,GUJARAT LEASE FINANCING LTD.,Active,T ,10.0,INE540A01017,Other Financial Services,Equity,Financial Services,Financial Services,Finance,Other Financial Services,6M,0,G
+500174,Gujarat Lease Financing Limited,GLFL,GUJARAT LEASE FINANCING LTD.,Active,T ,10.0,INE540A01017,Other Financial Services,Equity,Financial Services,Financial Services,Finance,Other Financial Services,1Y,0,G
 500179,HCL Infosystems Ltd,HCL-INSYS,HCL INFOSYSTEMS LTD.,Active,T ,2.0,INE236A01020,Computers Hardware & Equipments,Equity,Information Technology,Information Technology,IT - Hardware,Computers Hardware & Equipments,1W,0,G
 500179,HCL Infosystems Ltd,HCL-INSYS,HCL INFOSYSTEMS LTD.,Active,T ,2.0,INE236A01020,Computers Hardware & Equipments,Equity,Information Technology,Information Technology,IT - Hardware,Computers Hardware & Equipments,1M,0,G
 500179,HCL Infosystems Ltd,HCL-INSYS,HCL INFOSYSTEMS LTD.,Active,T ,2.0,INE236A01020,Computers Hardware & Equipments,Equity,Information Technology,Information Technology,IT - Hardware,Computers Hardware & Equipments,3M,0,G
