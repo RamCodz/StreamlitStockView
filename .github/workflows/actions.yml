@@ -2,7 +2,7 @@ name: run runreport.py
 
 on:
   schedule:
-    - cron: '5 * * * *' # Uncomment to schedule it as needed
+    - cron: '*/5 * * * *' # Uncomment to schedule it as needed
   workflow_dispatch:
 
 jobs:
