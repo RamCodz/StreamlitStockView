@@ -63,7 +63,7 @@ def delete_old_csv_files(base_url):
 # Function to create or update a file in a GitHub repository
 def create_or_update_file(path, content, message="Update file via Streamlit", branch="main"):
     print("Starting create_or_update_file...")
-    
+    print("length of GITHUB_TOKEN : ", length(GITHUB_TOKEN)) 
     url = f"https://api.github.com/repos/RamCodz/StreamlitStockView/contents/{path}"
     headers = {
         "Authorization": f"token {GITHUB_TOKEN}",
