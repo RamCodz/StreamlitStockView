@@ -83,12 +83,27 @@ def display_stock_data_from_df(df, key_prefix=""):
 
 Cherry_tabs = st.tabs(["5 Year Breakout", "1 Year Breakout", "6 Month Breakout", "3 Month Breakout", "1 Month Breakout"])
 with Cherry_tabs[0]:
-    display_stock_data_from_df(stock_list_df[(stock_list_df['Report'] == 'C') & (stock_list_df['Break Out'] == '5Y')].sort_values(by='Variation',ascending=True), key_prefix="Cherries5Y")
+    if not stock_list_df.empty:
+        display_stock_data_from_df(stock_list_df[(stock_list_df['Report'] == 'C') & (stock_list_df['Break Out'] == '5Y')].sort_values(by='Variation',ascending=True), key_prefix="Cherries5Y")
+    else:
+        st.write("No data available to display.")
 with Cherry_tabs[1]:
-    display_stock_data_from_df(stock_list_df[(stock_list_df['Report'] == 'C') & (stock_list_df['Break Out'] == '1Y')].sort_values(by='Variation',ascending=True), key_prefix="Cherries1Y")
+    if not stock_list_df.empty:
+        display_stock_data_from_df(stock_list_df[(stock_list_df['Report'] == 'C') & (stock_list_df['Break Out'] == '5Y')].sort_values(by='Variation',ascending=True), key_prefix="Cherries5Y")
+    else:
+        st.write("No data available to display.")
 with Cherry_tabs[2]:
-    display_stock_data_from_df(stock_list_df[(stock_list_df['Report'] == 'C') & (stock_list_df['Break Out'] == '6M')].sort_values(by='Variation',ascending=True), key_prefix="Cherries6M")
+    if not stock_list_df.empty:
+        display_stock_data_from_df(stock_list_df[(stock_list_df['Report'] == 'C') & (stock_list_df['Break Out'] == '5Y')].sort_values(by='Variation',ascending=True), key_prefix="Cherries5Y")
+    else:
+        st.write("No data available to display.")
 with Cherry_tabs[3]:
-    display_stock_data_from_df(stock_list_df[(stock_list_df['Report'] == 'C') & (stock_list_df['Break Out'] == '3M')].sort_values(by='Variation',ascending=True), key_prefix="Cherries3M")
+    if not stock_list_df.empty:
+        display_stock_data_from_df(stock_list_df[(stock_list_df['Report'] == 'C') & (stock_list_df['Break Out'] == '5Y')].sort_values(by='Variation',ascending=True), key_prefix="Cherries5Y")
+    else:
+        st.write("No data available to display.")
 with Cherry_tabs[4]:
-    display_stock_data_from_df(stock_list_df[(stock_list_df['Report'] == 'C') & (stock_list_df['Break Out'] == '1M')].sort_values(by='Variation',ascending=True), key_prefix="Cherries1M")
+    if not stock_list_df.empty:
+        display_stock_data_from_df(stock_list_df[(stock_list_df['Report'] == 'C') & (stock_list_df['Break Out'] == '5Y')].sort_values(by='Variation',ascending=True), key_prefix="Cherries5Y")
+    else:
+        st.write("No data available to display.")
