@@ -104,4 +104,8 @@ if __name__ == "__main__":
     if stock_list_df.empty:
         st.error("The stock data is empty. Please check the data source.")
     else:
+        # Debugging: Show the raw DataFrame to ensure it is not empty
+        st.write("Stock Data (Raw DataFrame):")
+        st.write(stock_list_df)
+
         display_stock_data_from_df(stock_list_df)
