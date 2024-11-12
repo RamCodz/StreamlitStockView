@@ -20,7 +20,6 @@ def create_sample_data():
     }
     return pd.DataFrame(data)
 
-
 # Function to get the stock data (simulated data for now)
 def get_stock_data(ticker, period="1y", interval="1d"):
     dates = pd.date_range(start="2020-01-01", periods=365)
@@ -56,7 +55,6 @@ def display_stock_data_from_df(df):
             '</div>', unsafe_allow_html=True
         )
         
-        # Displaying each row of data with color-coded returns
         for index, row in df.iterrows():
             ticker = row['Security Id']
             tick = row['Security Name']
@@ -65,20 +63,23 @@ def display_stock_data_from_df(df):
             returns = [row['1M'], row['3M'], row['6M'], row['1Y'], row['5Y']]
             colors = [get_color(value) for value in returns]
             
-            # Display stock data with colors
-            st.markdown(
-                f'<div style="display: flex; flex-direction: row; align-items: center; padding: 5px;">' +
-                f'<div style="flex:1; {colors[0]}; padding:10px;">{tick}</div>' +
-                f'<div style="flex:1; {colors[0]}; padding:10px;">{row["1M"]}%</div>' +
-                f'<div style="flex:1; {colors[1]}; padding:10px;">{row["3M"]}%</div>' +
-                f'<div style="flex:1; {colors[2]}; padding:10px;">{row["6M"]}%</div>' +
-                f'<div style="flex:1; {colors[3]}; padding:10px;">{row["1Y"]}%</div>' +
-                f'<div style="flex:1; {colors[4]}; padding:10px;">{row["5Y"]}%</div>' +
-                '</div>', unsafe_allow_html=True
+            # Create an interactive row with a clickable link
+            row_html = (
+                f'<div style="display: flex; flex-direction: row; align-items: center; padding: 5px; cursor: pointer; {colors[0]}">'
+                f'<a href="javascript:void(0)" onclick="window.parent.postMessage({{"ticker": "{ticker}"}})">'  # Make the row clickable
+                f'<div style="flex:1; padding:10px;">{tick}</div>'
+                f'<div style="flex:1; padding:10px;">{row["1M"]}%</div>'
+                f'<div style="flex:1; padding:10px;">{row["3M"]}%</div>'
+                f'<div style="flex:1; padding:10px;">{row["6M"]}%</div>'
+                f'<div style="flex:1; padding:10px;">{row["1Y"]}%</div>'
+                f'<div style="flex:1; padding:10px;">{row["5Y"]}%</div>'
+                '</a></div>'
             )
-            
-            # Making the stock name clickable using a Streamlit button
-            if st.button(f"View {tick}", key=ticker):
+
+            st.markdown(row_html, unsafe_allow_html=True)
+
+            # Listen for a click (simulated in Streamlit)
+            if 'ticker' in st.session_state and st.session_state['ticker'] == ticker:
                 st.write(f"**Details for {tick}:**")
                 st.write(f"**Sector:** {row['Sector Name']}")
                 st.write(f"**Industry:** {row['Industry']}")
@@ -104,16 +105,20 @@ def display_stock_data_from_df(df):
 
                 # Display the plot
                 st.plotly_chart(fig)
+    
     else:
         st.warning("No data available to display.")
 
+# Main app logic
 stock_list_df = create_sample_data()
+
 # Check if data exists
 if stock_list_df.empty:
     st.error("The stock data is empty. Please check the data source.")
 else:
-    # Debugging: Show the raw DataFrame to ensure it is not empty
+    # Show the raw DataFrame to ensure it is not empty
     st.write("Stock Data (Raw DataFrame):")
     st.write(stock_list_df)
 
+# Create and display the stock table with clickable rows
     display_stock_data_from_df(stock_list_df)
