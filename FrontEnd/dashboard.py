@@ -53,7 +53,7 @@ def display_stock_data_from_df(df, key_prefix=""):
             .no-space div[data-testid="stMarkdownContainer"] {
                 margin-top: 0;
                 margin-bottom: 0;
-                padding: 5px 0;
+                padding: 0;
             }
             </style>
             """, unsafe_allow_html=True
@@ -68,13 +68,13 @@ def display_stock_data_from_df(df, key_prefix=""):
             colors = [get_color(value) for value in returns]
             
             st.markdown(
-                f'<div style="padding:10px; border-radius:5px; display:flex; flex-direction:row; align-items:center;" class="no-space">' +
-                f'<div style="flex:1; {colors[0]}; padding:10px;">{tick}</div>' +
-                f'<div style="flex:1; {colors[0]}; padding:10px;">{row["1M"]}%</div>' +
-                f'<div style="flex:1; {colors[1]}; padding:10px;">{row["3M"]}%</div>' +
-                f'<div style="flex:1; {colors[2]}; padding:10px;">{row["6M"]}%</div>' +
-                f'<div style="flex:1; {colors[3]}; padding:10px;">{row["1Y"]}%</div>' +
-                f'<div style="flex:1; {colors[4]}; padding:10px;">{row["5Y"]}%</div>' +
+                f'<div style="margin:0; padding:0; border-radius:5px; display:flex; flex-direction:row; align-items:center;" class="no-space">' +
+                f'<div style="flex:1; {colors[0]}; margin:0; padding:10px;">{tick}</div>' +
+                f'<div style="flex:1; {colors[0]}; margin:0; padding:10px;">{row["1M"]}%</div>' +
+                f'<div style="flex:1; {colors[1]}; margin:0; padding:10px;">{row["3M"]}%</div>' +
+                f'<div style="flex:1; {colors[2]}; margin:0; padding:10px;">{row["6M"]}%</div>' +
+                f'<div style="flex:1; {colors[3]}; margin:0; padding:10px;">{row["1Y"]}%</div>' +
+                f'<div style="flex:1; {colors[4]}; margin:0; padding:10px;">{row["5Y"]}%</div>' +
                 '</div>', unsafe_allow_html=True
             )
     else:
