@@ -1,8 +1,8 @@
 import streamlit as st
 import pandas as pd
 import yfinance as yf
-import plotly.express as px
 import plotly.graph_objs as go
+import plotly.express as px
 from pandas.errors import EmptyDataError
 
 # Sample data creation with returns and fundamental values
@@ -28,19 +28,23 @@ def create_sample_data():
 # Using sample data for testing
 stock_list_df = create_sample_data()
 
-# Create heatmap
-def create_heatmap(returns_df):
-    fig = px.imshow(
-        returns_df[["Security Name", "1M", "3M", "6M", "1Y", "5Y"]].set_index('Security Name'),
-        labels=dict(x="Period", y="Stock", color="Return (%)"),
-        x=["1M", "3M", "6M", "1Y", "5Y"],
-        y=returns_df['Security Name'],
-        color_continuous_scale='RdYlGn'
-    )
-    fig.update_layout(title="Stock Returns Heatmap")
-    st.plotly_chart(fig)
+# Create grid of stocks
+def create_stock_grid(df):
+    for index, row in df.iterrows():
+        ticker = row['Security Id']
+        tick = row['Security Name']
+        sector = row['Sector Name']
+        industry = row['Industry']
+        variation = round(row['Variation'])
 
-create_heatmap(stock_list_df)
+        col1, col2 = st.columns([1, 4])
+        
+        with col1:
+            if st.button(f"{tick}", key=f"{tick}-button"):
+                display_stock_details(stock_list_df, tick)
+                
+        with col2:
+            st.write(f"**{variation}%** - {sector} - {industry}")
 
 # Mock data for the stock price and volume change
 def get_mock_stock_data(ticker):
@@ -56,4 +60,23 @@ def display_stock_details(stock_list_df, stock_name):
     stock_data = stock_list_df[stock_list_df['Security Name'] == stock_name].iloc[0]
     st.write(f"### {stock_data['Security Name']}")
     st.write(f"**Sector:** {stock_data['Sector Name']}")
-    st.write(f"**
+    st.write(f"**Industry:** {stock_data['Industry']}")
+    st.write(f"**PE Ratio:** {stock_data['PE']}")
+    st.write(f"**PB Ratio:** {stock_data['PB']}")
+    st.write(f"**PS Ratio:** {stock_data['PS']}")
+    st.write(f"**PEG Ratio:** {stock_data['PEG']}")
+
+    stock_price_data = get_mock_stock_data(stock_data['Security Id'])
+    if not stock_price_data.empty:
+        fig = go.Figure()
+        fig.add_trace(go.Scatter(x=stock_price_data.index, y=stock_price_data['Close'], mode='lines', name='Close Price', yaxis='y', marker=dict(color='blue')))
+        fig.add_trace(go.Bar(x=stock_price_data.index, y=stock_price_data['Volume'], name='Volume Change', yaxis='y2', marker=dict(color='orange')))
+        fig.update_layout(
+            yaxis2=dict(title='Volume', overlaying='y', side='right'),
+            template="plotly_dark",
+            showlegend=True
+        )
+        st.plotly_chart(fig)
+
+# Create and display grid
+create_stock_grid(stock_list_df)
