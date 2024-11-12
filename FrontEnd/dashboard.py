@@ -20,8 +20,6 @@ def create_sample_data():
     }
     return pd.DataFrame(data)
 
-# Using sample data for testing
-stock_list_df = create_sample_data()
 
 # Function to get the stock data (simulated data for now)
 def get_stock_data(ticker, period="1y", interval="1d"):
@@ -109,17 +107,13 @@ def display_stock_data_from_df(df):
     else:
         st.warning("No data available to display.")
 
-# Main app logic
-if __name__ == "__main__":
-    # Using sample data for testing
-    stock_list_df = create_sample_data()
+stock_list_df = create_sample_data()
+# Check if data exists
+if stock_list_df.empty:
+    st.error("The stock data is empty. Please check the data source.")
+else:
+    # Debugging: Show the raw DataFrame to ensure it is not empty
+    st.write("Stock Data (Raw DataFrame):")
+    st.write(stock_list_df)
 
-    # Check if data exists
-    if stock_list_df.empty:
-        st.error("The stock data is empty. Please check the data source.")
-    else:
-        # Debugging: Show the raw DataFrame to ensure it is not empty
-        st.write("Stock Data (Raw DataFrame):")
-        st.write(stock_list_df)
-
-        display_stock_data_from_df(stock_list_df)
+    display_stock_data_from_df(stock_list_df)
