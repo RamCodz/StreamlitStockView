@@ -66,28 +66,6 @@ def display_stock_data_from_df(df, key_prefix=""):
                 f'<div style="flex:1; {colors[4]}; padding:10px;">{row["5Y"]}%</div>' +
                 '</div>', unsafe_allow_html=True
             )
-
-            if show_plot:
-                cherries_stock = get_stock_data(ticker)
-                if not cherries_stock.empty:
-                    fig = go.Figure()
-
-                    fig.add_trace(go.Scatter(x=cherries_stock.index, y=cherries_stock['Close'], mode='lines', name='Close Price', yaxis='y', marker=dict(color='blue')))
-                    fig.add_trace(go.Bar(x=cherries_stock.index, y=cherries_stock['Volume'], name='Volume Change', yaxis='y2', marker=dict(color='orange')))
-
-                    fig.update_layout(
-                        yaxis2=dict(
-                            title='Volume',
-                            overlaying='y',
-                            side='right'
-                        ),
-                        template="plotly_dark",
-                        showlegend=True
-                    )
-                    
-                    st.plotly_chart(fig)
-                else:
-                    st.error(f"No data found for {ticker}. Please check the ticker symbol or try again later.")
     else:
         st.warning("No data available to display.")
 
