@@ -83,11 +83,6 @@ def display_stock_data_from_df(df):
                 st.write(f"**Details for {tick}:**")
                 st.write(f"**Sector:** {row['Sector Name']}")
                 st.write(f"**Industry:** {row['Industry']}")
-                st.write(f"**1M Return:** {row['1M']}%")
-                st.write(f"**3M Return:** {row['3M']}%")
-                st.write(f"**6M Return:** {row['6M']}%")
-                st.write(f"**1Y Return:** {row['1Y']}%")
-                st.write(f"**5Y Return:** {row['5Y']}%")
 
                 # Fetch the stock data (simulated in this case)
                 stock_data = get_stock_data(ticker)
