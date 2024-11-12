@@ -2,6 +2,7 @@ import streamlit as st
 from pathlib import Path
 import pandas as pd
 import yfinance as yf
+from pandas.errors import EmptyDataError
 from BackEnd.Utils import globals
 from FrontEnd.Utils import get_latest_report_data
 import plotly.graph_objs as go
@@ -11,16 +12,16 @@ stock_list = str(globals.data_filepath) + get_latest_report_data.get_latest_file
 
 try:
     stock_list_df = pd.read_csv(stock_list)
+except EmptyDataError:
+    stock_list_df = pd.DataFrame()
 except Exception as e:
     st.error(f"Error reading the file: {e}")
     stock_list_df = pd.DataFrame()
-
 
 # Function to get the stock data
 def get_stock_data(ticker, period="1y", interval="1d"):
     stock = yf.Ticker(ticker + ".BO")  # Append .BO for BSE stocks
     return stock.history(period=period, interval=interval)
-
 
 # Common function to display stock data
 def display_stock_data_from_df(df, key_prefix=""):
@@ -44,16 +45,10 @@ def display_stock_data_from_df(df, key_prefix=""):
                     fig = go.Figure()
 
                     # Add trace for Close Price
-                    fig.add_trace(
-                        go.Scatter(x=cherries_stock.index, y=cherries_stock['Close'], mode='lines', name='Close Price',
-                                   yaxis='y', marker=dict(color='blue'))
-                    )
+                    fig.add_trace(go.Scatter(x=cherries_stock.index, y=cherries_stock['Close'], mode='lines', name='Close Price', yaxis='y', marker=dict(color='blue')))
 
                     # Add trace for Volume Change
-                    fig.add_trace(
-                        go.Bar(x=cherries_stock.index, y=cherries_stock['Volume'], name='Volume Change', yaxis='y2',
-                               marker=dict(color='orange'))
-                    )
+                    fig.add_trace(go.Bar(x=cherries_stock.index, y=cherries_stock['Volume'], name='Volume Change', yaxis='y2', marker=dict(color='orange')))
 
                     fig.update_layout(
                         yaxis2=dict(
@@ -61,9 +56,10 @@ def display_stock_data_from_df(df, key_prefix=""):
                             overlaying='y',
                             side='right'
                         ),
-                        template="plotly_dark",  # Change template as needed for dark or light themes
+                        template="plotly_dark",
                         showlegend=True
                     )
+
                     col1, col2, col3 = st.columns(3, gap="small")
                     with col1:
                         st.write("PE : ")
@@ -81,14 +77,16 @@ def display_stock_data_from_df(df, key_prefix=""):
     else:
         st.warning("No data available to display.")
 
-Gems_tabs = st.tabs(["Fall in 1 week", "Fall in 1 month", "Fall in 3 months", "Fall in 6 months", "Fall in 1 year"])
-with Gems_tabs[0]:
-    display_stock_data_from_df(stock_list_df[(stock_list_df['Report'] == 'G') & (stock_list_df['Break Out'] == '1W')].sort_values(by='Variation',ascending=False), key_prefix="Gems1w")
-with Gems_tabs[1]:
-    display_stock_data_from_df(stock_list_df[(stock_list_df['Report'] == 'G') & (stock_list_df['Break Out'] == '1M')].sort_values(by='Variation',ascending=False), key_prefix="Gems1m")
-with Gems_tabs[2]:
-    display_stock_data_from_df(stock_list_df[(stock_list_df['Report'] == 'G') & (stock_list_df['Break Out'] == '3M')].sort_values(by='Variation',ascending=False), key_prefix="Gems3m")
-with Gems_tabs[3]:
-    display_stock_data_from_df(stock_list_df[(stock_list_df['Report'] == 'G') & (stock_list_df['Break Out'] == '6M')].sort_values(by='Variation',ascending=False), key_prefix="Gems6m")
-with Gems_tabs[4]:
-    display_stock_data_from_df(stock_list_df[(stock_list_df['Report'] == 'G') & (stock_list_df['Break Out'] == '1Y')].sort_values(by='Variation',ascending=False), key_prefix="Gems1y")
+# Function to create tabs and display data
+def create_tabs(tab_titles, stock_list_df):
+    tabs = st.tabs(tab_titles)
+    for i, title in enumerate(tab_titles):
+        with tabs[i]:
+            if not stock_list_df.empty:
+                display_stock_data_from_df(stock_list_df[(stock_list_df['Report'] == 'G') & (stock_list_df['Break Out'] == title.split()[2])].sort_values(by='Variation', ascending=False), key_prefix=f"Gems{title.split()[2]}")
+            else:
+                st.write("No data available to display.")
+
+# Create and display tabs
+tab_titles = ["Fall in 1 week", "Fall in 1 month", "Fall in 3 months", "Fall in 6 months", "Fall in 1 year"]
+create_tabs(tab_titles, stock_list_df)
