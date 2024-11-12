@@ -1,6 +1,6 @@
+import streamlit as st
 import pandas as pd
 import numpy as np
-import streamlit as st
 import plotly.graph_objs as go
 
 # Create sample data
@@ -19,6 +19,9 @@ def create_sample_data():
         "Break Out": ["5Y", "1Y", "6M", "3M"]
     }
     return pd.DataFrame(data)
+
+# Using sample data for testing
+stock_list_df = create_sample_data()
 
 # Function to get the stock data (simulated data for now)
 def get_stock_data(ticker, period="1y", interval="1d"):
@@ -68,6 +71,11 @@ def display_stock_data_from_df(df):
                 f'<div style="display: flex; flex-direction: row; align-items: center; padding: 5px; cursor: pointer; {colors[0]}">'
                 f'<a href="javascript:void(0)" onclick="window.parent.postMessage({{"ticker": "{ticker}"}})">'  # Make the row clickable
                 f'<div style="flex:1; padding:10px;">{tick}</div>'
+                f'<div style="flex:1; padding:10px;">{row["1M"]}%</div>'
+                f'<div style="flex:1; padding:10px;">{row["3M"]}%</div>'
+                f'<div style="flex:1; padding:10px;">{row["6M"]}%</div>'
+                f'<div style="flex:1; padding:10px;">{row["1Y"]}%</div>'
+                f'<div style="flex:1; padding:10px;">{row["5Y"]}%</div>'
                 '</a></div>'
             )
 
@@ -75,27 +83,33 @@ def display_stock_data_from_df(df):
 
             # Listen for a click (simulated in Streamlit)
             if 'ticker' in st.session_state and st.session_state['ticker'] == ticker:
-                st.write(f"**Details for {tick}:**")
-                st.write(f"**Sector:** {row['Sector Name']}")
-                st.write(f"**Industry:** {row['Industry']}")
+                # Expand and show additional stock details
+                with st.expander(f"Details for {tick}"):
+                    st.write(f"**Sector:** {row['Sector Name']}")
+                    st.write(f"**Industry:** {row['Industry']}")
+                    st.write(f"**1M Return:** {row['1M']}%")
+                    st.write(f"**3M Return:** {row['3M']}%")
+                    st.write(f"**6M Return:** {row['6M']}%")
+                    st.write(f"**1Y Return:** {row['1Y']}%")
+                    st.write(f"**5Y Return:** {row['5Y']}%")
 
-                # Fetch the stock data (simulated in this case)
-                stock_data = get_stock_data(ticker)
-                
-                # Plot the Close price of the stock using Plotly
-                fig = go.Figure()
+                    # Fetch the stock data (simulated in this case)
+                    stock_data = get_stock_data(ticker)
+                    
+                    # Plot the Close price of the stock using Plotly
+                    fig = go.Figure()
 
-                # Add trace for Close Price
-                fig.add_trace(go.Scatter(x=stock_data.index, y=stock_data['Close'], mode='lines', name=f'Close Price - {tick}'))
+                    # Add trace for Close Price
+                    fig.add_trace(go.Scatter(x=stock_data.index, y=stock_data['Close'], mode='lines', name=f'Close Price - {tick}'))
 
-                # Add trace for Volume
-                fig.add_trace(go.Bar(x=stock_data.index, y=stock_data['Volume'], name=f'Volume - {tick}'))
+                    # Add trace for Volume
+                    fig.add_trace(go.Bar(x=stock_data.index, y=stock_data['Volume'], name=f'Volume - {tick}'))
 
-                fig.update_layout(title=f"{tick} Price and Volume over Time", template="plotly_dark")
+                    fig.update_layout(title=f"{tick} Price and Volume over Time", template="plotly_dark")
 
-                # Display the plot
-                st.plotly_chart(fig)
-    
+                    # Display the plot
+                    st.plotly_chart(fig)
+
     else:
         st.warning("No data available to display.")
 
