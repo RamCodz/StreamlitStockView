@@ -1,5 +1,7 @@
 import streamlit as st
 import pandas as pd
+import yfinance as yf
+from pandas.errors import EmptyDataError
 import plotly.graph_objs as go
 
 # Create sample data
@@ -22,17 +24,8 @@ def create_sample_data():
 # Using sample data for testing
 stock_list_df = create_sample_data()
 
-# Function to get color based on returns
-def get_color(value):
-    if value > 0:
-        return f'background-color: rgba(0, 255, 0, {value / 100})'  # Green for positive returns
-    elif value < 0:
-        return f'background-color: rgba(255, 0, 0, {-value / 100})'  # Red for negative returns
-    else:
-        return 'background-color: white'  # White for no change
-
-# Function to get mock stock data
-def get_mock_stock_data(ticker):
+# Function to get the stock data
+def get_stock_data(ticker, period="1y", interval="1d"):
     dates = pd.date_range(start="2020-01-01", periods=365)
     data = pd.DataFrame({
         'Date': dates,
@@ -42,55 +35,63 @@ def get_mock_stock_data(ticker):
     data.set_index('Date', inplace=True)
     return data
 
-# Display detailed information for a selected stock
-def display_stock_details(stock_data):
-    ticker = stock_data['Security Id']
-    tick = stock_data['Security Name']
-    sector = stock_data['Sector Name']
-    industry = stock_data['Industry']
-    returns = [stock_data['1M'], stock_data['3M'], stock_data['6M'], stock_data['1Y'], stock_data['5Y']]
+# Function to get color based on returns
+def get_color(value):
+    if value > 0:
+        return f'background-color: rgba(0, 255, 0, {value / 100})'  # Green for positive returns
+    elif value < 0:
+        return f'background-color: rgba(255, 0, 0, {-value / 100})'  # Red for negative returns
+    else:
+        return 'background-color: white'  # White for no change
 
-    st.write(f"### {tick}")
-    st.write(f"**Sector:** {sector}")
-    st.write(f"**Industry:** {industry}")
-
-    st.write("#### Returns")
-    for period, value in zip(["1M", "3M", "6M", "1Y", "5Y"], returns):
-        st.write(f"{period}: {value}%")
-
-    stock_price_data = get_mock_stock_data(ticker)
-    if not stock_price_data.empty:
-        fig = go.Figure()
-        fig.add_trace(go.Scatter(x=stock_price_data.index, y=stock_price_data['Close'], mode='lines', name='Close Price', yaxis='y', marker=dict(color='blue')))
-        fig.add_trace(go.Bar(x=stock_price_data.index, y=stock_price_data['Volume'], name='Volume Change', yaxis='y2', marker=dict(color='orange')))
-        fig.update_layout(
-            yaxis2=dict(title='Volume', overlaying='y', side='right'),
-            template="plotly_dark",
-            showlegend=True
-        )
-        st.plotly_chart(fig)
-
-# Display stock data in rows
-def display_stock_data_from_df(df):
+# Common function to display stock data
+def display_stock_data_from_df(df, key_prefix=""):
     if not df.empty:
         for index, row in df.iterrows():
+            ticker = row['Security Id']
             tick = row['Security Name']
             sector = row['Sector Name']
             industry = row['Industry']
+            
             returns = [row['1M'], row['3M'], row['6M'], row['1Y'], row['5Y']]
             colors = [get_color(value) for value in returns]
+            
+            st.markdown(
+                f'<div style="padding:10px; margin:5px; border-radius:5px; display:flex; flex-direction:row; align-items:center;">' +
+                f'<div style="flex:1; {colors[0]}; padding:10px;">{tick}</div>' +
+                f'<div style="flex:1; {colors[0]}; padding:10px;">{row["1M"]}%</div>' +
+                f'<div style="flex:1; {colors[1]}; padding:10px;">{row["3M"]}%</div>' +
+                f'<div style="flex:1; {colors[2]}; padding:10px;">{row["6M"]}%</div>' +
+                f'<div style="flex:1; {colors[3]}; padding:10px;">{row["1Y"]}%</div>' +
+                f'<div style="flex:1; {colors[4]}; padding:10px;">{row["5Y"]}%</div>' +
+                '</div>', unsafe_allow_html=True
+            )
 
-            with st.expander(f"{tick} >>> {row['1Y']}% - {sector} - {industry}"):
-                st.markdown(
-                    f'<div style="padding:10px; margin:5px; border-radius:5px; display:flex; flex-direction:row; align-items:center;">' +
-                    f'<div style="flex:1; {colors[0]}; padding:10px;">1M: {row["1M"]}%</div>' +
-                    f'<div style="flex:1; {colors[1]}; padding:10px;">3M: {row["3M"]}%</div>' +
-                    f'<div style="flex:1; {colors[2]}; padding:10px;">6M: {row["6M"]}%</div>' +
-                    f'<div style="flex:1; {colors[3]}; padding:10px;">1Y: {row["1Y"]}%</div>' +
-                    f'<div style="flex:1; {colors[4]}; padding:10px;">5Y: {row["5Y"]}%</div>' +
-                    '</div>', unsafe_allow_html=True
-                )
-                display_stock_details(row)
+            show_plot = st.checkbox(f"More about {tick}", key=f"{key_prefix}-{tick}")
+
+            if show_plot:
+                cherries_stock = get_stock_data(ticker)
+                if not cherries_stock.empty:
+                    fig = go.Figure()
+
+                    fig.add_trace(go.Scatter(x=cherries_stock.index, y=cherries_stock['Close'], mode='lines', name='Close Price', yaxis='y', marker=dict(color='blue')))
+                    fig.add_trace(go.Bar(x=cherries_stock.index, y=cherries_stock['Volume'], name='Volume Change', yaxis='y2', marker=dict(color='orange')))
+
+                    fig.update_layout(
+                        yaxis2=dict(
+                            title='Volume',
+                            overlaying='y',
+                            side='right'
+                        ),
+                        template="plotly_dark",
+                        showlegend=True
+                    )
+                    
+                    st.plotly_chart(fig)
+                else:
+                    st.error(f"No data found for {ticker}. Please check the ticker symbol or try again later.")
+    else:
+        st.warning("No data available to display.")
 
 # Create and display data
 display_stock_data_from_df(stock_list_df)
