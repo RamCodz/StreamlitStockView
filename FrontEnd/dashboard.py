@@ -1,45 +1,77 @@
 import streamlit as st
-from pathlib import Path
 import pandas as pd
 import yfinance as yf
+import plotly.graph_objs as go
+import plotly.express as px
+from pandas.errors import EmptyDataError
 from BackEnd.Utils import globals
 from FrontEnd.Utils import get_latest_report_data
-import plotly.graph_objs as go
 
 # Read stock data from latest file
 stock_list = str(globals.data_filepath) + get_latest_report_data.get_latest_file(str(globals.data_filepath))
 
 try:
     stock_list_df = pd.read_csv(stock_list)
+except EmptyDataError:
+    st.warning("The file is empty. Please check the file or upload a valid data file.")
+    stock_list_df = pd.DataFrame()
 except Exception as e:
     st.error(f"Error reading the file: {e}")
     stock_list_df = pd.DataFrame()
 
-cherries_5y = stock_list_df[(stock_list_df['Report'] == 'C') & (stock_list_df['Break Out'] == '5Y')]
-cherries_1y = stock_list_df[(stock_list_df['Report'] == 'C') & (stock_list_df['Break Out'] == '1Y')]
-cherries_6m = stock_list_df[(stock_list_df['Report'] == 'C') & (stock_list_df['Break Out'] == '6M')]
-cherries_3m = stock_list_df[(stock_list_df['Report'] == 'C') & (stock_list_df['Break Out'] == '3M')]
-cherries_1m = stock_list_df[(stock_list_df['Report'] == 'C') & (stock_list_df['Break Out'] == '1M')]
+# Function to get the stock data
+def get_stock_data(ticker, period="5y", interval="1d"):
+    stock = yf.Ticker(ticker + ".BO")  # Append .BO for BSE stocks
+    return stock.history(period=period, interval=interval)
 
-gems_1w = stock_list_df[(stock_list_df['Report'] == 'G') & (stock_list_df['Break Out'] == '1W')]
-gems_1m = stock_list_df[(stock_list_df['Report'] == 'G') & (stock_list_df['Break Out'] == '1M')]
-gems_3m = stock_list_df[(stock_list_df['Report'] == 'G') & (stock_list_df['Break Out'] == '3M')]
-gems_6m = stock_list_df[(stock_list_df['Report'] == 'G') & (stock_list_df['Break Out'] == '6M')]
-gems_1y = stock_list_df[(stock_list_df['Report'] == 'G') & (stock_list_df['Break Out'] == '1Y')]
+# Calculate returns for each stock over specified periods
+def calculate_returns(stock_list_df):
+    periods = {"3M": "3mo", "6M": "6mo", "1Y": "1y", "5Y": "5y"}
+    returns_df = pd.DataFrame(columns=["Stock", "3M", "6M", "1Y", "5Y"])
+    
+    for index, row in stock_list_df.iterrows():
+        ticker = row['Security Id']
+        stock_data = get_stock_data(ticker)
+        
+        if not stock_data.empty:
+            returns = {}
+            returns['Stock'] = row['Security Name']
+            for period_name, period in periods.items():
+                period_data = get_stock_data(ticker, period=period)
+                if not period_data.empty:
+                    start_price = period_data['Close'].iloc[0]
+                    end_price = period_data['Close'].iloc[-1]
+                    returns[period_name] = ((end_price - start_price) / start_price) * 100
+                else:
+                    returns[period_name] = None
+            returns_df = returns_df.append(returns, ignore_index=True)
+    return returns_df
 
-common_cherries = cherries_3m[cherries_3m['Security Code'].isin(cherries_1m['Security Code'])]
-common_cherries = cherries_6m[cherries_6m['Security Code'].isin(common_cherries['Security Code'])]
-common_cherries = cherries_1y[cherries_1y['Security Code'].isin(common_cherries['Security Code'])]
-common_cherries = cherries_5y[cherries_5y['Security Code'].isin(common_cherries['Security Code'])]
+# Create heatmap
+def create_heatmap(returns_df):
+    fig = px.imshow(
+        returns_df.set_index('Stock').T,
+        labels=dict(x="Stock", y="Period", color="Return (%)"),
+        x=returns_df['Stock'],
+        y=["3M", "6M", "1Y", "5Y"],
+        color_continuous_scale='RdYlGn'
+    )
+    fig.update_layout(title="Stock Returns Heatmap")
+    st.plotly_chart(fig)
 
-common_gems = gems_6m[gems_6m['Security Code'].isin(gems_1y['Security Code'])]
-common_gems = gems_3m[gems_3m['Security Code'].isin(common_gems['Security Code'])]
-common_gems = gems_1m[gems_1m['Security Code'].isin(common_gems['Security Code'])]
-common_gems = gems_1w[gems_1w['Security Code'].isin(common_gems['Security Code'])]
+returns_df = calculate_returns(stock_list_df)
+create_heatmap(returns_df)
 
-if not common_cherries.empty:
-    st.write('Common Cherries')
-    st.write(common_cherries)
-if not common_gems.empty:
-    st.write('Common Gems')
-    st.write(common_gems)
+# Function to create tabs and display data
+def create_tabs(tab_titles, stock_list_df):
+    tabs = st.tabs(tab_titles)
+    for i, title in enumerate(tab_titles):
+        with tabs[i]:
+            if not stock_list_df.empty:
+                display_stock_data_from_df(stock_list_df[(stock_list_df['Report'] == 'C') & (stock_list_df['Break Out'] == title.split()[0])].sort_values(by='Variation', ascending=True), key_prefix=f"Cherries{title.split()[0]}")
+            else:
+                st.write("No data available to display.")
+
+# Create and display tabs
+tab_titles = ["5 Year Breakout", "1 Year Breakout", "6 Month Breakout", "3 Month Breakout", "1 Month Breakout"]
+create_tabs(tab_titles, stock_list_df)
