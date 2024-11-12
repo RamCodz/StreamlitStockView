@@ -1,8 +1,9 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
+import plotly.graph_objs as go
 
-# Sample data creation with returns
+# Sample data creation with returns and fundamental values
 def create_sample_data():
     data = {
         "Security Id": ["RELIANCE.BO", "TCS.BO", "INFY.BO", "HDFC.BO"],
@@ -10,13 +11,15 @@ def create_sample_data():
         "Sector Name": ["Energy", "IT", "IT", "Finance"],
         "Industry": ["Oil & Gas", "Software", "Software", "Banking"],
         "Variation": [5, 3, -2, 4],
-        "Report": ["C", "C", "C", "C"],
-        "Break Out": ["5Y", "1Y", "6M", "3M"],
         "1M": [2.5, 1.8, -1.2, 2.1],
         "3M": [5.5, 3.4, -2.1, 4.3],
         "6M": [12.5, 8.2, -4.6, 10.7],
         "1Y": [25.6, 18.9, -8.3, 22.4],
-        "5Y": [50.3, 37.8, -16.2, 47.1]
+        "5Y": [50.3, 37.8, -16.2, 47.1],
+        "PE": [30.4, 32.1, 28.2, 29.5],
+        "PB": [3.5, 6.2, 5.4, 4.8],
+        "PS": [2.2, 5.1, 4.3, 3.9],
+        "PEG": [1.5, 1.8, 1.7, 1.4]
     }
     return pd.DataFrame(data)
 
@@ -37,75 +40,44 @@ def create_heatmap(returns_df):
 
 create_heatmap(stock_list_df)
 
-# Function to display stock data
-def display_stock_data_from_df(df, key_prefix=""):
-    if not df.empty:
-        for index, row in df.iterrows():
-            ticker = row['Security Id']
-            tick = row['Security Name']
-            sector = row['Sector Name']
-            industry = row['Industry']
-            variation = round(row['Variation'])
+# Mock data for the stock price and volume change
+def get_mock_stock_data(ticker):
+    dates = pd.date_range(start="2020-01-01", periods=100)
+    return pd.DataFrame({
+        "Date": dates,
+        "Close": pd.Series(range(100)) + pd.np.random.randn(100).cumsum(),
+        "Volume": pd.Series(range(1000, 1100)) + pd.np.random.randint(1, 10, size=100)
+    }).set_index("Date")
 
-            # Create a checkbox to toggle plot display
-            show_plot = st.checkbox(f"**{tick}** >>> ***{variation}%*** - {sector} - {industry}", key=f"{key_prefix}-{tick}")
+# Display detailed information for a selected stock
+def display_stock_details(stock_list_df, stock_name):
+    stock_data = stock_list_df[stock_list_df['Security Name'] == stock_name].iloc[0]
+    st.write(f"### {stock_data['Security Name']}")
+    st.write(f"**Sector:** {stock_data['Sector Name']}")
+    st.write(f"**Industry:** {stock_data['Industry']}")
+    st.write(f"**PE Ratio:** {stock_data['PE']}")
+    st.write(f"**PB Ratio:** {stock_data['PB']}")
+    st.write(f"**PS Ratio:** {stock_data['PS']}")
+    st.write(f"**PEG Ratio:** {stock_data['PEG']}")
 
-            if show_plot:
-                # Mock data for the stock price and volume change
-                dates = pd.date_range(start="2020-01-01", periods=100)
-                stock_data = pd.DataFrame({
-                    "Date": dates,
-                    "Close": pd.Series(range(100)) + pd.np.random.randn(100).cumsum(),
-                    "Volume": pd.Series(range(1000, 1100)) + pd.np.random.randint(1, 10, size=100)
-                }).set_index("Date")
-                
-                if not stock_data.empty:
-                    # Plotting the stock price and volume change over time using Plotly
-                    fig = go.Figure()
-
-                    # Add trace for Close Price
-                    fig.add_trace(go.Scatter(x=stock_data.index, y=stock_data['Close'], mode='lines', name='Close Price', yaxis='y', marker=dict(color='blue')))
-
-                    # Add trace for Volume Change
-                    fig.add_trace(go.Bar(x=stock_data.index, y=stock_data['Volume'], name='Volume Change', yaxis='y2', marker=dict(color='orange')))
-
-                    fig.update_layout(
-                        yaxis2=dict(
-                            title='Volume',
-                            overlaying='y',
-                            side='right'
-                        ),
-                        template="plotly_dark",
-                        showlegend=True
-                    )
-                    
-                    col1, col2, col3 = st.columns(3, gap="small")
-                    with col1:
-                        st.write("PE : ")
-                        st.write("PB : ")
-                    with col2:
-                        st.write("PE : ")
-                        st.write("PB : ")
-                    with col3:
-                        st.write("PE : ")
-                        st.write("PB : ")
-                    
-                    st.plotly_chart(fig)
-                else:
-                    st.error(f"No data found for {ticker}. Please check the ticker symbol or try again later.")
-    else:
-        st.warning("No data available to display.")
+    stock_price_data = get_mock_stock_data(stock_data['Security Id'])
+    if not stock_price_data.empty:
+        fig = go.Figure()
+        fig.add_trace(go.Scatter(x=stock_price_data.index, y=stock_price_data['Close'], mode='lines', name='Close Price', yaxis='y', marker=dict(color='blue')))
+        fig.add_trace(go.Bar(x=stock_price_data.index, y=stock_price_data['Volume'], name='Volume Change', yaxis='y2', marker=dict(color='orange')))
+        fig.update_layout(
+            yaxis2=dict(title='Volume', overlaying='y', side='right'),
+            template="plotly_dark",
+            showlegend=True
+        )
+        st.plotly_chart(fig)
 
 # Function to create tabs and display data
-def create_tabs(tab_titles, stock_list_df):
-    tabs = st.tabs(tab_titles)
-    for i, title in enumerate(tab_titles):
-        with tabs[i]:
-            if not stock_list_df.empty:
-                display_stock_data_from_df(stock_list_df[(stock_list_df['Report'] == 'C') & (stock_list_df['Break Out'] == title.split()[0])].sort_values(by='Variation', ascending=True), key_prefix=f"Cherries{title.split()[0]}")
-            else:
-                st.write("No data available to display.")
+def create_tabs(stock_list_df):
+    stock_names = stock_list_df['Security Name'].unique()
+    for stock_name in stock_names:
+        if st.button(stock_name):
+            display_stock_details(stock_list_df, stock_name)
 
 # Create and display tabs
-tab_titles = ["5 Year Breakout", "1 Year Breakout", "6 Month Breakout", "3 Month Breakout", "1 Month Breakout"]
-create_tabs(tab_titles, stock_list_df)
+create_tabs(stock_list_df)
