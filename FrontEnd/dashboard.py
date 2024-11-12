@@ -68,11 +68,6 @@ def display_stock_data_from_df(df):
                 f'<div style="display: flex; flex-direction: row; align-items: center; padding: 5px; cursor: pointer; {colors[0]}">'
                 f'<a href="javascript:void(0)" onclick="window.parent.postMessage({{"ticker": "{ticker}"}})">'  # Make the row clickable
                 f'<div style="flex:1; padding:10px;">{tick}</div>'
-                f'<div style="flex:1; padding:10px;">{row["1M"]}%</div>'
-                f'<div style="flex:1; padding:10px;">{row["3M"]}%</div>'
-                f'<div style="flex:1; padding:10px;">{row["6M"]}%</div>'
-                f'<div style="flex:1; padding:10px;">{row["1Y"]}%</div>'
-                f'<div style="flex:1; padding:10px;">{row["5Y"]}%</div>'
                 '</a></div>'
             )
 
