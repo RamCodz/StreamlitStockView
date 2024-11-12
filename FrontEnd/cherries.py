@@ -10,6 +10,10 @@ import plotly.graph_objs as go
 # Read stock data from latest file
 stock_list = str(globals.data_filepath) + get_latest_report_data.get_latest_file(str(globals.data_filepath))
 
+# Apply HTML for styling 
+for item in checklist: 
+    st.markdown(f'<input type="checkbox"> {item}', unsafe_allow_html=True)
+
 try:
     stock_list_df = pd.read_csv(stock_list)
 except EmptyDataError:
