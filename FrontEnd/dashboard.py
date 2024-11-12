@@ -1,5 +1,7 @@
 import streamlit as st
 import pandas as pd
+import yfinance as yf
+from pandas.errors import EmptyDataError
 import plotly.graph_objs as go
 
 # Create sample data
@@ -22,14 +24,25 @@ def create_sample_data():
 # Using sample data for testing
 stock_list_df = create_sample_data()
 
+# Function to get the stock data
+def get_stock_data(ticker, period="1y", interval="1d"):
+    dates = pd.date_range(start="2020-01-01", periods=365)
+    data = pd.DataFrame({
+        'Date': dates,
+        'Close': pd.Series(range(365)) + pd.np.random.randn(365).cumsum(),
+        'Volume': pd.Series(range(1000, 1365)) + pd.np.random.randint(1, 10, size=365)
+    })
+    data.set_index('Date', inplace=True)
+    return data
+
 # Function to get color based on returns
 def get_color(value):
     if value > 0:
-        return f'background-color: rgba(0, 255, 0, {value / 100})'
+        return f'background-color: rgba(0, 255, 0, {value / 100})'  # Green for positive returns
     elif value < 0:
-        return f'background-color: rgba(255, 0, 0, {-value / 100})'
+        return f'background-color: rgba(255, 0, 0, {-value / 100})'  # Red for negative returns
     else:
-        return 'background-color: white'
+        return 'background-color: white'  # White for no change
 
 # Common function to display stock data
 def display_stock_data_from_df(df, key_prefix=""):
@@ -46,28 +59,24 @@ def display_stock_data_from_df(df, key_prefix=""):
             st.markdown(
                 f'<div style="padding:10px; margin:5px; border-radius:5px; display:flex; flex-direction:row; align-items:center;">' +
                 f'<div style="flex:1; {colors[0]}; padding:10px;">{tick}</div>' +
-                f'<div style="flex:1; {colors[1]}; padding:10px;">{row["1M"]}%</div>' +
-                f'<div style="flex:1; {colors[2]}; padding:10px;">{row["3M"]}%</div>' +
-                f'<div style="flex:1; {colors[3]}; padding:10px;">{row["6M"]}%</div>' +
-                f'<div style="flex:1; {colors[4]}; padding:10px;">{row["1Y"]}%</div>' +
-                f'<div style="flex:1; {colors[5]}; padding:10px;">{row["5Y"]}%</div>' +
+                f'<div style="flex:1; {colors[0]}; padding:10px;">{row["1M"]}%</div>' +
+                f'<div style="flex:1; {colors[1]}; padding:10px;">{row["3M"]}%</div>' +
+                f'<div style="flex:1; {colors[2]}; padding:10px;">{row["6M"]}%</div>' +
+                f'<div style="flex:1; {colors[3]}; padding:10px;">{row["1Y"]}%</div>' +
+                f'<div style="flex:1; {colors[4]}; padding:10px;">{row["5Y"]}%</div>' +
                 '</div>', unsafe_allow_html=True
             )
 
             show_plot = st.checkbox(f"More about {tick}", key=f"{key_prefix}-{tick}")
 
             if show_plot:
-                dates = pd.date_range(start="2020-01-01", periods=365)
-                cherries_stock = pd.DataFrame({
-                    'Date': dates,
-                    'Close': pd.Series(range(365)) + pd.np.random.randn(365).cumsum(),
-                    'Volume': pd.Series(range(1000, 1365)) + pd.np.random.randint(1, 10, size=365)
-                }).set_index('Date')
-
+                cherries_stock = get_stock_data(ticker)
                 if not cherries_stock.empty:
                     fig = go.Figure()
+
                     fig.add_trace(go.Scatter(x=cherries_stock.index, y=cherries_stock['Close'], mode='lines', name='Close Price', yaxis='y', marker=dict(color='blue')))
                     fig.add_trace(go.Bar(x=cherries_stock.index, y=cherries_stock['Volume'], name='Volume Change', yaxis='y2', marker=dict(color='orange')))
+
                     fig.update_layout(
                         yaxis2=dict(
                             title='Volume',
@@ -77,6 +86,7 @@ def display_stock_data_from_df(df, key_prefix=""):
                         template="plotly_dark",
                         showlegend=True
                     )
+                    
                     st.plotly_chart(fig)
                 else:
                     st.error(f"No data found for {ticker}. Please check the ticker symbol or try again later.")
