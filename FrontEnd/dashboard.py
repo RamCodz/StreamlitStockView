@@ -71,4 +71,31 @@ def display_stock_data_from_df(df, key_prefix=""):
                 f'<div style="flex:1; {colors[1]}; padding:10px;">{row["3M"]}%</div>' +
                 f'<div style="flex:1; {colors[2]}; padding:10px;">{row["6M"]}%</div>' +
                 f'<div style="flex:1; {colors[3]}; padding:10px;">{row["1Y"]}%</div>' +
-                f'<div style="flex:1; {colors[4]}; padding:10px;">{row["5Y"]
+                f'<div style="flex:1; {colors[4]}; padding:10px;">{row["5Y"]}%</div>' +
+                '</div>', unsafe_allow_html=True
+            )
+            
+            # Fetch the stock data (simulated in this case)
+            stock_data = get_stock_data(ticker)
+            
+            # Plot the Close price of the stock using Plotly
+            fig = go.Figure()
+
+            # Add trace for Close Price
+            fig.add_trace(go.Scatter(x=stock_data.index, y=stock_data['Close'], mode='lines', name=f'Close Price - {tick}'))
+
+            # Add trace for Volume
+            fig.add_trace(go.Bar(x=stock_data.index, y=stock_data['Volume'], name=f'Volume - {tick}'))
+
+            fig.update_layout(title=f"{tick} Price and Volume over Time", template="plotly_dark")
+
+            # Display the plot
+            st.plotly_chart(fig)
+    else:
+        st.warning("No data available to display.")
+
+# Run the app
+if __name__ == "__main__":
+    # Using sample data for testing
+    stock_list_df = create_sample_data()
+    display_stock_data_from_df(stock_list_df)
