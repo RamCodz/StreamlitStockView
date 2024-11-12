@@ -43,6 +43,10 @@ def get_color(value):
 # Displaying stock data with a chart
 def display_stock_data_from_df(df, key_prefix=""):
     if not df.empty:
+        # Print the data for debugging
+        st.write("Displaying stock data:")
+        st.write(df)
+        
         # Add header row for clarity
         st.markdown(
             '<div style="display: flex; flex-direction: row; font-weight: bold;">' +
@@ -98,4 +102,9 @@ def display_stock_data_from_df(df, key_prefix=""):
 if __name__ == "__main__":
     # Using sample data for testing
     stock_list_df = create_sample_data()
-    display_stock_data_from_df(stock_list_df)
+
+    # Check if data exists
+    if stock_list_df.empty:
+        st.error("The stock data is empty. Please check the data source.")
+    else:
+        display_stock_data_from_df(stock_list_df)
