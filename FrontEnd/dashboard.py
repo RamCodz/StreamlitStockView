@@ -26,10 +26,10 @@ stock_list_df = create_sample_data()
 # Create heatmap
 def create_heatmap(returns_df):
     fig = px.imshow(
-        returns_df[["Security Name", "1M", "3M", "6M", "1Y", "5Y"]].set_index('Security Name').T,
-        labels=dict(x="Stock", y="Period", color="Return (%)"),
-        x=returns_df['Security Name'],
-        y=["1M", "3M", "6M", "1Y", "5Y"],
+        returns_df[["Security Name", "1M", "3M", "6M", "1Y", "5Y"]].set_index('Security Name'),
+        labels=dict(x="Period", y="Stock", color="Return (%)"),
+        x=["1M", "3M", "6M", "1Y", "5Y"],
+        y=returns_df['Security Name'],
         color_continuous_scale='RdYlGn'
     )
     fig.update_layout(title="Stock Returns Heatmap")
@@ -85,3 +85,27 @@ def display_stock_data_from_df(df, key_prefix=""):
                         st.write("PB : ")
                     with col2:
                         st.write("PE : ")
+                        st.write("PB : ")
+                    with col3:
+                        st.write("PE : ")
+                        st.write("PB : ")
+                    
+                    st.plotly_chart(fig)
+                else:
+                    st.error(f"No data found for {ticker}. Please check the ticker symbol or try again later.")
+    else:
+        st.warning("No data available to display.")
+
+# Function to create tabs and display data
+def create_tabs(tab_titles, stock_list_df):
+    tabs = st.tabs(tab_titles)
+    for i, title in enumerate(tab_titles):
+        with tabs[i]:
+            if not stock_list_df.empty:
+                display_stock_data_from_df(stock_list_df[(stock_list_df['Report'] == 'C') & (stock_list_df['Break Out'] == title.split()[0])].sort_values(by='Variation', ascending=True), key_prefix=f"Cherries{title.split()[0]}")
+            else:
+                st.write("No data available to display.")
+
+# Create and display tabs
+tab_titles = ["5 Year Breakout", "1 Year Breakout", "6 Month Breakout", "3 Month Breakout", "1 Month Breakout"]
+create_tabs(tab_titles, stock_list_df)
