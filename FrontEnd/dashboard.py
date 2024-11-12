@@ -1,7 +1,9 @@
 import streamlit as st
 import pandas as pd
+import yfinance as yf
 import plotly.express as px
 import plotly.graph_objs as go
+from pandas.errors import EmptyDataError
 
 # Sample data creation with returns and fundamental values
 def create_sample_data():
@@ -54,30 +56,4 @@ def display_stock_details(stock_list_df, stock_name):
     stock_data = stock_list_df[stock_list_df['Security Name'] == stock_name].iloc[0]
     st.write(f"### {stock_data['Security Name']}")
     st.write(f"**Sector:** {stock_data['Sector Name']}")
-    st.write(f"**Industry:** {stock_data['Industry']}")
-    st.write(f"**PE Ratio:** {stock_data['PE']}")
-    st.write(f"**PB Ratio:** {stock_data['PB']}")
-    st.write(f"**PS Ratio:** {stock_data['PS']}")
-    st.write(f"**PEG Ratio:** {stock_data['PEG']}")
-
-    stock_price_data = get_mock_stock_data(stock_data['Security Id'])
-    if not stock_price_data.empty:
-        fig = go.Figure()
-        fig.add_trace(go.Scatter(x=stock_price_data.index, y=stock_price_data['Close'], mode='lines', name='Close Price', yaxis='y', marker=dict(color='blue')))
-        fig.add_trace(go.Bar(x=stock_price_data.index, y=stock_price_data['Volume'], name='Volume Change', yaxis='y2', marker=dict(color='orange')))
-        fig.update_layout(
-            yaxis2=dict(title='Volume', overlaying='y', side='right'),
-            template="plotly_dark",
-            showlegend=True
-        )
-        st.plotly_chart(fig)
-
-# Function to create tabs and display data
-def create_tabs(stock_list_df):
-    stock_names = stock_list_df['Security Name'].unique()
-    for stock_name in stock_names:
-        if st.button(stock_name):
-            display_stock_details(stock_list_df, stock_name)
-
-# Create and display tabs
-create_tabs(stock_list_df)
+    st.write(f"**
