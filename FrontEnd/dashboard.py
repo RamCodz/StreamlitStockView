@@ -44,6 +44,12 @@ def display_stock_details(stock_data):
     st.write(f"**PB Ratio:** {stock_data['PB']}")
     st.write(f"**PS Ratio:** {stock_data['PS']}")
     st.write(f"**PEG Ratio:** {stock_data['PEG']}")
+    
+    st.write(f"**1 Month Return:** {stock_data['1M']}%")
+    st.write(f"**3 Month Return:** {stock_data['3M']}%")
+    st.write(f"**6 Month Return:** {stock_data['6M']}%")
+    st.write(f"**1 Year Return:** {stock_data['1Y']}%")
+    st.write(f"**5 Year Return:** {stock_data['5Y']}%")
 
     stock_price_data = get_mock_stock_data(stock_data['Security Id'])
     if not stock_price_data.empty:
@@ -67,6 +73,12 @@ def display_stocks(df):
         variation = round(row['Variation'])
 
         with st.expander(f"{tick} >>> {variation}% - {sector} - {industry}"):
+            st.write("**Growth Values**")
+            st.write(f"**1 Month:** {row['1M']}%")
+            st.write(f"**3 Month:** {row['3M']}%")
+            st.write(f"**6 Month:** {row['6M']}%")
+            st.write(f"**1 Year:** {row['1Y']}%")
+            st.write(f"**5 Year:** {row['5Y']}%")
             display_stock_details(row)
 
 # Display stock data
