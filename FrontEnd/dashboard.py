@@ -47,6 +47,17 @@ def get_color(value):
 # Common function to display stock data
 def display_stock_data_from_df(df, key_prefix=""):
     if not df.empty:
+        st.markdown(
+            """
+            <style>
+            .no-space div[data-testid="stMarkdownContainer"] {
+                margin-top: 0;
+                margin-bottom: 0;
+                padding: 5px 0;
+            }
+            </style>
+            """, unsafe_allow_html=True
+        )
         for index, row in df.iterrows():
             ticker = row['Security Id']
             tick = row['Security Name']
@@ -57,7 +68,7 @@ def display_stock_data_from_df(df, key_prefix=""):
             colors = [get_color(value) for value in returns]
             
             st.markdown(
-                f'<div style="padding:10px; margin:5px; border-radius:5px; display:flex; flex-direction:row; align-items:center;">' +
+                f'<div style="padding:10px; border-radius:5px; display:flex; flex-direction:row; align-items:center;" class="no-space">' +
                 f'<div style="flex:1; {colors[0]}; padding:10px;">{tick}</div>' +
                 f'<div style="flex:1; {colors[0]}; padding:10px;">{row["1M"]}%</div>' +
                 f'<div style="flex:1; {colors[1]}; padding:10px;">{row["3M"]}%</div>' +
