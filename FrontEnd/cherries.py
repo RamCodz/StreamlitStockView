@@ -2,6 +2,7 @@ import streamlit as st
 from pathlib import Path
 import pandas as pd
 import yfinance as yf
+from pandas.errors import EmptyDataError
 from BackEnd.Utils import globals
 from FrontEnd.Utils import get_latest_report_data
 import plotly.graph_objs as go
@@ -11,16 +12,16 @@ stock_list = str(globals.data_filepath) + get_latest_report_data.get_latest_file
 
 try:
     stock_list_df = pd.read_csv(stock_list)
+except EmptyDataError:
+    stock_list_df = pd.DataFrame()
 except Exception as e:
     st.error(f"Error reading the file: {e}")
     stock_list_df = pd.DataFrame()
-
 
 # Function to get the stock data
 def get_stock_data(ticker, period="1y", interval="1d"):
     stock = yf.Ticker(ticker + ".BO")  # Append .BO for BSE stocks
     return stock.history(period=period, interval=interval)
-
 
 # Common function to display stock data
 def display_stock_data_from_df(df, key_prefix=""):
@@ -38,22 +39,14 @@ def display_stock_data_from_df(df, key_prefix=""):
             if show_plot:
                 cherries_stock = get_stock_data(ticker)
                 if not cherries_stock.empty:
-                    # Add your details to be displayed when a stock is selected
-
                     # Plotting the stock price and volume change over time using Plotly
                     fig = go.Figure()
 
                     # Add trace for Close Price
-                    fig.add_trace(
-                        go.Scatter(x=cherries_stock.index, y=cherries_stock['Close'], mode='lines', name='Close Price',
-                                   yaxis='y', marker=dict(color='blue'))
-                    )
+                    fig.add_trace(go.Scatter(x=cherries_stock.index, y=cherries_stock['Close'], mode='lines', name='Close Price', yaxis='y', marker=dict(color='blue')))
 
                     # Add trace for Volume Change
-                    fig.add_trace(
-                        go.Bar(x=cherries_stock.index, y=cherries_stock['Volume'], name='Volume Change', yaxis='y2',
-                               marker=dict(color='orange'))
-                    )
+                    fig.add_trace(go.Bar(x=cherries_stock.index, y=cherries_stock['Volume'], name='Volume Change', yaxis='y2', marker=dict(color='orange')))
 
                     fig.update_layout(
                         yaxis2=dict(
@@ -61,9 +54,10 @@ def display_stock_data_from_df(df, key_prefix=""):
                             overlaying='y',
                             side='right'
                         ),
-                        template="plotly_dark",  # Change template as needed for dark or light themes
+                        template="plotly_dark",
                         showlegend=True
                     )
+                    
                     col1, col2, col3 = st.columns(3, gap="small")
                     with col1:
                         st.write("PE : ")
@@ -74,36 +68,23 @@ def display_stock_data_from_df(df, key_prefix=""):
                     with col3:
                         st.write("PE : ")
                         st.write("PB : ")
+                    
                     st.plotly_chart(fig)
                 else:
                     st.error(f"No data found for {ticker}. Please check the ticker symbol or try again later.")
     else:
         st.warning("No data available to display.")
 
+# Function to create tabs and display data
+def create_tabs(tab_titles, stock_list_df):
+    tabs = st.tabs(tab_titles)
+    for i, title in enumerate(tab_titles):
+        with tabs[i]:
+            if not stock_list_df.empty:
+                display_stock_data_from_df(stock_list_df[(stock_list_df['Report'] == 'C') & (stock_list_df['Break Out'] == title.split()[0])].sort_values(by='Variation', ascending=True), key_prefix=f"Cherries{title.split()[0]}")
+            else:
+                st.write("No data available to display.")
 
-Cherry_tabs = st.tabs(["5 Year Breakout", "1 Year Breakout", "6 Month Breakout", "3 Month Breakout", "1 Month Breakout"])
-with Cherry_tabs[0]:
-    if not stock_list_df.empty:
-        display_stock_data_from_df(stock_list_df[(stock_list_df['Report'] == 'C') & (stock_list_df['Break Out'] == '5Y')].sort_values(by='Variation',ascending=True), key_prefix="Cherries5Y")
-    else:
-        st.write("No data available to display.")
-with Cherry_tabs[1]:
-    if not stock_list_df.empty:
-        display_stock_data_from_df(stock_list_df[(stock_list_df['Report'] == 'C') & (stock_list_df['Break Out'] == '5Y')].sort_values(by='Variation',ascending=True), key_prefix="Cherries5Y")
-    else:
-        st.write("No data available to display.")
-with Cherry_tabs[2]:
-    if not stock_list_df.empty:
-        display_stock_data_from_df(stock_list_df[(stock_list_df['Report'] == 'C') & (stock_list_df['Break Out'] == '5Y')].sort_values(by='Variation',ascending=True), key_prefix="Cherries5Y")
-    else:
-        st.write("No data available to display.")
-with Cherry_tabs[3]:
-    if not stock_list_df.empty:
-        display_stock_data_from_df(stock_list_df[(stock_list_df['Report'] == 'C') & (stock_list_df['Break Out'] == '5Y')].sort_values(by='Variation',ascending=True), key_prefix="Cherries5Y")
-    else:
-        st.write("No data available to display.")
-with Cherry_tabs[4]:
-    if not stock_list_df.empty:
-        display_stock_data_from_df(stock_list_df[(stock_list_df['Report'] == 'C') & (stock_list_df['Break Out'] == '5Y')].sort_values(by='Variation',ascending=True), key_prefix="Cherries5Y")
-    else:
-        st.write("No data available to display.")
+# Create and display tabs
+tab_titles = ["5 Year Breakout", "1 Year Breakout", "6 Month Breakout", "3 Month Breakout", "1 Month Breakout"]
+create_tabs(tab_titles, stock_list_df)
