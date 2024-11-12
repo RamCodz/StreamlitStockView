@@ -70,7 +70,7 @@ def display_stock_data_from_df(df, key_prefix=""):
             returns = [row['1M'], row['3M'], row['6M'], row['1Y'], row['5Y']]
             colors = [get_color(value) for value in returns]
             
-            st.markdown(
+            st.checkbox(st.markdown(
                 f'<div style="margin:0; padding:0; border-radius:5px; display:flex; flex-direction:row; align-items:center;" class="no-space">' +
                 f'<div style="flex:1; {colors[0]}; margin:0; padding:10px;">{tick}</div>' +
                 f'<div style="flex:1; {colors[0]}; margin:0; padding:10px;">{row["1M"]}%</div>' +
@@ -79,7 +79,7 @@ def display_stock_data_from_df(df, key_prefix=""):
                 f'<div style="flex:1; {colors[3]}; margin:0; padding:10px;">{row["1Y"]}%</div>' +
                 f'<div style="flex:1; {colors[4]}; margin:0; padding:10px;">{row["5Y"]}%</div>' +
                 '</div>', unsafe_allow_html=True
-            )
+            ))
     else:
         st.warning("No data available to display.")
 
