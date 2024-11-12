@@ -1,9 +1,7 @@
 import streamlit as st
 import pandas as pd
-import yfinance as yf
 import plotly.graph_objs as go
 import plotly.express as px
-from pandas.errors import EmptyDataError
 
 # Sample data creation with returns and fundamental values
 def create_sample_data():
@@ -28,24 +26,6 @@ def create_sample_data():
 # Using sample data for testing
 stock_list_df = create_sample_data()
 
-# Create grid of stocks
-def create_stock_grid(df):
-    for index, row in df.iterrows():
-        ticker = row['Security Id']
-        tick = row['Security Name']
-        sector = row['Sector Name']
-        industry = row['Industry']
-        variation = round(row['Variation'])
-
-        col1, col2 = st.columns([1, 4])
-        
-        with col1:
-            if st.button(f"{tick}", key=f"{tick}-button"):
-                display_stock_details(stock_list_df, tick)
-                
-        with col2:
-            st.write(f"**{variation}%** - {sector} - {industry}")
-
 # Mock data for the stock price and volume change
 def get_mock_stock_data(ticker):
     dates = pd.date_range(start="2020-01-01", periods=100)
@@ -56,8 +36,7 @@ def get_mock_stock_data(ticker):
     }).set_index("Date")
 
 # Display detailed information for a selected stock
-def display_stock_details(stock_list_df, stock_name):
-    stock_data = stock_list_df[stock_list_df['Security Name'] == stock_name].iloc[0]
+def display_stock_details(stock_data):
     st.write(f"### {stock_data['Security Name']}")
     st.write(f"**Sector:** {stock_data['Sector Name']}")
     st.write(f"**Industry:** {stock_data['Industry']}")
@@ -78,5 +57,17 @@ def display_stock_details(stock_list_df, stock_name):
         )
         st.plotly_chart(fig)
 
-# Create and display grid
-create_stock_grid(stock_list_df)
+# Create rows of stocks and display details on click
+def display_stocks(df):
+    for index, row in df.iterrows():
+        ticker = row['Security Id']
+        tick = row['Security Name']
+        sector = row['Sector Name']
+        industry = row['Industry']
+        variation = round(row['Variation'])
+
+        with st.expander(f"{tick} >>> {variation}% - {sector} - {industry}"):
+            display_stock_details(row)
+
+# Display stock data
+display_stocks(stock_list_df)
