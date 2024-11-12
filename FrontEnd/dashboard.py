@@ -4,25 +4,33 @@ import yfinance as yf
 import plotly.graph_objs as go
 import plotly.express as px
 from pandas.errors import EmptyDataError
-from BackEnd.Utils import globals
-from FrontEnd.Utils import get_latest_report_data
 
-# Read stock data from latest file
-stock_list = str(globals.data_filepath) + get_latest_report_data.get_latest_file(str(globals.data_filepath))
+# Sample data creation
+def create_sample_data():
+    data = {
+        "Security Id": ["RELIANCE.BO", "TCS.BO", "INFY.BO", "HDFC.BO"],
+        "Security Name": ["Reliance", "TCS", "Infosys", "HDFC"],
+        "Sector Name": ["Energy", "IT", "IT", "Finance"],
+        "Industry": ["Oil & Gas", "Software", "Software", "Banking"],
+        "Variation": [5, 3, -2, 4],
+        "Report": ["C", "C", "C", "C"],
+        "Break Out": ["5Y", "1Y", "6M", "3M"]
+    }
+    return pd.DataFrame(data)
 
-try:
-    stock_list_df = pd.read_csv(stock_list)
-except EmptyDataError:
-    st.warning("The file is empty. Please check the file or upload a valid data file.")
-    stock_list_df = pd.DataFrame()
-except Exception as e:
-    st.error(f"Error reading the file: {e}")
-    stock_list_df = pd.DataFrame()
+# Using sample data for testing
+stock_list_df = create_sample_data()
 
 # Function to get the stock data
 def get_stock_data(ticker, period="5y", interval="1d"):
-    stock = yf.Ticker(ticker + ".BO")  # Append .BO for BSE stocks
-    return stock.history(period=period, interval=interval)
+    # Create mock data instead of fetching from yfinance for testing purposes
+    dates = pd.date_range(start="2020-01-01", periods=100)
+    data = {
+        "Date": dates,
+        "Close": pd.Series(range(100)) + pd.np.random.randn(100).cumsum(),
+        "Volume": pd.Series(range(1000, 1100)) + pd.np.random.randint(1, 10, size=100)
+    }
+    return pd.DataFrame(data).set_index("Date")
 
 # Calculate returns for each stock over specified periods
 def calculate_returns(stock_list_df):
@@ -61,6 +69,58 @@ def create_heatmap(returns_df):
 
 returns_df = calculate_returns(stock_list_df)
 create_heatmap(returns_df)
+
+# Function to display stock data
+def display_stock_data_from_df(df, key_prefix=""):
+    if not df.empty:
+        for index, row in df.iterrows():
+            ticker = row['Security Id']
+            tick = row['Security Name']
+            sector = row['Sector Name']
+            industry = row['Industry']
+            variation = round(row['Variation'])
+
+            # Create a checkbox to toggle plot display
+            show_plot = st.checkbox(f"**{tick}** >>> ***{variation}%*** - {sector} - {industry}", key=f"{key_prefix}-{tick}")
+
+            if show_plot:
+                cherries_stock = get_stock_data(ticker)
+                if not cherries_stock.empty:
+                    # Plotting the stock price and volume change over time using Plotly
+                    fig = go.Figure()
+
+                    # Add trace for Close Price
+                    fig.add_trace(go.Scatter(x=cherries_stock.index, y=cherries_stock['Close'], mode='lines', name='Close Price', yaxis='y', marker=dict(color='blue')))
+
+                    # Add trace for Volume Change
+                    fig.add_trace(go.Bar(x=cherries_stock.index, y=cherries_stock['Volume'], name='Volume Change', yaxis='y2', marker=dict(color='orange')))
+
+                    fig.update_layout(
+                        yaxis2=dict(
+                            title='Volume',
+                            overlaying='y',
+                            side='right'
+                        ),
+                        template="plotly_dark",
+                        showlegend=True
+                    )
+                    
+                    col1, col2, col3 = st.columns(3, gap="small")
+                    with col1:
+                        st.write("PE : ")
+                        st.write("PB : ")
+                    with col2:
+                        st.write("PE : ")
+                        st.write("PB : ")
+                    with col3:
+                        st.write("PE : ")
+                        st.write("PB : ")
+                    
+                    st.plotly_chart(fig)
+                else:
+                    st.error(f"No data found for {ticker}. Please check the ticker symbol or try again later.")
+    else:
+        st.warning("No data available to display.")
 
 # Function to create tabs and display data
 def create_tabs(tab_titles, stock_list_df):
