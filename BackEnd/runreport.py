@@ -33,7 +33,7 @@ def process_stock_data(gv_sys_date):
     # Find cherries and gems
     cherries_ticker_dtls = find_cherries(all_data, StockList)
     gems_ticker_dtls = find_gems(all_data, StockList)
-    
+    st.write(cherries_ticker_dtls)
     # Concatenate results
     final_df = pd.concat([cherries_ticker_dtls, gems_ticker_dtls])
     
