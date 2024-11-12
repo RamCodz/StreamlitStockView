@@ -1,10 +1,9 @@
+import numpy as np
+import plotly.graph_objs as go
 import streamlit as st
 import pandas as pd
-import yfinance as yf
-from pandas.errors import EmptyDataError
-import plotly.graph_objs as go
 
-# Create sample data
+# Sample data creation
 def create_sample_data():
     data = {
         "Security Id": ["RELIANCE.BO", "TCS.BO", "INFY.BO", "HDFC.BO"],
@@ -21,16 +20,13 @@ def create_sample_data():
     }
     return pd.DataFrame(data)
 
-# Using sample data for testing
-stock_list_df = create_sample_data()
-
-# Function to get the stock data
+# Sample stock data generation
 def get_stock_data(ticker, period="1y", interval="1d"):
     dates = pd.date_range(start="2020-01-01", periods=365)
     data = pd.DataFrame({
         'Date': dates,
-        'Close': pd.Series(range(365)) + pd.np.random.randn(365).cumsum(),
-        'Volume': pd.Series(range(1000, 1365)) + pd.np.random.randint(1, 10, size=365)
+        'Close': np.random.randn(365).cumsum() + 1000,  # Simulated close price
+        'Volume': np.random.randint(1, 10, size=365) * 1000  # Simulated volume
     })
     data.set_index('Date', inplace=True)
     return data
@@ -44,41 +40,35 @@ def get_color(value):
     else:
         return 'background-color: white'  # White for no change
 
-# Common function to display stock data
+# Displaying stock data with a chart
 def display_stock_data_from_df(df, key_prefix=""):
     if not df.empty:
+        # Add header row for clarity
         st.markdown(
-            """
-            <style>
-            .no-space div[data-testid="stMarkdownContainer"] {
-                margin-top: 0;
-                margin-bottom: 0;
-                padding: 0;
-            }
-            </style>
-            """, unsafe_allow_html=True
+            '<div style="display: flex; flex-direction: row; font-weight: bold;">' +
+            '<div style="flex:1; padding:5px;">Stock</div>' +
+            '<div style="flex:1; padding:5px;">1M</div>' +
+            '<div style="flex:1; padding:5px;">3M</div>' +
+            '<div style="flex:1; padding:5px;">6M</div>' +
+            '<div style="flex:1; padding:5px;">1Y</div>' +
+            '<div style="flex:1; padding:5px;">5Y</div>' +
+            '</div>', unsafe_allow_html=True
         )
+        
         for index, row in df.iterrows():
             ticker = row['Security Id']
             tick = row['Security Name']
-            sector = row['Sector Name']
-            industry = row['Industry']
             
+            # Get color based on return values
             returns = [row['1M'], row['3M'], row['6M'], row['1Y'], row['5Y']]
             colors = [get_color(value) for value in returns]
             
+            # Display stock data with colors
             st.markdown(
-                f'<div style="margin:0; padding:0; border-radius:5px; display:flex; flex-direction:row; align-items:center;" class="no-space">' +
-                f'<div style="flex:1; {colors[0]}; margin:0; padding:10px;">{tick}</div>' +
-                f'<div style="flex:1; {colors[0]}; margin:0; padding:10px;">{row["1M"]}%</div>' +
-                f'<div style="flex:1; {colors[1]}; margin:0; padding:10px;">{row["3M"]}%</div>' +
-                f'<div style="flex:1; {colors[2]}; margin:0; padding:10px;">{row["6M"]}%</div>' +
-                f'<div style="flex:1; {colors[3]}; margin:0; padding:10px;">{row["1Y"]}%</div>' +
-                f'<div style="flex:1; {colors[4]}; margin:0; padding:10px;">{row["5Y"]}%</div>' +
-                '</div>', unsafe_allow_html=True
-            )
-    else:
-        st.warning("No data available to display.")
-
-# Create and display data
-display_stock_data_from_df(stock_list_df)
+                f'<div style="display: flex; flex-direction: row; align-items: center;">' +
+                f'<div style="flex:1; {colors[0]}; padding:10px;">{tick}</div>' +
+                f'<div style="flex:1; {colors[0]}; padding:10px;">{row["1M"]}%</div>' +
+                f'<div style="flex:1; {colors[1]}; padding:10px;">{row["3M"]}%</div>' +
+                f'<div style="flex:1; {colors[2]}; padding:10px;">{row["6M"]}%</div>' +
+                f'<div style="flex:1; {colors[3]}; padding:10px;">{row["1Y"]}%</div>' +
+                f'<div style="flex:1; {colors[4]}; padding:10px;">{row["5Y"]
