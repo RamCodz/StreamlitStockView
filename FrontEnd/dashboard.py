@@ -1,6 +1,8 @@
 import streamlit as st
 import pandas as pd
-from st_aggrid import AgGrid, GridOptionsBuilder, JsCode
+import yfinance as yf
+from pandas.errors import EmptyDataError
+import plotly.graph_objs as go
 
 # Create sample data
 def create_sample_data():
@@ -13,67 +15,71 @@ def create_sample_data():
         "3M": [5.5, 3.4, -2.1, 4.3],
         "6M": [12.5, 8.2, -4.6, 10.7],
         "1Y": [25.6, 18.9, -8.3, 22.4],
-        "5Y": [50.3, 37.8, -16.2, 47.1]
+        "5Y": [50.3, 37.8, -16.2, 47.1],
+        "Report": ["C", "C", "C", "C"],
+        "Break Out": ["5Y", "1Y", "6M", "3M"]
     }
     return pd.DataFrame(data)
 
 # Using sample data for testing
 stock_list_df = create_sample_data()
 
-# Customize AgGrid
-def aggrid_interactive_table(df: pd.DataFrame):
-    options = GridOptionsBuilder.from_dataframe(df)
-    options.configure_default_column(editable=True)
-    options.configure_selection('single')
-    
-    # You can customize further features of AgGrid here
+# Function to get the stock data
+def get_stock_data(ticker, period="1y", interval="1d"):
+    dates = pd.date_range(start="2020-01-01", periods=365)
+    data = pd.DataFrame({
+        'Date': dates,
+        'Close': pd.Series(range(365)) + pd.np.random.randn(365).cumsum(),
+        'Volume': pd.Series(range(1000, 1365)) + pd.np.random.randint(1, 10, size=365)
+    })
+    data.set_index('Date', inplace=True)
+    return data
 
-    grid_options = options.build()
-    grid_response = AgGrid(
-        df, 
-        gridOptions=grid_options,
-        fit_columns_on_grid_load=True,
-        height=350,
-        reload_data=True
-    )
-    
-    return grid_response
+# Function to get color based on returns
+def get_color(value):
+    if value > 0:
+        return f'background-color: rgba(0, 255, 0, {value / 100})'  # Green for positive returns
+    elif value < 0:
+        return f'background-color: rgba(255, 0, 0, {-value / 100})'  # Red for negative returns
+    else:
+        return 'background-color: white'  # White for no change
 
-# Display the table
-st.write("Interactive Stock Data Table:")
-response = aggrid_interactive_table(stock_list_df)
+# Common function to display stock data
+def display_stock_data_from_df(df, key_prefix=""):
+    if not df.empty:
+        st.markdown(
+            """
+            <style>
+            .no-space div[data-testid="stMarkdownContainer"] {
+                margin-top: 0;
+                margin-bottom: 0;
+                padding: 0;
+            }
+            </style>
+            """, unsafe_allow_html=True
+        )
+        for index, row in df.iterrows():
+            ticker = row['Security Id']
+            tick = row['Security Name']
+            
+            # Create a checkbox to toggle plot display
+            show_plot = st.checkbox(f"**{tick}** >>> ***{ticker}%***", key=f"{key_prefix}-{tick}")
 
-# Retrieve and display the selected row
-if response['selected_rows']:
-    selected_row = response['selected_rows'][0]
-    st.write("You selected:")
-    st.json(selected_row)
+            returns = [row['1M'], row['3M'], row['6M'], row['1Y'], row['5Y']]
+            colors = [get_color(value) for value in returns]
+            
+            st.markdown(
+                f'<div style="margin:0; padding:0; border-radius:5px; display:flex; flex-direction:row; align-items:center;" class="no-space">' +
+                f'<div style="flex:1; {colors[0]}; margin:0; padding:10px;">{tick}</div>' +
+                f'<div style="flex:1; {colors[0]}; margin:0; padding:10px;">{row["1M"]}%</div>' +
+                f'<div style="flex:1; {colors[1]}; margin:0; padding:10px;">{row["3M"]}%</div>' +
+                f'<div style="flex:1; {colors[2]}; margin:0; padding:10px;">{row["6M"]}%</div>' +
+                f'<div style="flex:1; {colors[3]}; margin:0; padding:10px;">{row["1Y"]}%</div>' +
+                f'<div style="flex:1; {colors[4]}; margin:0; padding:10px;">{row["5Y"]}%</div>' +
+                '</div>', unsafe_allow_html=True
+            )
+    else:
+        st.warning("No data available to display.")
 
-    ticker = selected_row['Security Id']
-    st.write(f"**Details for {ticker}:**")
-    st.write(f"**Sector:** {selected_row['Sector Name']}")
-    st.write(f"**Industry:** {selected_row['Industry']}")
-
-    # Fetch the stock data (simulated in this case)
-    def get_stock_data(ticker, period="1y", interval="1d"):
-        dates = pd.date_range(start="2020-01-01", periods=365)
-        data = pd.DataFrame({
-            'Date': dates,
-            'Close': pd.Series(range(365)) + pd.np.random.randn(365).cumsum(),
-            'Volume': pd.Series(range(1000, 1365)) + pd.np.random.randint(1, 10, size=365)
-        })
-        data.set_index('Date', inplace=True)
-        return data
-
-    stock_data = get_stock_data(ticker)
-    
-    # Plot the Close price of the stock using Plotly
-    fig = go.Figure()
-    fig.add_trace(go.Scatter(x=stock_data.index, y=stock_data['Close'], mode='lines', name=f'Close Price - {ticker}'))
-    fig.add_trace(go.Bar(x=stock_data.index, y=stock_data['Volume'], name=f'Volume - {ticker}'))
-    fig.update_layout(title=f"{ticker} Price and Volume over Time", template="plotly_dark")
-    
-    # Display the plot
-    st.plotly_chart(fig)
-else:
-    st.warning("No row selected.")
+# Create and display data
+display_stock_data_from_df(stock_list_df)
