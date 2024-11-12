@@ -67,8 +67,6 @@ def display_stock_data_from_df(df, key_prefix=""):
                 '</div>', unsafe_allow_html=True
             )
 
-            show_plot = st.checkbox(f"More about {tick}", key=f"{key_prefix}-{tick}")
-
             if show_plot:
                 cherries_stock = get_stock_data(ticker)
                 if not cherries_stock.empty:
