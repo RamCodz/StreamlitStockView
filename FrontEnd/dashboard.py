@@ -1,6 +1,7 @@
-import pandas as pd
-import numpy as np
 import streamlit as st
+import pandas as pd
+import yfinance as yf
+from pandas.errors import EmptyDataError
 import plotly.graph_objs as go
 
 # Create sample data
@@ -20,13 +21,16 @@ def create_sample_data():
     }
     return pd.DataFrame(data)
 
-# Function to get the stock data (simulated data for now)
+# Using sample data for testing
+stock_list_df = create_sample_data()
+
+# Function to get the stock data
 def get_stock_data(ticker, period="1y", interval="1d"):
     dates = pd.date_range(start="2020-01-01", periods=365)
     data = pd.DataFrame({
         'Date': dates,
-        'Close': np.random.randn(365).cumsum() + 1000,  # Simulated close price
-        'Volume': np.random.randint(1, 10, size=365) * 1000  # Simulated volume
+        'Close': pd.Series(range(365)) + pd.np.random.randn(365).cumsum(),
+        'Volume': pd.Series(range(1000, 1365)) + pd.np.random.randint(1, 10, size=365)
     })
     data.set_index('Date', inplace=True)
     return data
@@ -34,82 +38,67 @@ def get_stock_data(ticker, period="1y", interval="1d"):
 # Function to get color based on returns
 def get_color(value):
     if value > 0:
-        return 'background-color: rgba(0, 255, 0, 0.5)'  # Green for positive returns
+        return f'background-color: rgba(0, 255, 0, {value / 100})'  # Green for positive returns
     elif value < 0:
-        return 'background-color: rgba(255, 0, 0, 0.5)'  # Red for negative returns
+        return f'background-color: rgba(255, 0, 0, {-value / 100})'  # Red for negative returns
     else:
-        return 'background-color: rgba(255, 255, 255, 0.5)'  # White for no change
+        return 'background-color: white'  # White for no change
 
-# Common function to display stock data with clickable rows
-def display_stock_data_from_df(df):
+# Common function to display stock data
+def display_stock_data_from_df(df, key_prefix=""):
     if not df.empty:
-        # Displaying a header row
         st.markdown(
-            '<div style="display: flex; font-weight: bold; padding: 5px; background-color: #f4f4f4;">' +
-            '<div style="flex:1; padding:5px;">Stock</div>' +
-            '<div style="flex:1; padding:5px;">1M</div>' +
-            '<div style="flex:1; padding:5px;">3M</div>' +
-            '<div style="flex:1; padding:5px;">6M</div>' +
-            '<div style="flex:1; padding:5px;">1Y</div>' +
-            '<div style="flex:1; padding:5px;">5Y</div>' +
-            '</div>', unsafe_allow_html=True
+            """
+            <style>
+            .no-space div[data-testid="stMarkdownContainer"] {
+                margin-top: 0;
+                margin-bottom: 0;
+                padding: 0;
+            }
+            </style>
+            """, unsafe_allow_html=True
         )
-        
         for index, row in df.iterrows():
             ticker = row['Security Id']
             tick = row['Security Name']
             
-            # Get color based on return values
+            # Create a checkbox to toggle plot display
+            show_plot = st.checkbox(f"**{tick}** >>> ***{ticker}%***", key=f"{key_prefix}-{tick}")
+            
+            for check in show_plot:
+                styled_checkbox("**Bold Item**")
+                
             returns = [row['1M'], row['3M'], row['6M'], row['1Y'], row['5Y']]
             colors = [get_color(value) for value in returns]
             
-            # Create an interactive row with a clickable link
-            row_html = (
-                f'<div style="display: flex; flex-direction: row; align-items: center; padding: 5px; cursor: pointer; {colors[0]}">'
-                f'<a href="javascript:void(0)" onclick="window.parent.postMessage({{"ticker": "{ticker}"}})">'  # Make the row clickable
-                f'<div style="flex:1; padding:10px;">{tick}</div>'
-                '</a></div>'
+            st.markdown(
+                f'<div style="margin:0; padding:0; border-radius:5px; display:flex; flex-direction:row; align-items:center;" class="no-space">' +
+                f'<div style="flex:1; {colors[0]}; margin:0; padding:10px;">{tick}</div>' +
+                f'<div style="flex:1; {colors[0]}; margin:0; padding:10px;">{row["1M"]}%</div>' +
+                f'<div style="flex:1; {colors[1]}; margin:0; padding:10px;">{row["3M"]}%</div>' +
+                f'<div style="flex:1; {colors[2]}; margin:0; padding:10px;">{row["6M"]}%</div>' +
+                f'<div style="flex:1; {colors[3]}; margin:0; padding:10px;">{row["1Y"]}%</div>' +
+                f'<div style="flex:1; {colors[4]}; margin:0; padding:10px;">{row["5Y"]}%</div>' +
+                '</div>', unsafe_allow_html=True
             )
-
-            # Display the row in the Streamlit app
-            st.markdown(row_html, unsafe_allow_html=True)
-            
-            # Check if the row is clicked and display detailed information
-            if st.session_state.get('ticker') == ticker:
-                st.write(f"**Details for {tick}:**")
-                st.write(f"**Sector:** {row['Sector Name']}")
-                st.write(f"**Industry:** {row['Industry']}")
-
-                # Fetch the stock data (simulated in this case)
-                stock_data = get_stock_data(ticker)
-                
-                # Plot the Close price of the stock using Plotly
-                fig = go.Figure()
-
-                # Add trace for Close Price
-                fig.add_trace(go.Scatter(x=stock_data.index, y=stock_data['Close'], mode='lines', name=f'Close Price - {tick}'))
-
-                # Add trace for Volume
-                fig.add_trace(go.Bar(x=stock_data.index, y=stock_data['Volume'], name=f'Volume - {tick}'))
-
-                fig.update_layout(title=f"{tick} Price and Volume over Time", template="plotly_dark")
-
-                # Display the plot
-                st.plotly_chart(fig)
-    
     else:
         st.warning("No data available to display.")
 
-# Main app logic
-stock_list_df = create_sample_data()
+# Function to create a styled checkbox
+def styled_checkbox(label, checked=False):
+    checkbox_id = label.lower().replace(" ", "-")
+    html = f"""
+    <style>
+    .{checkbox_id} {{
+        display: inline-block;
+        vertical-align: middle;
+        margin-right: 10px;
+    }}
+    </style>
+    <input type="checkbox" class="{checkbox_id}" {'checked' if checked else ''}>
+    <label for="{checkbox_id}">{label}</label>
+    """
+    return st.markdown(html, unsafe_allow_html=True)
 
-# Check if data exists
-if stock_list_df.empty:
-    st.error("The stock data is empty. Please check the data source.")
-else:
-    # Show the raw DataFrame to ensure it is not empty
-    st.write("Stock Data (Raw DataFrame):")
-    st.write(stock_list_df)
-
-    # Create and display the stock table with clickable rows
-    display_stock_data_from_df(stock_list_df)
+# Create and display data
+display_stock_data_from_df(stock_list_df)
