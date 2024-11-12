@@ -65,8 +65,7 @@ def display_stock_data_from_df(df, key_prefix=""):
             # Create a checkbox to toggle plot display
             show_plot = st.checkbox(f"**{tick}** >>> ***{ticker}%***", key=f"{key_prefix}-{tick}")
             
-            for check in show_plot:
-                styled_checkbox("**Bold Item**")
+            styled_checkbox("**Bold Item**")
                 
             returns = [row['1M'], row['3M'], row['6M'], row['1Y'], row['5Y']]
             colors = [get_color(value) for value in returns]
