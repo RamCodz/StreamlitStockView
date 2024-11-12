@@ -61,4 +61,3 @@ yfinance==0.2.40
 yahoo_fin==0.8.9.1
 seaborn==0.13.2
 requests_html==0.3.4
-st-aggrid
