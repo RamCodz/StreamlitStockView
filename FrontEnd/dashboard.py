@@ -3,24 +3,37 @@ import pandas as pd
 import yfinance as yf
 from pandas.errors import EmptyDataError
 import plotly.graph_objs as go
-from BackEnd.Utils import globals
-from FrontEnd.Utils import get_latest_report_data
 
-# Read stock data from latest file
-stock_list = str(globals.data_filepath) + get_latest_report_data.get_latest_file(str(globals.data_filepath))
+# Create sample data
+def create_sample_data():
+    data = {
+        "Security Id": ["RELIANCE.BO", "TCS.BO", "INFY.BO", "HDFC.BO"],
+        "Security Name": ["Reliance", "TCS", "Infosys", "HDFC"],
+        "Sector Name": ["Energy", "IT", "IT", "Finance"],
+        "Industry": ["Oil & Gas", "Software", "Software", "Banking"],
+        "1M": [2.5, 1.8, -1.2, 2.1],
+        "3M": [5.5, 3.4, -2.1, 4.3],
+        "6M": [12.5, 8.2, -4.6, 10.7],
+        "1Y": [25.6, 18.9, -8.3, 22.4],
+        "5Y": [50.3, 37.8, -16.2, 47.1],
+        "Report": ["C", "C", "C", "C"],
+        "Break Out": ["5Y", "1Y", "6M", "3M"]
+    }
+    return pd.DataFrame(data)
 
-try:
-    stock_list_df = pd.read_csv(stock_list)
-except EmptyDataError:
-    stock_list_df = pd.DataFrame()
-except Exception as e:
-    st.error(f"Error reading the file: {e}")
-    stock_list_df = pd.DataFrame()
+# Using sample data for testing
+stock_list_df = create_sample_data()
 
 # Function to get the stock data
 def get_stock_data(ticker, period="1y", interval="1d"):
-    stock = yf.Ticker(ticker + ".BO")  # Append .BO for BSE stocks
-    return stock.history(period=period, interval=interval)
+    dates = pd.date_range(start="2020-01-01", periods=365)
+    data = pd.DataFrame({
+        'Date': dates,
+        'Close': pd.Series(range(365)) + pd.np.random.randn(365).cumsum(),
+        'Volume': pd.Series(range(1000, 1365)) + pd.np.random.randint(1, 10, size=365)
+    })
+    data.set_index('Date', inplace=True)
+    return data
 
 # Function to get color based on returns
 def get_color(value):
