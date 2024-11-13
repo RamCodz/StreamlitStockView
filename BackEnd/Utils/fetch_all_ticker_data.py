@@ -10,6 +10,10 @@ def dbg(msg):
 def get_stock_data(ticker, start_date, end_date):  
     try:
         # Get historical data
+        print("start_date")
+        print(start_date)
+        print("end_date")
+        print(end_date)
         historical_data = si.get_data(ticker, start_date=start_date, end_date=end_date, interval='1d')
 
         return historical_data
