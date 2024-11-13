@@ -28,25 +28,41 @@ def display_stock_details(stock_data):
 def display_stock_data_from_df(df, key_prefix=""):
     if not df.empty:
         # Aligning the header with columns
-        col1, col2, col3, col4, col5, col6, col7, col8, col9 = st.columns([0.7, 2, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7])
+        col1, col2, col3, col4, col5, col6, col7, col8, col9 = st.columns([0.2, 3, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5])
 
         # Header row for the heatmap values (1W, 1M, 3M, 6M, 1Y, 5Y)
         with col1:
-            st.write("")  # Empty space for the checkbox
+            st.markdown(f'<div style="margin:0; padding:0; display:flex; flex-direction:row; align-items:center;" class="header-row">' +
+                        f'<div style="flex:0.7; margin:0; padding:3px;"></div>' +  # Space for the checkbox
+                        '</div>', unsafe_allow_html=True)
         with col2:
-            st.write("Stock Name")
+            st.markdown(f'<div style="margin:0; padding:0; display:flex; flex-direction:row; align-items:center;" class="header-row">' +
+                        f'<div style="flex:2; margin:0; padding:3px;">Stock Name</div>' +
+                        '</div>', unsafe_allow_html=True)
         with col3:
-            st.write("1 Week")
+            st.markdown(f'<div style="margin:0; padding:0; display:flex; flex-direction:row; align-items:center;" class="header-row">' +
+                        f'<div style="flex:0.7; margin:0; padding:3px;">1Week</div>' +
+                        '</div>', unsafe_allow_html=True)
         with col4:
-            st.write("1 Month")
+            st.markdown(f'<div style="margin:0; padding:0; display:flex; flex-direction:row; align-items:center;" class="header-row">' +
+                        f'<div style="flex:0.7; margin:0; padding:3px;">1Month</div>' +
+                        '</div>', unsafe_allow_html=True)
         with col5:
-            st.write("3 Month")
+            st.markdown(f'<div style="margin:0; padding:0; display:flex; flex-direction:row; align-items:center;" class="header-row">' +
+                        f'<div style="flex:0.7; margin:0; padding:3px;">3Month</div>' +
+                        '</div>', unsafe_allow_html=True)
         with col6:
-            st.write("6 Month")
+            st.markdown(f'<div style="margin:0; padding:0; display:flex; flex-direction:row; align-items:center;" class="header-row">' +
+                        f'<div style="flex:0.7; margin:0; padding:3px;">6Month</div>' +
+                        '</div>', unsafe_allow_html=True)
         with col7:
-            st.write("1 Year")
+            st.markdown(f'<div style="margin:0; padding:0; display:flex; flex-direction:row; align-items:center;" class="header-row">' +
+                        f'<div style="flex:0.7; margin:0; padding:3px;">1Year</div>' +
+                        '</div>', unsafe_allow_html=True)
         with col8:
-            st.write("5 Year")
+            st.markdown(f'<div style="margin:0; padding:0; display:flex; flex-direction:row; align-items:center;" class="header-row">' +
+                        f'<div style="flex:0.7; margin:0; padding:3px;">5Year</div>' +
+                        '</div>', unsafe_allow_html=True)
 
         # Iterate through the rows and display stock names with checkboxes
         for index, row in df.iterrows():
