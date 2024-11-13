@@ -27,37 +27,27 @@ def display_stock_details(stock_data):
 # Common function to display stock data with checkboxes
 def display_stock_data_from_df(df, key_prefix=""):
     if not df.empty:
-        st.markdown(
-            """
-            <style>
-            .no-space div[data-testid="stMarkdownContainer"] {
-                margin-top: 0;
-                margin-bottom: 0;
-                padding: 0;
-            }
-            .header-row {
-                font-weight: bold;
-                background-color: #f0f0f0;
-                padding: 3px;
-            }
-            </style>
-            """, unsafe_allow_html=True
-        )
+        # Aligning the header with columns
+        col1, col2, col3, col4, col5, col6, col7, col8, col9 = st.columns([0.7, 2, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7])
 
         # Header row for the heatmap values (1W, 1M, 3M, 6M, 1Y, 5Y)
-        st.markdown(
-            f'<div style="margin:0; padding:0; display:flex; flex-direction:row; align-items:center;" class="header-row">' +
-            f'<div style="flex:0.7; margin:0; padding:3px;"></div>' +  # Space for the checkbox
-            f'<div style="flex:2; margin:0; padding:3px;">Stock Name</div>' +
-            f'<div style="flex:0.7; margin:0; padding:3px;">1Week</div>' +
-            f'<div style="flex:0.7; margin:0; padding:3px;">1Month</div>' +
-            f'<div style="flex:0.7; margin:0; padding:3px;">3Month</div>' +
-            f'<div style="flex:0.7; margin:0; padding:3px;">6Month</div>' +
-            f'<div style="flex:0.7; margin:0; padding:3px;">1Year</div>' +
-            f'<div style="flex:0.7; margin:0; padding:3px;">5Year</div>' +
-            '</div>', unsafe_allow_html=True
-        )
-        
+        with col1:
+            st.write("")  # Empty space for the checkbox
+        with col2:
+            st.write("Stock Name")
+        with col3:
+            st.write("1 Week")
+        with col4:
+            st.write("1 Month")
+        with col5:
+            st.write("3 Month")
+        with col6:
+            st.write("6 Month")
+        with col7:
+            st.write("1 Year")
+        with col8:
+            st.write("5 Year")
+
         # Iterate through the rows and display stock names with checkboxes
         for index, row in df.iterrows():
             ticker = row['Security Id']
