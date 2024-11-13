@@ -60,14 +60,7 @@ def display_stock_data_from_df(df, key_prefix=""):
             '</div>', unsafe_allow_html=True
         )
         
-        # Add the interactive stock name as a clickable button and show details in the same page
-        stock_names = df['Security Name'].tolist()
-        selected_stock_name = st.radio("Select a stock to view details", stock_names)
-
-        # Find the selected stock data
-        selected_stock_data = df[df['Security Name'] == selected_stock_name].iloc[0]
-
-        # Display the stock data with color coding for each timeframe
+        # Iterate through the rows and display stock names with checkboxes
         for index, row in df.iterrows():
             ticker = row['Security Id']
             tick = row['Security Name']
@@ -75,7 +68,7 @@ def display_stock_data_from_df(df, key_prefix=""):
             # Calculate returns for each timeframe and apply color formatting
             returns = [row['1W_value'], row['1M_value'], row['3M_value'], row['6M_value'], row['1Y_value'], row['5Y_value']]
             colors = [get_color(value) for value in returns]
-            
+
             # Display the stock data with color coding for each timeframe
             st.markdown(
                 f'<div style="margin:0; padding:0; border-radius:3px; display:flex; flex-direction:row; align-items:center;" class="no-space">' +
@@ -88,10 +81,13 @@ def display_stock_data_from_df(df, key_prefix=""):
                 f'<div style="flex:1; {colors[5]}; margin:0; padding:3px;">{row["5Y_value"]}%</div>' +
                 '</div>', unsafe_allow_html=True
             )
-        
-        # Display the detailed information for the selected stock
-        if selected_stock_data is not None:
-            display_stock_details(selected_stock_data)
+            
+            # Add checkbox for each stock
+            show_details = st.checkbox('', key=f"{key_prefix}_{ticker}")
+            
+            # If checkbox is checked, display detailed information
+            if show_details:
+                display_stock_details(row)
 
     else:
         st.warning("No data available to display.")
