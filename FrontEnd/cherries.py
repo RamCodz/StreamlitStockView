@@ -25,9 +25,6 @@ def display_stock_details(stock_data):
     st.write(f"6 Month Change: {stock_data['6M_value']}%")
     st.write(f"1 Year Change: {stock_data['1Y_value']}%")
     st.write(f"5 Year Change: {stock_data['5Y_value']}%")
-    
-    # Add any additional stock info you want to display (like historical data, etc.)
-    # st.write(f"More information about the stock...") 
 
 
 # Common function to display stock data with clickable stock names
@@ -64,6 +61,13 @@ def display_stock_data_from_df(df, key_prefix=""):
         )
         
         # Add the interactive stock name as a clickable button and show details in the same page
+        stock_names = df['Security Name'].tolist()
+        selected_stock_name = st.radio("Select a stock to view details", stock_names)
+
+        # Find the selected stock data
+        selected_stock_data = df[df['Security Name'] == selected_stock_name].iloc[0]
+
+        # Display the stock data with color coding for each timeframe
         for index, row in df.iterrows():
             ticker = row['Security Id']
             tick = row['Security Name']
@@ -75,9 +79,7 @@ def display_stock_data_from_df(df, key_prefix=""):
             # Display the stock data with color coding for each timeframe
             st.markdown(
                 f'<div style="margin:0; padding:0; border-radius:3px; display:flex; flex-direction:row; align-items:center;" class="no-space">' +
-                f'<div style="flex:1; margin:0; padding:3px;">' +
-                f'<button style="background: none; border: none; color: #007BFF; text-decoration: underline; cursor: pointer;" onClick="st.write({ticker})">{tick}</button>' +
-                f'</div>' +
+                f'<div style="flex:1; margin:0; padding:3px;">{tick}</div>' +
                 f'<div style="flex:1; {colors[0]}; margin:0; padding:3px;">{row["1W_value"]}%</div>' +
                 f'<div style="flex:1; {colors[1]}; margin:0; padding:3px;">{row["1M_value"]}%</div>' +
                 f'<div style="flex:1; {colors[2]}; margin:0; padding:3px;">{row["3M_value"]}%</div>' +
@@ -86,6 +88,10 @@ def display_stock_data_from_df(df, key_prefix=""):
                 f'<div style="flex:1; {colors[5]}; margin:0; padding:3px;">{row["5Y_value"]}%</div>' +
                 '</div>', unsafe_allow_html=True
             )
+        
+        # Display the detailed information for the selected stock
+        if selected_stock_data is not None:
+            display_stock_details(selected_stock_data)
 
     else:
         st.warning("No data available to display.")
@@ -136,7 +142,3 @@ tab_titles = {
 }
 
 create_tabs(tab_titles, stock_list_df)
-
-# When a stock name is clicked, show additional details in an expander
-if st.session_state.get("selected_stock"):
-    st.write("testing...")
