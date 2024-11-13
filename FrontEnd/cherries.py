@@ -1,17 +1,37 @@
 import streamlit as st
 import pandas as pd
+import math
 from pandas.errors import EmptyDataError  # Import EmptyDataError explicitly
 from BackEnd.Utils import globals
 from FrontEnd.Utils import get_latest_report_data
 
-# Function to get color based on returns
+# Function to calculate the color based on the value, with logarithmic scaling
 def get_color(value):
-    if value > 0:
-        return f'background-color: rgba(0, 255, 0, {value / 100})'  # Green for positive returns
-    elif value < 0:
-        return f'background-color: rgba(255, 0, 0, {-value / 100})'  # Red for negative returns
+    # Handle extreme negative or positive values
+    abs_value = abs(value)
+    
+    # Apply logarithmic scaling to map values from 0 to 1
+    if abs_value > 0:
+        log_scaled = math.log(abs_value + 1)  # log(x+1) to prevent log(0) error
     else:
-        return 'background-color: white'  # White for no change
+        log_scaled = 0
+    
+    # Normalize log_scaled to the range 0 to 1
+    if abs_value > 1:
+        log_scaled /= math.log(abs_value + 1)
+    else:
+        log_scaled /= 10  # Apply less scaling for smaller values
+    
+    # Proportional scaling based on sign of the value
+    if value > 0:
+        # Green for positive values
+        return f'background-color: rgba(0, 255, 0, {min(log_scaled, 1)})'  # Green for positive returns
+    elif value < 0:
+        # Red for negative values
+        return f'background-color: rgba(255, 0, 0, {min(log_scaled, 1)})'  # Red for negative returns
+    else:
+        return 'background-color: white'  # White for zero value
+
 
 # Common function to display stock data with headers for each column
 def display_stock_data_from_df(df, key_prefix=""):
