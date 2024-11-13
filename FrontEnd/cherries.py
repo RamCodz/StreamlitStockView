@@ -7,11 +7,11 @@ from FrontEnd.Utils import get_latest_report_data
 # Function to get color based on returns
 def get_color(value):
     if value > 0:
-        return f'background-color: rgba(0, 255, 0, {value / 100})'  # Green for positive returns
+        return f'rgba(0, 255, 0, {value / 100})'  # Green for positive returns
     elif value < 0:
-        return f'background-color: rgba(255, 0, 0, {-value / 100})'  # Red for negative returns
+        return f'rgba(255, 0, 0, {-value / 100})'  # Red for negative returns
     else:
-        return 'background-color: white'  # White for no change
+        return 'rgba(255, 255, 255, 0)'  # White for no change (transparent background)
 
 # Function to display stock data with interactive stock names
 def display_stock_data_from_df(df, key_prefix=""):
@@ -55,7 +55,7 @@ def display_stock_data_from_df(df, key_prefix=""):
             colors = [get_color(value) for value in returns]
             
             # Apply color to the stock name in the row itself
-            stock_name_with_color = f'<span style="{colors[0]}">{tick}</span>'  # Use the 1W color for stock name
+            stock_name_with_color = f'<span style="color:{colors[0]}">{tick}</span>'  # Use the 1W color for stock name
 
             # Display the stock data with color coding for each timeframe
             st.markdown(
@@ -71,14 +71,14 @@ def display_stock_data_from_df(df, key_prefix=""):
             )
             
             # Create an expander for the stock details that gets activated on click
-            with st.expander(f"<span style='{colors[0]}'>{tick}</span>", expanded=False):
+            with st.expander(f"<span style='color:{colors[0]}'>{tick}</span>", expanded=False):
                 # Display stock details with color coding
-                st.markdown(f"<div style='padding: 10px; {colors[0]}'>1 Week Value: {row['1W_value']}%</div>", unsafe_allow_html=True)
-                st.markdown(f"<div style='padding: 10px; {colors[1]}'>1 Month Value: {row['1M_value']}%</div>", unsafe_allow_html=True)
-                st.markdown(f"<div style='padding: 10px; {colors[2]}'>3 Months Value: {row['3M_value']}%</div>", unsafe_allow_html=True)
-                st.markdown(f"<div style='padding: 10px; {colors[3]}'>6 Months Value: {row['6M_value']}%</div>", unsafe_allow_html=True)
-                st.markdown(f"<div style='padding: 10px; {colors[4]}'>1 Year Value: {row['1Y_value']}%</div>", unsafe_allow_html=True)
-                st.markdown(f"<div style='padding: 10px; {colors[5]}'>5 Year Value: {row['5Y_value']}%</div>", unsafe_allow_html=True)
+                st.markdown(f"<div style='padding: 10px; color:{colors[0]}'>1 Week Value: {row['1W_value']}%</div>", unsafe_allow_html=True)
+                st.markdown(f"<div style='padding: 10px; color:{colors[1]}'>1 Month Value: {row['1M_value']}%</div>", unsafe_allow_html=True)
+                st.markdown(f"<div style='padding: 10px; color:{colors[2]}'>3 Months Value: {row['3M_value']}%</div>", unsafe_allow_html=True)
+                st.markdown(f"<div style='padding: 10px; color:{colors[3]}'>6 Months Value: {row['6M_value']}%</div>", unsafe_allow_html=True)
+                st.markdown(f"<div style='padding: 10px; color:{colors[4]}'>1 Year Value: {row['1Y_value']}%</div>", unsafe_allow_html=True)
+                st.markdown(f"<div style='padding: 10px; color:{colors[5]}'>5 Year Value: {row['5Y_value']}%</div>", unsafe_allow_html=True)
 
     else:
         st.warning("No data available to display.")
