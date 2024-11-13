@@ -33,15 +33,14 @@ def get_all_data(StockList):
 
     for index, row in StockList.iterrows():
         stkSymbol = row['Security Id']+'.NS'
-        if stkSymbol == 'RVNL.NS':
-            five_year_data = get_stock_data(stkSymbol, five_year_ago, today)
-            print("five_year_data")
-            print(five_year_data)
-            if not five_year_data.empty:
-                ##five_year_data['Security Name'] = row['Security Name'];
-                ##for k in range(len(DListLbl)):
-                ##five_year_data[DListLbl[k]] = row[DListLbl[k]]
-                all_data = pd.concat([all_data, five_year_data])
+        five_year_data = get_stock_data(stkSymbol, five_year_ago, today)
+        print("five_year_data")
+        print(five_year_data)
+        if not five_year_data.empty:
+            ##five_year_data['Security Name'] = row['Security Name'];
+            ##for k in range(len(DListLbl)):
+            ##five_year_data[DListLbl[k]] = row[DListLbl[k]]
+            all_data = pd.concat([all_data, five_year_data])
         
     print("Completed get_all_data...")
     return all_data
