@@ -4,6 +4,7 @@ import yfinance as yf
 from pandas.errors import EmptyDataError
 from BackEnd.Utils import globals
 from FrontEnd.Utils import get_latest_report_data
+import plotly.graph_objs as go
 
 # Function to get the stock data
 def get_stock_data(ticker, period="5y", interval="1d"):
