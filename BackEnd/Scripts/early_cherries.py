@@ -54,10 +54,10 @@ def process_ticker_data(ticker_data, ticker_stklist_dtls):
 def apply_flags(ticker_stklist_dtls):
     """Apply flags if one timeframe outperforms another."""
     ticker_stklist_dtls.loc[ticker_stklist_dtls['1W_value'] > ticker_stklist_dtls['1M_value'], '1M_FLG'] = 'Y'
-    ticker_stklist_dtls.loc[ticker_stklist_dtls['1W_value'] > ticker_stklist_dtls['3M_value'], '3M_FLG'] = 'Y'
-    ticker_stklist_dtls.loc[ticker_stklist_dtls['1W_value'] > ticker_stklist_dtls['6M_value'], '6M_FLG'] = 'Y'
-    ticker_stklist_dtls.loc[ticker_stklist_dtls['1W_value'] > ticker_stklist_dtls['1Y_value'], '1Y_FLG'] = 'Y'
-    ticker_stklist_dtls.loc[ticker_stklist_dtls['1W_value'] > ticker_stklist_dtls['5Y_value'], '5Y_FLG'] = 'Y'
+    ticker_stklist_dtls.loc[ticker_stklist_dtls['1M_value'] > ticker_stklist_dtls['3M_value'], '3M_FLG'] = 'Y'
+    ticker_stklist_dtls.loc[ticker_stklist_dtls['1M_value'] > ticker_stklist_dtls['6M_value'], '6M_FLG'] = 'Y'
+    ticker_stklist_dtls.loc[ticker_stklist_dtls['1M_value'] > ticker_stklist_dtls['1Y_value'], '1Y_FLG'] = 'Y'
+    ticker_stklist_dtls.loc[ticker_stklist_dtls['1M_value'] > ticker_stklist_dtls['5Y_value'], '5Y_FLG'] = 'Y'
 
 def get_breakout_days(break_out):
     """Determine the number of breakout days based on the period."""
