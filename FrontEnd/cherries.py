@@ -138,7 +138,7 @@ tab_titles = {
 create_tabs(tab_titles, stock_list_df)
 
 # When a stock name is clicked, show additional details in an expander
-if st.session_state.get("selected_stock") == ticker:
+if st.session_state.get("selected_stock"):
     with st.expander(f"Details for {tick}"):
         #display_stock_details(row)
         st.write("testing...")
