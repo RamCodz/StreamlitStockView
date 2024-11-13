@@ -10,7 +10,8 @@ import plotly.graph_objs as go
 # Read stock data from latest file
 stock_list = str(globals.data_filepath) + get_latest_report_data.get_latest_file(str(globals.data_filepath))
 
-# Apply HTML for styling 
+# Define a checklist for applying HTML for styling 
+checklist = ['Item 1', 'Item 2', 'Item 3']
 for item in checklist: 
     st.markdown(f'<input type="checkbox"> {item}', unsafe_allow_html=True)
 
@@ -81,11 +82,11 @@ def display_stock_data_from_df(df, key_prefix=""):
 
 # Function to create tabs and display data
 def create_tabs(tab_titles, stock_list_df):
-    tabs = st.tabs(tab_titles.values)
-    for i, title in enumerate(tab_titles.keys):
+    tabs = st.tabs(list(tab_titles.values()))
+    for i, title in enumerate(tab_titles.keys()):
         with tabs[i]:
             if not stock_list_df.empty:
-                display_stock_data_from_df(stock_list_df[(stock_list_df['Report'] == 'C') & (stock_list_df[title||'_FLG'] == 'Y', ascending=True), key_prefix=f"Cherries{title.split()[0]}")
+                display_stock_data_from_df(stock_list_df[(stock_list_df['Report'] == 'C') & (stock_list_df[title + '_FLG'] == 'Y')], key_prefix=f"Cherries{title.split()[0]}")
             else:
                 st.write("No data available to display.")
 
