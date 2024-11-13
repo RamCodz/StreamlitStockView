@@ -1,8 +1,9 @@
 import streamlit as st
+from pathlib import Path
 import pandas as pd
 import yfinance as yf
-from pandas.errors import EmptyDataError
-import plotly.graph_objs as go
+from BackEnd.Utils import globals
+from FrontEnd.Utils import get_latest_report_data
 
 # Function to get color based on returns
 def get_color(value):
