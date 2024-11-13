@@ -1,8 +1,6 @@
 import pandas as pd
 import warnings
 from datetime import datetime, timedelta
-from Utils import globals
-from Utils.debug import debug
 
 def dbg(msg):
     debug("early_cherries-->" + str(msg))
@@ -12,7 +10,7 @@ def analyze_stock(ticker_data, breakout_days, w_or_m):
     pct_change = 0
     
     if w_or_m == 'M':
-        if breakout_days <= globals.m_bwout:
+        if breakout_days <= 21:
             recent_data = ticker_data.iloc[-1]
             try:
                 past_data = ticker_data.iloc[-breakout_days]
@@ -20,14 +18,14 @@ def analyze_stock(ticker_data, breakout_days, w_or_m):
                 print("Index is out of bounds")
                 past_data = None
         else:
-            recent_data = ticker_data.iloc[-(1+globals.m_bwout)]
+            recent_data = ticker_data.iloc[-(1+21)]
             try:
-                past_data = ticker_data.iloc[-(breakout_days+globals.m_bwout)]
+                past_data = ticker_data.iloc[-(breakout_days+21)]
             except IndexError:
                 print("Index is out of bounds")
                 past_data = None
     else:
-        if breakout_days == globals.w_bwout:
+        if breakout_days == 5:
             recent_data = ticker_data.iloc[-1]
             try:
                 past_data = ticker_data.iloc[-breakout_days]
@@ -35,9 +33,9 @@ def analyze_stock(ticker_data, breakout_days, w_or_m):
                 print("Index is out of bounds")
                 past_data = None
         else:
-            recent_data = ticker_data.iloc[-(1+globals.w_bwout)]
+            recent_data = ticker_data.iloc[-(1+5)]
             try:
-                past_data = ticker_data.iloc[-(breakout_days+globals.w_bwout)]
+                past_data = ticker_data.iloc[-(breakout_days+5)]
             except IndexError:
                 print("Index is out of bounds")
                 past_data = None
@@ -84,17 +82,17 @@ def find_cherries(all_data, StockList, current_date):
                     print('SettingWithCopyWarning')
         m_ticker_stklist_dtls = ticker_stklist_dtls
         current_index = ticker_stklist_dtls.index
-        for break_out in globals.breakout:
+        for break_out in ['1W','1M','3M','6M','1Y','5Y']:
             print('Y/M ' + break_out[-1])
             print('val ' + break_out[:-1])
             if break_out[-1] == 'Y':
-                breakout_days = int(break_out[:-1]) * globals.y_bwout
+                breakout_days = int(break_out[:-1]) * 21
                 breakout_name = break_out + "_value"
             elif break_out[-1] == 'M':
-                breakout_days = int(break_out[:-1]) * globals.m_bwout
+                breakout_days = int(break_out[:-1]) * 21
                 breakout_name = break_out + "_value"
             elif break_out[-1] == 'W':
-                breakout_days = int(break_out[:-1]) * globals.w_bwout
+                breakout_days = int(break_out[:-1]) * 5
                 breakout_name = break_out + "_value"
             print('breakout days ' + str(breakout_days))
             w_pct_change = 0
