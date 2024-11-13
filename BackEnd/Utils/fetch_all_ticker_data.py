@@ -27,6 +27,7 @@ def get_all_data(StockList):
     DListLbl=['Security Name','Status','Group','Face Value','ISIN No','Industry','Instrument','Sector Name','Industry New Name','Igroup Name','ISubgroup Name'] 
     ##StockList = pd.read_csv(str(globals.equity_list_path) + str(globals.equity_list_filename))
 
+    i = 0
     for index, row in StockList.iterrows():
         stkSymbol = row['Security Id']+'.NS'
         
@@ -37,6 +38,10 @@ def get_all_data(StockList):
                 ##five_year_data[DListLbl[k]] = row[DListLbl[k]]
             all_data = pd.concat([all_data, five_year_data])
 
+    i = i+1
+    if i == 100:
+        break
+        
     print("Completed get_all_data...")
     return all_data
         
