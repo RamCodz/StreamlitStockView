@@ -1,9 +1,15 @@
 import streamlit as st
 import pandas as pd
+import yfinance as yf
 from pandas.errors import EmptyDataError
 from BackEnd.Utils import globals
 from FrontEnd.Utils import get_latest_report_data
 
+# Function to get the stock data
+def get_stock_data(ticker, period="5y", interval="1d"):
+    stock = yf.Ticker(ticker + ".BO")  # Append .BO for BSE stocks
+    return stock.history(period=period, interval=interval)
+    
 # Function to get color based on returns
 def get_color(value):
     if value > 0:
@@ -14,11 +20,11 @@ def get_color(value):
         return 'background-color: white'  # White for no change
 
 # Function to display detailed stock information
-def display_stock_details(stock_data, ticker):
+def display_stock_details(stock_data):
     st.subheader(f"Details for {stock_data['Security Name']}")
 
     # Assuming get_stock_data() is a function that returns a DataFrame for a given ticker
-    cherries_stock = get_stock_data(ticker)
+    cherries_stock = get_stock_data(stock_data['Security Code'])
 
     if not cherries_stock.empty:
         # Plotting the stock price and volume change over time using Plotly
