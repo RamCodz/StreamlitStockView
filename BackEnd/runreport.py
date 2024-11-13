@@ -28,7 +28,7 @@ def process_stock_data(gv_sys_date):
     all_data['Date'] = pd.to_datetime(all_data['Date'])
 
     # Filter data based on the selected date
-    all_data = all_data[all_data['Date'] == gv_sys_date]
+    all_data = all_data[all_data['Date'] <= gv_sys_date]
 
     # Find cherries and gems
     cherries_ticker_dtls = find_cherries(all_data, StockList, gv_sys_date)
