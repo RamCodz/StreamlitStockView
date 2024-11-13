@@ -22,6 +22,8 @@ def get_color(value):
 # Function to display detailed stock information
 def display_stock_details(stock_data):
     st.subheader(f"Details for {stock_data['Security Name']}")
+    st.write(stock_data['Security Id'])
+    st.write(stock_data['Security Code'])
 
     # Assuming get_stock_data() is a function that returns a DataFrame for a given ticker
     cherries_stock = get_stock_data(stock_data['Security Code'])
@@ -80,7 +82,7 @@ def display_stock_details(stock_data):
         st.plotly_chart(fig)
 
     else:
-        st.error(f"No data found for {ticker}. Please check the ticker symbol or try again later.")
+        st.error(f"No data found for {stock_data['Security Id']}. Please check the ticker symbol or try again later.")
 
 
 # Common function to display stock data with checkboxes
