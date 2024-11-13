@@ -50,6 +50,7 @@ def display_stock_data_from_df(df, key_prefix=""):
         # Header row for the heatmap values (1W, 1M, 3M, 6M, 1Y, 5Y)
         st.markdown(
             f'<div style="margin:0; padding:0; display:flex; flex-direction:row; align-items:center;" class="header-row">' +
+            f'<div style="flex:0.5; margin:0; padding:3px;"></div>' +  # Space for the checkbox
             f'<div style="flex:1; margin:0; padding:3px;">Stock Name</div>' +
             f'<div style="flex:1; margin:0; padding:3px;">1Week</div>' +
             f'<div style="flex:1; margin:0; padding:3px;">1Month</div>' +
@@ -69,10 +70,14 @@ def display_stock_data_from_df(df, key_prefix=""):
             returns = [row['1W_value'], row['1M_value'], row['3M_value'], row['6M_value'], row['1Y_value'], row['5Y_value']]
             colors = [get_color(value) for value in returns]
 
+            # Add checkbox for each stock at the start of the row
+            show_details = st.checkbox('', key=f"{key_prefix}_{ticker}")
+
             # Display the stock data with color coding for each timeframe
             st.markdown(
                 f'<div style="margin:0; padding:0; border-radius:3px; display:flex; flex-direction:row; align-items:center;" class="no-space">' +
-                f'<div style="flex:1; margin:0; padding:3px;">{tick}</div>' +
+                f'<div style="flex:0.5; margin:0; padding:3px;">{show_details}</div>' +  # Checkbox column
+                f'<div style="flex:1; margin:0; padding:3px;">{tick}</div>' +  # Stock name
                 f'<div style="flex:1; {colors[0]}; margin:0; padding:3px;">{row["1W_value"]}%</div>' +
                 f'<div style="flex:1; {colors[1]}; margin:0; padding:3px;">{row["1M_value"]}%</div>' +
                 f'<div style="flex:1; {colors[2]}; margin:0; padding:3px;">{row["3M_value"]}%</div>' +
@@ -81,9 +86,6 @@ def display_stock_data_from_df(df, key_prefix=""):
                 f'<div style="flex:1; {colors[5]}; margin:0; padding:3px;">{row["5Y_value"]}%</div>' +
                 '</div>', unsafe_allow_html=True
             )
-            
-            # Add checkbox for each stock
-            show_details = st.checkbox('', key=f"{key_prefix}_{ticker}")
             
             # If checkbox is checked, display detailed information
             if show_details:
