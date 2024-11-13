@@ -18,7 +18,7 @@ def analyze_stock(ticker_data, breakout_days, w_or_m):
                 print("Index is out of bounds")
                 past_data = None
         else:
-            recent_data = ticker_data.iloc[-(1+21)]
+            recent_data = ticker_data.iloc[-(22)]
             try:
                 past_data = ticker_data.iloc[-(breakout_days+21)]
             except IndexError:
@@ -33,7 +33,7 @@ def analyze_stock(ticker_data, breakout_days, w_or_m):
                 print("Index is out of bounds")
                 past_data = None
         else:
-            recent_data = ticker_data.iloc[-(1+5)]
+            recent_data = ticker_data.iloc[-(6)]
             try:
                 past_data = ticker_data.iloc[-(breakout_days+5)]
             except IndexError:
