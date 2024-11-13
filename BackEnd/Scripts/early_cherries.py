@@ -96,7 +96,7 @@ def find_cherries(all_data, StockList, current_date):
         apply_flags(ticker_stklist_dtls)
 
         # Concatenate the stock data for this ticker with the results
-        if filtered_data = ticker_stklist_dtls[ticker_stklist_dtls['1M_value'] > '30' & (ticker_stklist_dtls['5Y_FLG'] = 'Y' or ticker_stklist_dtls['1Y_FLG'] = 'Y')]:
+        if filtered_data = ticker_stklist_dtls[ticker_stklist_dtls['1M_value'] > '30' & (ticker_stklist_dtls['5Y_FLG'] == 'Y' or ticker_stklist_dtls['1Y_FLG'] == 'Y')]:
             cherries_ticker_dtls = pd.concat([cherries_ticker_dtls, filtered_data])
 
     return cherries_ticker_dtls
