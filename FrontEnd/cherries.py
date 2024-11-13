@@ -29,6 +29,7 @@ def display_stock_details(stock_data):
     # Add any additional stock info you want to display (like historical data, etc.)
     # st.write(f"More information about the stock...") 
 
+
 # Common function to display stock data with clickable stock names
 def display_stock_data_from_df(df, key_prefix=""):
     if not df.empty:
@@ -62,6 +63,7 @@ def display_stock_data_from_df(df, key_prefix=""):
             '</div>', unsafe_allow_html=True
         )
         
+        # Add the interactive stock name as a clickable button and show details in the same page
         for index, row in df.iterrows():
             ticker = row['Security Id']
             tick = row['Security Name']
@@ -73,8 +75,8 @@ def display_stock_data_from_df(df, key_prefix=""):
             # Display the stock data with color coding for each timeframe
             st.markdown(
                 f'<div style="margin:0; padding:0; border-radius:3px; display:flex; flex-direction:row; align-items:center;" class="no-space">' +
-                f'<div style="flex:1; margin:0; padding:1px;">' +
-                f'<button style="background: none; border: none; color: #007BFF; text-decoration: underline; cursor: pointer;" onClick="display_stock_details(row)">{tick}</button>' +
+                f'<div style="flex:1; margin:0; padding:3px;">' +
+                f'<button style="background: none; border: none; color: #007BFF; text-decoration: underline; cursor: pointer;" onClick="st.session_state.selected_stock = {ticker}">{tick}</button>' +
                 f'</div>' +
                 f'<div style="flex:1; {colors[0]}; margin:0; padding:3px;">{row["1W_value"]}%</div>' +
                 f'<div style="flex:1; {colors[1]}; margin:0; padding:3px;">{row["1M_value"]}%</div>' +
@@ -84,12 +86,15 @@ def display_stock_data_from_df(df, key_prefix=""):
                 f'<div style="flex:1; {colors[5]}; margin:0; padding:3px;">{row["5Y_value"]}%</div>' +
                 '</div>', unsafe_allow_html=True
             )
-            
-            # Check if this stock is clicked and display additional info
-            if st.button(f"Show details for {tick}", key=f"{key_prefix}_{ticker}"):
-                display_stock_details(row)
+
+            # When a stock name is clicked, show additional details in an expander
+            if st.session_state.get("selected_stock") == ticker:
+                with st.expander(f"Details for {tick}"):
+                    display_stock_details(row)
+
     else:
         st.warning("No data available to display.")
+
 
 # Function to load stock list from a file
 def load_stock_data(file_path):
