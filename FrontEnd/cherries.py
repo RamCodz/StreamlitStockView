@@ -76,7 +76,7 @@ def display_stock_data_from_df(df, key_prefix=""):
             st.markdown(
                 f'<div style="margin:0; padding:0; border-radius:3px; display:flex; flex-direction:row; align-items:center;" class="no-space">' +
                 f'<div style="flex:1; margin:0; padding:3px;">' +
-                f'<button style="background: none; border: none; color: #007BFF; text-decoration: underline; cursor: pointer;" onClick="st.session_state.selected_stock = {ticker}">{tick}</button>' +
+                f'<button style="background: none; border: none; color: #007BFF; text-decoration: underline; cursor: pointer;" onClick="st.write({ticker})">{tick}</button>' +
                 f'</div>' +
                 f'<div style="flex:1; {colors[0]}; margin:0; padding:3px;">{row["1W_value"]}%</div>' +
                 f'<div style="flex:1; {colors[1]}; margin:0; padding:3px;">{row["1M_value"]}%</div>' +
