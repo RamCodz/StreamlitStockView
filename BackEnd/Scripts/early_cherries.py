@@ -6,7 +6,6 @@ def dbg(msg):
     debug("early_cherries-->" + str(msg))
 
 def analyze_stock(ticker_data, breakout_days, w_or_m):
-    print("in analyze_stock")
     pct_change = 0
     
     if w_or_m == 'M':
@@ -15,14 +14,12 @@ def analyze_stock(ticker_data, breakout_days, w_or_m):
             try:
                 past_data = ticker_data.iloc[-breakout_days]
             except IndexError:
-                print("Index is out of bounds")
                 past_data = None
         else:
             recent_data = ticker_data.iloc[-(22)]
             try:
                 past_data = ticker_data.iloc[-(breakout_days+21)]
             except IndexError:
-                print("Index is out of bounds")
                 past_data = None
     else:
         if breakout_days == 5:
@@ -30,23 +27,19 @@ def analyze_stock(ticker_data, breakout_days, w_or_m):
             try:
                 past_data = ticker_data.iloc[-breakout_days]
             except IndexError:
-                print("Index is out of bounds")
                 past_data = None
         else:
             recent_data = ticker_data.iloc[-(6)]
             try:
                 past_data = ticker_data.iloc[-(breakout_days+5)]
             except IndexError:
-                print("Index is out of bounds")
                 past_data = None
     
-    print(past_data)
     if past_data is not None:
         pct_change = round((((recent_data['close'] - past_data['close']) / past_data['close']) * 100), 2)
     return pct_change
 
 def find_cherries(all_data, StockList, current_date):
-    print("in find_cherries ")
     cherries_ticker_dtls = pd.DataFrame()
     ticker_stklist_dtls  = pd.DataFrame()
     m_ticker_stklist_dtls  = pd.DataFrame()
@@ -55,16 +48,8 @@ def find_cherries(all_data, StockList, current_date):
     current_date = pd.to_datetime(current_date)
     
     for ticker in unique_tickers:
-        print("ticker " + ticker)
-        print("current_date", current_date)
-        print("all_data")
-        print(all_data)
         ticker_data = all_data[all_data['ticker'] == ticker]
-        print("ticker_data - ticker specific")
-        print(ticker_data)
         ticker_data = ticker_data[ticker_data['Date'] <= current_date]
-        print("ticker_data - date range")
-        print(ticker_data)
         ticker_stklist_dtls = StockList[StockList['Security Id'] + '.NS' == ticker]
         with warnings.catch_warnings(record=True) as w:
             warnings.simplefilter("always")
@@ -90,8 +75,6 @@ def find_cherries(all_data, StockList, current_date):
         m_ticker_stklist_dtls = ticker_stklist_dtls
         current_index = ticker_stklist_dtls.index
         for break_out in ['1W','1M','3M','6M','1Y','5Y']:
-            print('Y/M ' + break_out[-1])
-            print('val ' + break_out[:-1])
             if break_out[-1] == 'Y':
                 breakout_days = int(break_out[:-1]) * 21
                 breakout_name = break_out + "_value"
@@ -101,14 +84,10 @@ def find_cherries(all_data, StockList, current_date):
             elif break_out[-1] == 'W':
                 breakout_days = int(break_out[:-1]) * 5
                 breakout_name = break_out + "_value"
-            print('breakout days ' + str(breakout_days))
             w_pct_change = 0
             m_pct_change = 0
-            print("breakout_days " + str(breakout_days))
             w_pct_change = analyze_stock(ticker_data, breakout_days, 'W')
             m_pct_change = analyze_stock(ticker_data, breakout_days, 'M')
-            print("w_pct change " + str(w_pct_change))
-            print("current_index " + str(current_index))
             ticker_stklist_dtls.loc[current_index, breakout_name] = w_pct_change
             m_ticker_stklist_dtls.loc[current_index, breakout_name] = m_pct_change
         
