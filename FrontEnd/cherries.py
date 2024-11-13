@@ -32,7 +32,7 @@ def display_stock_data_from_df(df, key_prefix=""):
             tick = row['Security Name']
 
             # Calculate returns for each timeframe and apply color formatting
-            returns = [row['1M'], row['3M'], row['6M'], row['1Y'], row['5Y']]
+            returns = [row['1W_value'], row['1M_value'], row['3M_value'], row['6M_value'], row['1Y_value'], row['5Y_value']]
             colors = [get_color(value) for value in returns]
             
             st.markdown(
