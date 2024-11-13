@@ -43,7 +43,7 @@ def display_stock_data_from_df(df, key_prefix=""):
             .header-row {
                 font-weight: bold;
                 background-color: #f0f0f0;
-                padding: 5px;
+                padding: 3px;
             }
             </style>
             """, unsafe_allow_html=True
