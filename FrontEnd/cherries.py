@@ -7,12 +7,20 @@ from FrontEnd.Utils import get_latest_report_data
 
 # Function to get color based on returns
 def get_color(value):
+    max_value = 500  # Define a maximum return value for saturation
+    min_value = -100  # Minimum return value for saturation
+    
+    # Adjust the color intensity based on the magnitude of the value
     if value > 0:
-        return f'background-color: rgba(0, 255, 0, {value / 100})'  # Green for positive returns
+        intensity = min(value / max_value, 1)  # Limit the intensity to 1
+        return f'background-color: rgba(0, 255, 0, {intensity})'  # Green for positive returns
     elif value < 0:
-        return f'background-color: rgba(255, 0, 0, {-value / 100})'  # Red for negative returns
+        intensity = min(abs(value) / abs(min_value), 1)  # Limit intensity to 1
+        return f'background-color: rgba(255, 0, 0, {intensity})'  # Red for negative returns
     else:
         return 'background-color: white'  # White for no change
+
+
 
 # Common function to display stock data with headers for each column
 def display_stock_data_from_df(df, key_prefix=""):
@@ -113,5 +121,7 @@ tab_titles = {
     "3M": "3 Month Breakout",
     "1M": "1 Month Breakout"
     }
+
+@st.cache_data
 
 create_tabs(tab_titles, stock_list_df)
