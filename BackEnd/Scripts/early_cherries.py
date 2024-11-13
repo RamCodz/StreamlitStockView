@@ -1,68 +1,125 @@
 import pandas as pd
 import warnings
 from datetime import datetime, timedelta
-from BackEnd.Utils import globals
-from BackEnd.Utils.debug import debug
+from Utils import globals
+from Utils.debug import debug
+
+def dbg(msg):
+    debug("early_cherries-->" + str(msg))
 
 
-def analyze_stock(ticker_data,breakout_days):
+def analyze_stock(ticker_data,breakout_days, w_or_m):
+    dbg("in analyze_stock")
     pct_change = 0
-    end_date = datetime.now()
-    start_date_one_year = end_date - timedelta(days=breakout_days)
-    start_date_one_week = end_date - timedelta(days=21)
-
-    last_year_data = ticker_data[(ticker_data['Date'] >= start_date_one_year) & (ticker_data['Date'] <= end_date)]
-    last_week_data = ticker_data[(ticker_data['Date'] >= start_date_one_week) & (ticker_data['Date'] <= end_date)]
-    if last_year_data is not None and last_week_data is not None:
-        # Calculate the percentage change over the last year
-        year_start_price = last_year_data['close'].iloc[0]
-        year_end_price = last_year_data['close'].iloc[-1]
-        year_change = ((year_end_price - year_start_price) / year_start_price) * 100
-        
-        # Calculate the recent performance (last 30 days)
     
-        recent_start_price = last_week_data['close'].iloc[0]
-        recent_end_price = last_week_data['close'].iloc[-1]
-        recent_change = ((recent_end_price - recent_start_price) / recent_start_price) * 100
-        
-        # Criteria for identifying underperformers that recently rallied
-        if year_change < 500 and recent_change > 3:  # Adjust the thresholds as needed
-            return pct_change
+    if w_or_m == 'M':
+        if breakout_days <= globals.m_bwout:
+            recent_data = ticker_data.iloc[-1]
+            try:
+                past_data = ticker_data.iloc[-breakout_days]
+            except IndexError:
+                print("Index is out of bounds")
+                past_data = None
+        else:
+            recent_data = ticker_data.iloc[-(1+globals.m_bwout)]
+            try:
+                past_data = ticker_data.iloc[-(breakout_days+globals.m_bwout)]
+            except IndexError:
+                print("Index is out of bounds")
+                past_data = None
+    else:
+        if breakout_days == globals.w_bwout:
+            recent_data = ticker_data.iloc[-1]
+            try:
+                past_data = ticker_data.iloc[-breakout_days]
+            except IndexError:
+                print("Index is out of bounds")
+                past_data = None
+        else:
+            recent_data = ticker_data.iloc[-(1+globals.w_bwout)]
+            try:
+                past_data = ticker_data.iloc[-(breakout_days+globals.w_bwout)]
+            except IndexError:
+                print("Index is out of bounds")
+                past_data = None
+    
+    dbg(past_data)
+    if past_data is not None:
+        pct_change = round((((recent_data['close'] - past_data['close']) / past_data['close']) * 100),2)
     return pct_change
-       
+
+
 def find_cherries(all_data, StockList):
-    print("Starting find_cherries...")
+    dbg("in find_cherries ")
     cherries_ticker_dtls = pd.DataFrame()
     ticker_stklist_dtls  = pd.DataFrame()
-    '''DListLbl = ['Security Code', 'Issuer Name', 'Security Id', 'Security Name', 'Status', 'Group', 'Face Value',
-                'ISIN No', 'Industry', 'Instrument', 'Sector Name', 'Industry New Name', 'Igroup Name',
-                'ISubgroup Name']'''
+    m_ticker_stklist_dtls  = pd.DataFrame()
+    breakout_name = ""
     unique_tickers = all_data['ticker'].unique()
     for ticker in unique_tickers:
+        dbg("ticker " + ticker)
         ticker_data = all_data[all_data['ticker'] == ticker]
-        for break_out in globals.cherry_breakout:
+        ticker_stklist_dtls = StockList[StockList['Security Id'] + '.NS' == ticker]
+        with warnings.catch_warnings(record=True) as w:
+            warnings.simplefilter("always")
+            try:
+                ticker_stklist_dtls.loc[:,'Report'] = 'C'
+                ticker_stklist_dtls.loc[:,'1W_value'] = 0.00
+                ticker_stklist_dtls.loc[:,'1M_value'] = 0.00
+                ticker_stklist_dtls.loc[:,'3M_value'] = 0.00
+                ticker_stklist_dtls.loc[:,'6M_value'] = 0.00
+                ticker_stklist_dtls.loc[:,'1Y_value'] = 0.00
+                ticker_stklist_dtls.loc[:,'5Y_value'] = 0.00
+                ticker_stklist_dtls.loc[:,'1W_FLG'] = 'N'
+                ticker_stklist_dtls.loc[:,'1M_FLG'] = 'N'
+                ticker_stklist_dtls.loc[:,'3M_FLG'] = 'N'
+                ticker_stklist_dtls.loc[:,'6M_FLG'] = 'N'
+                ticker_stklist_dtls.loc[:,'1Y_FLG'] = 'N'
+                ticker_stklist_dtls.loc[:,'5Y_FLG'] = 'N'
+            except SettingWithCopyWarning:
+                dbg('SettingWithCopyWarning')
+            finally:
+                for warning in w:
+                    dbg('SettingWithCopyWarning')
+        m_ticker_stklist_dtls = ticker_stklist_dtls
+        current_index = ticker_stklist_dtls.index
+        for break_out in globals.breakout:
+            dbg('Y/M '+break_out[-1])
+            dbg('val '+break_out[:-1])
             if break_out[-1] == 'Y':
-                breakout_days = int(break_out[:-1])*365
+                breakout_days = int(break_out[:-1])*globals.y_bwout
+                breakout_name = break_out + "_value"
             elif break_out[-1] == 'M':
-                breakout_days = int(break_out[:-1])*30
-            pct_change = 0;
-            pct_change = analyze_stock(ticker_data, breakout_days)
-            if pct_change != 0:
-                ticker_stklist_dtls = StockList[StockList['Security Id'] + '.NS' == ticker]
-                #dbg("ticker stocklist " + str(ticker_stklist_dtls))
-                with warnings.catch_warnings(record=True) as w:
-                    warnings.simplefilter("always")
-                    try:
-                        ticker_stklist_dtls.loc[:,'Break Out'] = break_out
-                        ticker_stklist_dtls.loc[:,'Variation'] = pct_change #add logic to get % growth
-                        ticker_stklist_dtls.loc[:,'Report'] = 'C'
-                    except SettingWithCopyWarning:
-                        pass
-                        
-                    finally:
-                        # Display any warnings caught
-                        pass
-                    cherries_ticker_dtls = pd.concat([cherries_ticker_dtls, ticker_stklist_dtls])
-    print("Completed find_cherries...")
-    print(cherries_ticker_dtls)
+                breakout_days = int(break_out[:-1])*globals.m_bwout
+                breakout_name = break_out + "_value"
+            elif break_out[-1] == 'W':
+                breakout_days = int(break_out[:-1])*globals.w_bwout
+                breakout_name = break_out + "_value"
+            dbg('breakout days '+str(breakout_days))
+            w_pct_change = 0;
+            m_pct_change = 0;
+            dbg("breakout_days "+str(breakout_days))
+            w_pct_change = analyze_stock(ticker_data, breakout_days,'W')
+            m_pct_change = analyze_stock(ticker_data, breakout_days,'M')
+            dbg("w_pct change "+str(w_pct_change))
+            dbg("current_index " +str(current_index));
+            ticker_stklist_dtls.loc[current_index, breakout_name] = w_pct_change
+            m_ticker_stklist_dtls.loc[current_index, breakout_name] = m_pct_change
+        
+        ticker_stklist_dtls.loc[ticker_stklist_dtls['1W_value'] > ticker_stklist_dtls['1M_value'], '1M_FLG'] = 'Y'
+        ticker_stklist_dtls.loc[ticker_stklist_dtls['1W_value'] > ticker_stklist_dtls['3M_value'], '3M_FLG'] = 'Y'
+        ticker_stklist_dtls.loc[ticker_stklist_dtls['1W_value'] > ticker_stklist_dtls['6M_value'], '6M_FLG'] = 'Y'
+        ticker_stklist_dtls.loc[ticker_stklist_dtls['1W_value'] > ticker_stklist_dtls['1Y_value'], '1Y_FLG'] = 'Y'
+        ticker_stklist_dtls.loc[ticker_stklist_dtls['1W_value'] > ticker_stklist_dtls['5Y_value'], '5Y_FLG'] = 'Y'
+        
+        
+        m_ticker_stklist_dtls.loc[m_ticker_stklist_dtls['1M_value'] > m_ticker_stklist_dtls['3M_value'], '3M_FLG'] = 'Y'
+        m_ticker_stklist_dtls.loc[m_ticker_stklist_dtls['1M_value'] > m_ticker_stklist_dtls['6M_value'], '6M_FLG'] = 'Y'
+        m_ticker_stklist_dtls.loc[m_ticker_stklist_dtls['1M_value'] > m_ticker_stklist_dtls['1Y_value'], '1Y_FLG'] = 'Y'
+        m_ticker_stklist_dtls.loc[m_ticker_stklist_dtls['1M_value'] > m_ticker_stklist_dtls['5Y_value'], '5Y_FLG'] = 'Y'
+        
+        
+        cherries_ticker_dtls = pd.concat([cherries_ticker_dtls, ticker_stklist_dtls])
+        
+    ##dbg("cherries list "+str(cherries_ticker_dtls))
     return cherries_ticker_dtls
