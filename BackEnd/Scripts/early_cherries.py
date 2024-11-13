@@ -56,7 +56,7 @@ def find_cherries(all_data, StockList, current_date):
     
     for ticker in unique_tickers:
         print("ticker " + ticker)
-        print("current_date", ticker_data)
+        print("current_date", current_date)
         print(ticker_data)
         ticker_data = all_data[all_data['ticker'] == ticker]
         ticker_data = ticker_data[ticker_data['date'] <= current_date]
