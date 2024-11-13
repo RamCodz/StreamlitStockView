@@ -24,7 +24,7 @@ def display_stock_details(stock_data):
     st.write(f"1 Year Change: {stock_data['1Y_value']}%")
     st.write(f"5 Year Change: {stock_data['5Y_value']}%")
 
-# Common function to display stock data with clickable stock names
+# Common function to display stock data with checkboxes
 def display_stock_data_from_df(df, key_prefix=""):
     if not df.empty:
         st.markdown(
@@ -67,21 +67,32 @@ def display_stock_data_from_df(df, key_prefix=""):
             returns = [row['1W_value'], row['1M_value'], row['3M_value'], row['6M_value'], row['1Y_value'], row['5Y_value']]
             colors = [get_color(value) for value in returns]
 
-            # Add checkbox for each stock at the start of the row
-            show_details = st.checkbox('', key=f"{key_prefix}_{ticker}", label_visibility="hidden")
+            # Create columns for each part of the row (checkbox, stock name, and data columns)
+            col1, col2, col3, col4, col5, col6, col7, col8, col9 = st.columns([0.7, 2, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7])
 
-            # Display the stock data with color coding for each timeframe
-            st.markdown(
-                f'<div style="margin:0; padding:0; border-radius:3px; display:flex; flex-direction:row; align-items:center;" class="no-space">' +
-                f'<div style="flex:2; margin:0; padding:3px;">{tick}</div>' +  # Stock name
-                f'<div style="flex:0.7; {colors[0]}; margin:0; padding:3px;">{row["1W_value"]}%</div>' +
-                f'<div style="flex:0.7; {colors[1]}; margin:0; padding:3px;">{row["1M_value"]}%</div>' +
-                f'<div style="flex:0.7; {colors[2]}; margin:0; padding:3px;">{row["3M_value"]}%</div>' +
-                f'<div style="flex:0.7; {colors[3]}; margin:0; padding:3px;">{row["6M_value"]}%</div>' +
-                f'<div style="flex:0.7; {colors[4]}; margin:0; padding:3px;">{row["1Y_value"]}%</div>' +
-                f'<div style="flex:0.7; {colors[5]}; margin:0; padding:3px;">{row["5Y_value"]}%</div>' +
-                '</div>', unsafe_allow_html=True
-            )
+            with col1:
+                show_details = st.checkbox('', key=f"{key_prefix}_{ticker}", label_visibility="hidden")
+
+            with col2:
+                st.write(tick)  # Stock Name
+            
+            with col3:
+                st.markdown(f'<div style="{colors[0]}">{row["1W_value"]}%</div>', unsafe_allow_html=True)
+            
+            with col4:
+                st.markdown(f'<div style="{colors[1]}">{row["1M_value"]}%</div>', unsafe_allow_html=True)
+
+            with col5:
+                st.markdown(f'<div style="{colors[2]}">{row["3M_value"]}%</div>', unsafe_allow_html=True)
+
+            with col6:
+                st.markdown(f'<div style="{colors[3]}">{row["6M_value"]}%</div>', unsafe_allow_html=True)
+
+            with col7:
+                st.markdown(f'<div style="{colors[4]}">{row["1Y_value"]}%</div>', unsafe_allow_html=True)
+
+            with col8:
+                st.markdown(f'<div style="{colors[5]}">{row["5Y_value"]}%</div>', unsafe_allow_html=True)
 
             # If checkbox is checked, display detailed information
             if show_details:
