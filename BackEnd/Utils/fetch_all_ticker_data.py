@@ -10,10 +10,6 @@ def dbg(msg):
 def get_stock_data(ticker, start_date, end_date):  
     try:
         # Get historical data
-        print("start_date")
-        print(start_date)
-        print("end_date")
-        print(end_date)
         historical_data = si.get_data(ticker, start_date=start_date, end_date=end_date, interval='1d')
 
         return historical_data
@@ -22,9 +18,6 @@ def get_stock_data(ticker, start_date, end_date):
         return pd.DataFrame()
 
 def get_all_data(StockList):
-    print("Starting get_all_data...")
-    print("stock list")
-    print(StockList)
     all_data = pd.DataFrame()
     today = datetime.today()
     five_year_ago = today - timedelta(days=365*globals.noy)
@@ -34,19 +27,17 @@ def get_all_data(StockList):
     i = 0
     for index, row in StockList.iterrows():
         i=i+1
-        if i == 1000:
+        if i == 300:
             break
         stkSymbol = row['Security Id']+'.NS'
         five_year_data = get_stock_data(stkSymbol, five_year_ago, today)
-        print("five_year_data")
-        print(five_year_data)
+
         if not five_year_data.empty:
             ##five_year_data['Security Name'] = row['Security Name'];
             ##for k in range(len(DListLbl)):
             ##five_year_data[DListLbl[k]] = row[DListLbl[k]]
             all_data = pd.concat([all_data, five_year_data])
-        
-    print("Completed get_all_data...")
+
     return all_data
         
 ##get_all_data()
