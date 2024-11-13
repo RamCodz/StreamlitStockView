@@ -1,7 +1,6 @@
 import streamlit as st
 import pandas as pd
-import math
-from pandas.errors import EmptyDataError  # Import EmptyDataError explicitly
+from pandas.errors import EmptyDataError
 from BackEnd.Utils import globals
 from FrontEnd.Utils import get_latest_report_data
 
@@ -15,7 +14,22 @@ def get_color(value):
         return 'background-color: white'  # White for no change
 
 
-# Common function to display stock data with headers for each column
+# Function to display detailed stock information
+def display_stock_details(stock_data):
+    # Display detailed information about the stock (you can customize this)
+    st.subheader(f"Details for {stock_data['Security Name']}")
+    st.write(f"Stock ID: {stock_data['Security Id']}")
+    st.write(f"1 Week Change: {stock_data['1W_value']}%")
+    st.write(f"1 Month Change: {stock_data['1M_value']}%")
+    st.write(f"3 Month Change: {stock_data['3M_value']}%")
+    st.write(f"6 Month Change: {stock_data['6M_value']}%")
+    st.write(f"1 Year Change: {stock_data['1Y_value']}%")
+    st.write(f"5 Year Change: {stock_data['5Y_value']}%")
+    
+    # Add any additional stock info you want to display (like historical data, etc.)
+    # st.write(f"More information about the stock...") 
+
+# Common function to display stock data with clickable stock names
 def display_stock_data_from_df(df, key_prefix=""):
     if not df.empty:
         st.markdown(
@@ -59,7 +73,9 @@ def display_stock_data_from_df(df, key_prefix=""):
             # Display the stock data with color coding for each timeframe
             st.markdown(
                 f'<div style="margin:0; padding:0; border-radius:5px; display:flex; flex-direction:row; align-items:center;" class="no-space">' +
-                f'<div style="flex:1; margin:0; padding:3px;">{tick}</div>' +
+                f'<div style="flex:1; margin:0; padding:3px;">' +
+                f'<button style="background: none; border: none; color: #007BFF; text-decoration: underline; cursor: pointer;" onClick="window.location.reload();">{tick}</button>' +
+                f'</div>' +
                 f'<div style="flex:1; {colors[0]}; margin:0; padding:3px;">{row["1W_value"]}%</div>' +
                 f'<div style="flex:1; {colors[1]}; margin:0; padding:3px;">{row["1M_value"]}%</div>' +
                 f'<div style="flex:1; {colors[2]}; margin:0; padding:3px;">{row["3M_value"]}%</div>' +
@@ -68,6 +84,10 @@ def display_stock_data_from_df(df, key_prefix=""):
                 f'<div style="flex:1; {colors[5]}; margin:0; padding:3px;">{row["5Y_value"]}%</div>' +
                 '</div>', unsafe_allow_html=True
             )
+            
+            # Check if this stock is clicked and display additional info
+            if st.button(f"Show details for {tick}", key=f"{key_prefix}_{ticker}"):
+                display_stock_details(row)
     else:
         st.warning("No data available to display.")
 
@@ -113,6 +133,6 @@ tab_titles = {
     "6M": "6 Month Breakout",
     "3M": "3 Month Breakout",
     "1M": "1 Month Breakout"
-    }
+}
 
 create_tabs(tab_titles, stock_list_df)
