@@ -16,4 +16,10 @@ today = None  ##today in '%Y-%m-%d' format
 
 cherry_breakout = ['5Y','1Y','6M','3M','1M']  ##as of now Year(Y) and Month(M) allowed
 gems_breakout = ['1W','1M','3M','6M','1Y']  
+
+breakout = ['1W','1M','3M','6M','1Y','5Y']  
+w_bwout = 5
+m_bwout = 21
+y_bwout = 21
+
 gems_pct_change = -15
