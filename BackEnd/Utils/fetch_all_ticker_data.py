@@ -31,21 +31,15 @@ def get_all_data(StockList):
     DListLbl=['Security Name','Status','Group','Face Value','ISIN No','Industry','Instrument','Sector Name','Industry New Name','Igroup Name','ISubgroup Name'] 
     ##StockList = pd.read_csv(str(globals.equity_list_path) + str(globals.equity_list_filename))
 
-    i = 0
     for index, row in StockList.iterrows():
         stkSymbol = row['Security Id']+'.NS'
-        
-        five_year_data = get_stock_data(stkSymbol, five_year_ago, today)
-        if not five_year_data.empty:
-            ##five_year_data['Security Name'] = row['Security Name'];
-            ##for k in range(len(DListLbl)):
+        if stkSymbol = 'RVNL.NS':
+            five_year_data = get_stock_data(stkSymbol, five_year_ago, today)
+            if not five_year_data.empty:
+                ##five_year_data['Security Name'] = row['Security Name'];
+                ##for k in range(len(DListLbl)):
                 ##five_year_data[DListLbl[k]] = row[DListLbl[k]]
-            all_data = pd.concat([all_data, five_year_data])
-            
-        if i==100:
-            break
-            
-        i=i+1
+                all_data = pd.concat([all_data, five_year_data])
         
     print("Completed get_all_data...")
     return all_data
