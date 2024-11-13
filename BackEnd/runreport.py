@@ -37,5 +37,6 @@ def process_stock_data(gv_sys_date):
     # final_df = pd.concat([cherries_ticker_dtls, gems_ticker_dtls])
     final_df = cherries_ticker_dtls
     # Create or update the output file
+    print(str(globals.stockview_filename))
     create_or_update_file((str(globals.data_filepath) + str(globals.stockview_filename)), final_df)
     print("Completed process_stock_data...")
