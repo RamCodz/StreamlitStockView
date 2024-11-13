@@ -59,7 +59,8 @@ def find_cherries(all_data, StockList, current_date):
         print("current_date", current_date)
         print(all_data)
         ticker_data = all_data[all_data['ticker'] == ticker]
-        ticker_data = ticker_data[ticker_data['date'] <= current_date]
+        ticker_data = ticker_data[ticker_data['Date'] <= current_date]
+        print(ticker_data)
         ticker_stklist_dtls = StockList[StockList['Security Id'] + '.NS' == ticker]
         with warnings.catch_warnings(record=True) as w:
             warnings.simplefilter("always")
