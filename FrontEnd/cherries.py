@@ -7,7 +7,7 @@ from FrontEnd.Utils import get_latest_report_data
 
 # Function to get the stock data
 def get_stock_data(ticker, period="5y", interval="1d"):
-    stock = yf.Ticker(ticker + ".BO")  # Append .BO for BSE stocks
+    stock = yf.Ticker(str(ticker) + ".BO")  # Append .BO for BSE stocks
     return stock.history(period=period, interval=interval)
     
 # Function to get color based on returns
