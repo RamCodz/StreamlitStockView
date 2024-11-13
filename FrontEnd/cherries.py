@@ -13,10 +13,8 @@ def get_color(value):
     else:
         return 'background-color: white'  # White for no change
 
-
 # Function to display detailed stock information
 def display_stock_details(stock_data):
-    # Display detailed information about the stock (you can customize this)
     st.subheader(f"Details for {stock_data['Security Name']}")
     st.write(f"Stock ID: {stock_data['Security Id']}")
     st.write(f"1 Week Change: {stock_data['1W_value']}%")
@@ -25,7 +23,6 @@ def display_stock_details(stock_data):
     st.write(f"6 Month Change: {stock_data['6M_value']}%")
     st.write(f"1 Year Change: {stock_data['1Y_value']}%")
     st.write(f"5 Year Change: {stock_data['5Y_value']}%")
-
 
 # Common function to display stock data with clickable stock names
 def display_stock_data_from_df(df, key_prefix=""):
@@ -46,12 +43,12 @@ def display_stock_data_from_df(df, key_prefix=""):
             </style>
             """, unsafe_allow_html=True
         )
-        
+
         # Header row for the heatmap values (1W, 1M, 3M, 6M, 1Y, 5Y)
         st.markdown(
             f'<div style="margin:0; padding:0; display:flex; flex-direction:row; align-items:center;" class="header-row">' +
-            f'<div style="flex:0.5; margin:0; padding:3px;"></div>' +  # Space for the checkbox
-            f'<div style="flex:3; margin:0; padding:3px;">Stock Name</div>' +
+            f'<div style="flex:0.7; margin:0; padding:3px;"></div>' +  # Space for the checkbox
+            f'<div style="flex:2; margin:0; padding:3px;">Stock Name</div>' +
             f'<div style="flex:0.7; margin:0; padding:3px;">1Week</div>' +
             f'<div style="flex:0.7; margin:0; padding:3px;">1Month</div>' +
             f'<div style="flex:0.7; margin:0; padding:3px;">3Month</div>' +
@@ -71,28 +68,28 @@ def display_stock_data_from_df(df, key_prefix=""):
             colors = [get_color(value) for value in returns]
 
             # Add checkbox for each stock at the start of the row
-            show_details = st.checkbox('', key=f"{key_prefix}_{ticker}")
+            show_details = st.checkbox('', key=f"{key_prefix}_{ticker}", label_visibility="hidden")
 
             # Display the stock data with color coding for each timeframe
             st.markdown(
-                f'<div style="margin:0; padding:0; border-radius:1px; display:flex; flex-direction:row; align-items:center;" class="no-space">' +
-                f'<div style="flex:3; margin:5; padding:1px;">{tick}</div>' +  # Stock name
-                f'<div style="flex:0.7; {colors[0]}; margin:0; padding:1px;">{row["1W_value"]}%</div>' +
-                f'<div style="flex:0.7; {colors[1]}; margin:0; padding:1px;">{row["1M_value"]}%</div>' +
-                f'<div style="flex:0.7; {colors[2]}; margin:0; padding:1px;">{row["3M_value"]}%</div>' +
-                f'<div style="flex:0.7; {colors[3]}; margin:0; padding:1px;">{row["6M_value"]}%</div>' +
-                f'<div style="flex:0.7; {colors[4]}; margin:0; padding:1px;">{row["1Y_value"]}%</div>' +
-                f'<div style="flex:0.7; {colors[5]}; margin:0; padding:1px;">{row["5Y_value"]}%</div>' +
+                f'<div style="margin:0; padding:0; border-radius:3px; display:flex; flex-direction:row; align-items:center;" class="no-space">' +
+                f'<div style="flex:0.7; margin:0; padding:3px; text-align:center;">{show_details}</div>' +  # Checkbox aligned
+                f'<div style="flex:2; margin:0; padding:3px;">{tick}</div>' +  # Stock name
+                f'<div style="flex:0.7; {colors[0]}; margin:0; padding:3px;">{row["1W_value"]}%</div>' +
+                f'<div style="flex:0.7; {colors[1]}; margin:0; padding:3px;">{row["1M_value"]}%</div>' +
+                f'<div style="flex:0.7; {colors[2]}; margin:0; padding:3px;">{row["3M_value"]}%</div>' +
+                f'<div style="flex:0.7; {colors[3]}; margin:0; padding:3px;">{row["6M_value"]}%</div>' +
+                f'<div style="flex:0.7; {colors[4]}; margin:0; padding:3px;">{row["1Y_value"]}%</div>' +
+                f'<div style="flex:0.7; {colors[5]}; margin:0; padding:3px;">{row["5Y_value"]}%</div>' +
                 '</div>', unsafe_allow_html=True
             )
-            
+
             # If checkbox is checked, display detailed information
             if show_details:
                 display_stock_details(row)
 
     else:
         st.warning("No data available to display.")
-
 
 # Function to load stock list from a file
 def load_stock_data(file_path):
