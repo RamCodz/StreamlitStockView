@@ -14,15 +14,68 @@ def get_color(value):
         return 'background-color: white'  # White for no change
 
 # Function to display detailed stock information
-def display_stock_details(stock_data):
+def display_stock_details(stock_data, ticker):
     st.subheader(f"Details for {stock_data['Security Name']}")
-    st.write(f"Stock ID: {stock_data['Security Id']}")
-    st.write(f"1 Week Change: {stock_data['1W_value']}%")
-    st.write(f"1 Month Change: {stock_data['1M_value']}%")
-    st.write(f"3 Month Change: {stock_data['3M_value']}%")
-    st.write(f"6 Month Change: {stock_data['6M_value']}%")
-    st.write(f"1 Year Change: {stock_data['1Y_value']}%")
-    st.write(f"5 Year Change: {stock_data['5Y_value']}%")
+
+    # Assuming get_stock_data() is a function that returns a DataFrame for a given ticker
+    cherries_stock = get_stock_data(ticker)
+
+    if not cherries_stock.empty:
+        # Plotting the stock price and volume change over time using Plotly
+        fig = go.Figure()
+
+        # Add trace for Close Price
+        fig.add_trace(
+            go.Scatter(
+                x=cherries_stock.index, 
+                y=cherries_stock['Close'], 
+                mode='lines', 
+                name='Close Price',
+                yaxis='y', 
+                marker=dict(color='blue')
+            )
+        )
+
+        # Add trace for Volume Change
+        fig.add_trace(
+            go.Bar(
+                x=cherries_stock.index, 
+                y=cherries_stock['Volume'], 
+                name='Volume Change', 
+                yaxis='y2',
+                marker=dict(color='orange')
+            )
+        )
+
+        # Update layout for the chart with two y-axes
+        fig.update_layout(
+            yaxis2=dict(
+                title='Volume',
+                overlaying='y',
+                side='right'
+            ),
+            template="plotly_dark",  # Change template as needed for dark or light themes
+            showlegend=True
+        )
+
+        # Create three columns to display additional information (e.g., PE and PB ratios)
+        col1, col2, col3 = st.columns(3, gap="small")
+        with col1:
+            st.write("PE : [Add PE value here]")
+            st.write("PB : [Add PB value here]")
+        with col2:
+            st.write("PE : [Add PE value here]")
+            st.write("PB : [Add PB value here]")
+        with col3:
+            st.write("PE : [Add PE value here]")
+            st.write("PB : [Add PB value here]")
+
+        # Display the plotly chart
+        st.plotly_chart(fig)
+
+    else:
+        st.error(f"No data found for {ticker}. Please check the ticker symbol or try again later.")
+
 
 # Common function to display stock data with checkboxes
 def display_stock_data_from_df(df, key_prefix=""):
@@ -62,25 +115,18 @@ def display_stock_data_from_df(df, key_prefix=""):
 
             with col1:
                 show_details = st.checkbox('', key=f"{key_prefix}_{ticker}", label_visibility="hidden")
-
             with col2:
-                st.write(tick)  # Stock Name
-            
+                st.write(tick)  # Stock Name            
             with col3:
-                st.markdown(f'<div style="{colors[0]}">{row["1W_value"]}%</div>', unsafe_allow_html=True)
-            
+                st.markdown(f'<div style="{colors[0]}">{row["1W_value"]}%</div>', unsafe_allow_html=True)            
             with col4:
                 st.markdown(f'<div style="{colors[1]}">{row["1M_value"]}%</div>', unsafe_allow_html=True)
-
             with col5:
                 st.markdown(f'<div style="{colors[2]}">{row["3M_value"]}%</div>', unsafe_allow_html=True)
-
             with col6:
                 st.markdown(f'<div style="{colors[3]}">{row["6M_value"]}%</div>', unsafe_allow_html=True)
-
             with col7:
                 st.markdown(f'<div style="{colors[4]}">{row["1Y_value"]}%</div>', unsafe_allow_html=True)
-
             with col8:
                 st.markdown(f'<div style="{colors[5]}">{row["5Y_value"]}%</div>', unsafe_allow_html=True)
 
