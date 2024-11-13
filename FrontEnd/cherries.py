@@ -71,14 +71,22 @@ def display_stock_data_from_df(df, key_prefix=""):
             )
             
             # Create an expander for the stock details that gets activated on click
-            with st.expander(f"More Details for {tick}", expanded=False):
-                st.write(f"Details for stock {tick} (ID: {ticker})")
-                st.write(f"1 Week Value: {row['1W_value']}%")
-                st.write(f"1 Month Value: {row['1M_value']}%")
-                st.write(f"3 Months Value: {row['3M_value']}%")
-                st.write(f"6 Months Value: {row['6M_value']}%")
-                st.write(f"1 Year Value: {row['1Y_value']}%")
-                st.write(f"5 Year Value: {row['5Y_value']}%")
+            with st.expander(st.markdown(f'<div style="margin:0; padding:0; border-radius:5px; display:flex; flex-direction:row; align-items:center;" class="no-space">' +
+                                         f'<div style="flex:1; margin:0; padding:3px;">{stock_link}</div>' +
+                                         f'<div style="flex:1; {colors[0]}; margin:0; padding:3px;">{row["1W_value"]}%</div>' +
+                                         f'<div style="flex:1; {colors[1]}; margin:0; padding:3px;">{row["1M_value"]}%</div>' +
+                                         f'<div style="flex:1; {colors[2]}; margin:0; padding:3px;">{row["3M_value"]}%</div>' +
+                                         f'<div style="flex:1; {colors[3]}; margin:0; padding:3px;">{row["6M_value"]}%</div>' +
+                                         f'<div style="flex:1; {colors[4]}; margin:0; padding:3px;">{row["1Y_value"]}%</div>' +
+                                         f'<div style="flex:1; {colors[5]}; margin:0; padding:3px;">{row["5Y_value"]}%</div>' +
+                                         '</div>', unsafe_allow_html=True), expanded=False):
+                                             st.write(f"Details for stock {tick} (ID: {ticker})")
+                                             st.write(f"1 Week Value: {row['1W_value']}%")
+                                             st.write(f"1 Month Value: {row['1M_value']}%")
+                                             st.write(f"3 Months Value: {row['3M_value']}%")
+                                             st.write(f"6 Months Value: {row['6M_value']}%")
+                                             st.write(f"1 Year Value: {row['1Y_value']}%")
+                                             st.write(f"5 Year Value: {row['5Y_value']}%")
     else:
         st.warning("No data available to display.")
 
