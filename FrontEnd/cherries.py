@@ -7,7 +7,7 @@ from FrontEnd.Utils import get_latest_report_data
 
 # Function to get the stock data
 def get_stock_data(ticker, period="5y", interval="1d"):
-    stock = yf.Ticker(str(ticker) + ".BO")  # Append .BO for BSE stocks
+    stock = yf.Ticker(str(ticker) + ".NS")  # Append .BO for BSE stocks
     return stock.history(period=period, interval=interval)
     
 # Function to get color based on returns
@@ -22,11 +22,9 @@ def get_color(value):
 # Function to display detailed stock information
 def display_stock_details(stock_data):
     st.subheader(f"Details for {stock_data['Security Name']}")
-    st.write(stock_data['Security Id'])
-    st.write(stock_data['Security Code'])
 
     # Assuming get_stock_data() is a function that returns a DataFrame for a given ticker
-    cherries_stock = get_stock_data(stock_data['Security Code'])
+    cherries_stock = get_stock_data(stock_data['Security Id'])
 
     if not cherries_stock.empty:
         # Plotting the stock price and volume change over time using Plotly
