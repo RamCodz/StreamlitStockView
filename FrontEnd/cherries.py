@@ -36,13 +36,13 @@ def display_stock_data_from_df(df, key_prefix=""):
         # Header row for the heatmap values (1W, 1M, 3M, 6M, 1Y, 5Y)
         st.markdown(
             f'<div style="margin:0; padding:0; display:flex; flex-direction:row; align-items:center;" class="header-row">' +
-            f'<div style="flex:1; margin:0; padding:3px;">Security</div>' +
-            f'<div style="flex:1; margin:0; padding:3px;">1W</div>' +
-            f'<div style="flex:1; margin:0; padding:3px;">1M</div>' +
-            f'<div style="flex:1; margin:0; padding:3px;">3M</div>' +
-            f'<div style="flex:1; margin:0; padding:3px;">6M</div>' +
-            f'<div style="flex:1; margin:0; padding:3px;">1Y</div>' +
-            f'<div style="flex:1; margin:0; padding:3px;">5Y</div>' +
+            f'<div style="flex:1; margin:0; padding:3px;">Stock Name</div>' +
+            f'<div style="flex:1; margin:0; padding:3px;">1Week</div>' +
+            f'<div style="flex:1; margin:0; padding:3px;">1Month</div>' +
+            f'<div style="flex:1; margin:0; padding:3px;">3Month</div>' +
+            f'<div style="flex:1; margin:0; padding:3px;">6Month</div>' +
+            f'<div style="flex:1; margin:0; padding:3px;">1Year</div>' +
+            f'<div style="flex:1; margin:0; padding:3px;">5Year</div>' +
             '</div>', unsafe_allow_html=True
         )
         
