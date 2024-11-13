@@ -3,11 +3,11 @@ import warnings
 from datetime import datetime, timedelta
 
 
-def analyze_stock(ticker_data, breakout_days, interval_type):
-    if interval_type not in ['W', 'M']:
-        raise ValueError(f"Invalid interval type {interval_type}. Must be 'W' or 'M'.")
+def analyze_stock(ticker_data, breakout_days, break_type):
+    if break_type not in ['CO', 'BA']: #CO-Consecutive   BA-Break after
+        raise ValueError(f"Invalid break type {break_type}. Must be 'CO' or 'BA'.")
     
-    if interval_type == 'M':
+    if break_type == 'BA':
         # Monthly data
         if breakout_days <= 21:
             recent_data = ticker_data.iloc[-1]
@@ -86,7 +86,7 @@ def find_cherries(all_data, StockList, current_date):
 
         for break_out in ['1W', '1M', '3M', '6M', '1Y', '5Y']:
             breakout_days = get_breakout_days(break_out)
-            pct_change = analyze_stock(ticker_data, breakout_days, "W")
+            pct_change = analyze_stock(ticker_data, breakout_days, "BA")
 
             # Assign the calculated percentage change to the appropriate column
             breakout_name = f"{break_out}_value"
