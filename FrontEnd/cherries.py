@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-from pandas.errors import EmptyDataError  # Import EmptyDataError explicitly
+from pandas.errors import EmptyDataError
 from BackEnd.Utils import globals
 from FrontEnd.Utils import get_latest_report_data
 
@@ -13,7 +13,23 @@ def get_color(value):
     else:
         return 'background-color: white'  # White for no change
 
-# Function to display stock data with interactive stock names
+
+# Function to display detailed stock information
+def display_stock_details(stock_data):
+    # Display detailed information about the stock (you can customize this)
+    st.subheader(f"Details for {stock_data['Security Name']}")
+    st.write(f"Stock ID: {stock_data['Security Id']}")
+    st.write(f"1 Week Change: {stock_data['1W_value']}%")
+    st.write(f"1 Month Change: {stock_data['1M_value']}%")
+    st.write(f"3 Month Change: {stock_data['3M_value']}%")
+    st.write(f"6 Month Change: {stock_data['6M_value']}%")
+    st.write(f"1 Year Change: {stock_data['1Y_value']}%")
+    st.write(f"5 Year Change: {stock_data['5Y_value']}%")
+    
+    # Add any additional stock info you want to display (like historical data, etc.)
+    # st.write(f"More information about the stock...") 
+
+# Common function to display stock data with clickable stock names
 def display_stock_data_from_df(df, key_prefix=""):
     if not df.empty:
         st.markdown(
@@ -54,13 +70,12 @@ def display_stock_data_from_df(df, key_prefix=""):
             returns = [row['1W_value'], row['1M_value'], row['3M_value'], row['6M_value'], row['1Y_value'], row['5Y_value']]
             colors = [get_color(value) for value in returns]
             
-            # Apply color to the stock name in the row itself
-            stock_name_with_color = f'<span style="{colors[0]}">{tick}</span>'  # Use the 1W color for stock name
-
             # Display the stock data with color coding for each timeframe
             st.markdown(
                 f'<div style="margin:0; padding:0; border-radius:5px; display:flex; flex-direction:row; align-items:center;" class="no-space">' +
-                f'<div style="flex:1; margin:0; padding:3px;">{stock_name_with_color}</div>' +
+                f'<div style="flex:1; margin:0; padding:3px;">' +
+                f'<button style="background: none; border: none; color: #007BFF; text-decoration: underline; cursor: pointer;" onClick="window.location.reload();">{tick}</button>' +
+                f'</div>' +
                 f'<div style="flex:1; {colors[0]}; margin:0; padding:3px;">{row["1W_value"]}%</div>' +
                 f'<div style="flex:1; {colors[1]}; margin:0; padding:3px;">{row["1M_value"]}%</div>' +
                 f'<div style="flex:1; {colors[2]}; margin:0; padding:3px;">{row["3M_value"]}%</div>' +
@@ -70,16 +85,9 @@ def display_stock_data_from_df(df, key_prefix=""):
                 '</div>', unsafe_allow_html=True
             )
             
-            # Create an expander for the stock details that gets activated on click
-            with st.expander(f"<span style='{colors[0]}'>{tick}</span>", expanded=False):
-                # Display stock details with color coding
-                st.markdown(f"<div style='padding: 10px; {colors[0]}'>1 Week Value: {row['1W_value']}%</div>", unsafe_allow_html=True)
-                st.markdown(f"<div style='padding: 10px; {colors[1]}'>1 Month Value: {row['1M_value']}%</div>", unsafe_allow_html=True)
-                st.markdown(f"<div style='padding: 10px; {colors[2]}'>3 Months Value: {row['3M_value']}%</div>", unsafe_allow_html=True)
-                st.markdown(f"<div style='padding: 10px; {colors[3]}'>6 Months Value: {row['6M_value']}%</div>", unsafe_allow_html=True)
-                st.markdown(f"<div style='padding: 10px; {colors[4]}'>1 Year Value: {row['1Y_value']}%</div>", unsafe_allow_html=True)
-                st.markdown(f"<div style='padding: 10px; {colors[5]}'>5 Year Value: {row['5Y_value']}%</div>", unsafe_allow_html=True)
-
+            # Check if this stock is clicked and display additional info
+            if st.button(f"Show details for {tick}", key=f"{key_prefix}_{ticker}"):
+                display_stock_details(row)
     else:
         st.warning("No data available to display.")
 
