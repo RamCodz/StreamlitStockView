@@ -94,29 +94,23 @@ def create_tabs(tab_titles, stock_list_df):
                 st.write("No data available to display.")
 
 # Main logic to read stock data and create tabs
-if __name__ == "__main__":
-    # Get the latest stock data file path dynamically
-    stock_list_file = str(globals.data_filepath) + get_latest_report_data.get_latest_file(str(globals.data_filepath))
+stock_list_file = str(globals.data_filepath) + get_latest_report_data.get_latest_file(str(globals.data_filepath))
 
-    # Load stock data from CSV
-    try:
-        stock_list_df = pd.read_csv(stock_list_file)
-    except EmptyDataError:
-        stock_list_df = pd.DataFrame()
-    except Exception as e:
-        st.error(f"Error reading the file: {e}")
-        stock_list_df = pd.DataFrame()
+# Load stock data from CSV
+try:
+    stock_list_df = pd.read_csv(stock_list_file)
+except EmptyDataError:
+    stock_list_df = pd.DataFrame()
+except Exception as e:
+    st.error(f"Error reading the file: {e}")
+    stock_list_df = pd.DataFrame()
 
-    # Tab titles for each timeframe
-    tab_titles = {
-        "5Y": "5 Year Breakout",
-        "1Y": "1 Year Breakout",
-        "6M": "6 Month Breakout",
-        "3M": "3 Month Breakout",
-        "1M": "1 Month Breakout"
+tab_titles = {
+    "5Y": "5 Year Breakout",
+    "1Y": "1 Year Breakout",
+    "6M": "6 Month Breakout",
+    "3M": "3 Month Breakout",
+    "1M": "1 Month Breakout"
     }
 
-    # Create and display tabs for stock data
-    create_tabs(tab_titles, stock_list_df)
-
-main()
+create_tabs(tab_titles, stock_list_df)
