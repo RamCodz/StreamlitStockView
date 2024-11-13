@@ -28,7 +28,7 @@ def display_stock_details(stock_data):
 def display_stock_data_from_df(df, key_prefix=""):
     if not df.empty:
         # Aligning the header with columns
-        col1, col2, col3, col4, col5, col6, col7, col8, col9 = st.columns([0.7, 2, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7])
+        col1, col2, col3, col4, col5, col6, col7, col8, col9 = st.columns([0.2, 4, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5])
 
         # Header row for the heatmap values (1W, 1M, 3M, 6M, 1Y, 5Y)
         with col1:
