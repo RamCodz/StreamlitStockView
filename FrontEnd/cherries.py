@@ -81,14 +81,14 @@ def display_stock_data_from_df(df, key_prefix=""):
 
 # Function to create tabs and display data
 def create_tabs(tab_titles, stock_list_df):
-    tabs = st.tabs(tab_titles)
-    for i, title in enumerate(tab_titles):
+    tabs = st.tabs(tab_titles.values)
+    for i, title in enumerate(tab_titles.keys):
         with tabs[i]:
             if not stock_list_df.empty:
-                display_stock_data_from_df(stock_list_df[(stock_list_df['Report'] == 'C') & (stock_list_df['Break Out'] == title.split()[0])].sort_values(by='Variation', ascending=True), key_prefix=f"Cherries{title.split()[0]}")
+                display_stock_data_from_df(stock_list_df[(stock_list_df['Report'] == 'C') & (stock_list_df[title||'_FLG'] == 'Y', ascending=True), key_prefix=f"Cherries{title.split()[0]}")
             else:
                 st.write("No data available to display.")
 
 # Create and display tabs
-tab_titles = ["5 Year Breakout", "1 Year Breakout", "6 Month Breakout", "3 Month Breakout", "1 Month Breakout"]
+tab_titles = {"5Y":"5 Year Breakout", "1Y":"1 Year Breakout", "6M":"6 Month Breakout", "3M":"3 Month Breakout", "1M":"1 Month Breakout"}
 create_tabs(tab_titles, stock_list_df)
