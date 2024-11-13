@@ -33,7 +33,7 @@ def display_stock_data_from_df(df, key_prefix=""):
             tick = row['Security Name']
             
             # Create a checkbox to toggle plot display
-            show_plot = st.checkbox(f"**{tick}** >>> ***{ticker}%***", key=f"{key_prefix}-{tick}")
+            #show_plot = st.checkbox(f"**{tick}** >>> ***{ticker}%***", key=f"{key_prefix}-{tick}")
 
             returns = [row['1M'], row['3M'], row['6M'], row['1Y'], row['5Y']]
             colors = [get_color(value) for value in returns]
@@ -70,7 +70,7 @@ def create_tabs(tab_titles, stock_list_df):
         with tabs[i]:
             if not stock_list_df.empty:
                 # Display the data filtered by the "Report" and the flag corresponding to each timeframe
-                filtered_data = stock_list_df[(stock_list_df['Report'] == 'C') & (stock_list_df[title + '_FLG'] == 'Y')]
+                filtered_data = stock_list_df[(stock_list_df['Report'] == 'C') & (stock_list_df[str(title) + '_FLG'] == 'Y')]
                 display_stock_data_from_df(filtered_data, key_prefix=f"Cherries{title.split()[0]}")
             else:
                 st.write("No data available to display.")
