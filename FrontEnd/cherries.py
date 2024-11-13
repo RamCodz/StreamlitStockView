@@ -27,6 +27,18 @@ def display_stock_details(stock_data):
 # Common function to display stock data with checkboxes
 def display_stock_data_from_df(df, key_prefix=""):
     if not df.empty:
+        st.markdown(
+            """
+            <style>
+            .no-space div[data-testid="stMarkdownContainer"] {
+                margin-top: 0;
+                margin-bottom: 0;
+                padding: 0;
+            }
+            </style>
+            """, unsafe_allow_html=True
+        )
+        
         # Aligning the header with columns
         col1, col2, col3, col4, col5, col6, col7, col8, col9 = st.columns([0.2, 3, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6])
 
