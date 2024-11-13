@@ -54,13 +54,13 @@ def display_stock_data_from_df(df, key_prefix=""):
             returns = [row['1W_value'], row['1M_value'], row['3M_value'], row['6M_value'], row['1Y_value'], row['5Y_value']]
             colors = [get_color(value) for value in returns]
             
-            # Make stock name clickable and use it as a link
-            stock_link = f'<a href="#{ticker}" style="color: blue; text-decoration: none;">{tick}</a>'
+            # Apply color to the stock name in the row itself
+            stock_name_with_color = f'<span style="{colors[0]}">{tick}</span>'  # Use the 1W color for stock name
 
             # Display the stock data with color coding for each timeframe
             st.markdown(
                 f'<div style="margin:0; padding:0; border-radius:5px; display:flex; flex-direction:row; align-items:center;" class="no-space">' +
-                f'<div style="flex:1; margin:0; padding:3px;">{stock_link}</div>' +
+                f'<div style="flex:1; margin:0; padding:3px;">{stock_name_with_color}</div>' +
                 f'<div style="flex:1; {colors[0]}; margin:0; padding:3px;">{row["1W_value"]}%</div>' +
                 f'<div style="flex:1; {colors[1]}; margin:0; padding:3px;">{row["1M_value"]}%</div>' +
                 f'<div style="flex:1; {colors[2]}; margin:0; padding:3px;">{row["3M_value"]}%</div>' +
@@ -71,7 +71,7 @@ def display_stock_data_from_df(df, key_prefix=""):
             )
             
             # Create an expander for the stock details that gets activated on click
-            with st.expander(f"More Details for {tick}", expanded=False):
+            with st.expander(f"<span style='{colors[0]}'>{tick}</span>", expanded=False):
                 # Display stock details with color coding
                 st.markdown(f"<div style='padding: 10px; {colors[0]}'>1 Week Value: {row['1W_value']}%</div>", unsafe_allow_html=True)
                 st.markdown(f"<div style='padding: 10px; {colors[1]}'>1 Month Value: {row['1M_value']}%</div>", unsafe_allow_html=True)
