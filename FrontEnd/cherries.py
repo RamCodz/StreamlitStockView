@@ -28,7 +28,7 @@ def display_stock_details(stock_data):
 def display_stock_data_from_df(df, key_prefix=""):
     if not df.empty:
         # Aligning the header with columns
-        col1, col2, col3, col4, col5, col6, col7, col8, col9 = st.columns([0.2, 4, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5])
+        col1, col2, col3, col4, col5, col6, col7, col8, col9 = st.columns([0.2, 3, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6])
 
         # Header row for the heatmap values (1W, 1M, 3M, 6M, 1Y, 5Y)
         with col1:
@@ -58,7 +58,7 @@ def display_stock_data_from_df(df, key_prefix=""):
             colors = [get_color(value) for value in returns]
 
             # Create columns for each part of the row (checkbox, stock name, and data columns)
-            col1, col2, col3, col4, col5, col6, col7, col8, col9 = st.columns([0.7, 2, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7])
+            col1, col2, col3, col4, col5, col6, col7, col8, col9 = st.columns([0.2, 3, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6])
 
             with col1:
                 show_details = st.checkbox('', key=f"{key_prefix}_{ticker}", label_visibility="hidden")
