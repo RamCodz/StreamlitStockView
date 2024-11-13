@@ -1,7 +1,6 @@
 import streamlit as st
-from pathlib import Path
 import pandas as pd
-import yfinance as yf
+from pandas.errors import EmptyDataError  # Import EmptyDataError explicitly
 from BackEnd.Utils import globals
 from FrontEnd.Utils import get_latest_report_data
 
@@ -31,10 +30,8 @@ def display_stock_data_from_df(df, key_prefix=""):
         for index, row in df.iterrows():
             ticker = row['Security Id']
             tick = row['Security Name']
-            
-            # Create a checkbox to toggle plot display
-            #show_plot = st.checkbox(f"**{tick}** >>> ***{ticker}%***", key=f"{key_prefix}-{tick}")
 
+            # Calculate returns for each timeframe and apply color formatting
             returns = [row['1M'], row['3M'], row['6M'], row['1Y'], row['5Y']]
             colors = [get_color(value) for value in returns]
             
@@ -75,9 +72,10 @@ def create_tabs(tab_titles, stock_list_df):
             else:
                 st.write("No data available to display.")
 
-# Read stock data from latest file
+# Main logic to read stock data and create tabs
 stock_list = str(globals.data_filepath) + get_latest_report_data.get_latest_file(str(globals.data_filepath))
 
+# Load stock data from CSV
 try:
     stock_list_df = pd.read_csv(stock_list)
 except EmptyDataError:
@@ -85,13 +83,15 @@ except EmptyDataError:
 except Exception as e:
     st.error(f"Error reading the file: {e}")
     stock_list_df = pd.DataFrame()
-    
+
+# Tab titles for each timeframe
 tab_titles = {
-        "5Y": "5 Year Breakout",
-        "1Y": "1 Year Breakout",
-        "6M": "6 Month Breakout",
-        "3M": "3 Month Breakout",
-        "1M": "1 Month Breakout"
+    "5Y": "5 Year Breakout",
+    "1Y": "1 Year Breakout",
+    "6M": "6 Month Breakout",
+    "3M": "3 Month Breakout",
+    "1M": "1 Month Breakout"
     }
 
+# Create and display tabs for stock data
 create_tabs(tab_titles, stock_list_df)
