@@ -7,8 +7,7 @@ from Utils.debug import debug
 def dbg(msg):
     debug("early_cherries-->" + str(msg))
 
-
-def analyze_stock(ticker_data,breakout_days, w_or_m):
+def analyze_stock(ticker_data, breakout_days, w_or_m):
     dbg("in analyze_stock")
     pct_change = 0
     
@@ -45,37 +44,39 @@ def analyze_stock(ticker_data,breakout_days, w_or_m):
     
     dbg(past_data)
     if past_data is not None:
-        pct_change = round((((recent_data['close'] - past_data['close']) / past_data['close']) * 100),2)
+        pct_change = round((((recent_data['close'] - past_data['close']) / past_data['close']) * 100), 2)
     return pct_change
 
-
-def find_cherries(all_data, StockList):
+def find_cherries(all_data, StockList, current_date):
     dbg("in find_cherries ")
     cherries_ticker_dtls = pd.DataFrame()
     ticker_stklist_dtls  = pd.DataFrame()
     m_ticker_stklist_dtls  = pd.DataFrame()
     breakout_name = ""
     unique_tickers = all_data['ticker'].unique()
+    current_date = pd.to_datetime(current_date)
+    
     for ticker in unique_tickers:
         dbg("ticker " + ticker)
         ticker_data = all_data[all_data['ticker'] == ticker]
+        ticker_data = ticker_data[ticker_data['date'] <= current_date]
         ticker_stklist_dtls = StockList[StockList['Security Id'] + '.NS' == ticker]
         with warnings.catch_warnings(record=True) as w:
             warnings.simplefilter("always")
             try:
-                ticker_stklist_dtls.loc[:,'Report'] = 'C'
-                ticker_stklist_dtls.loc[:,'1W_value'] = 0.00
-                ticker_stklist_dtls.loc[:,'1M_value'] = 0.00
-                ticker_stklist_dtls.loc[:,'3M_value'] = 0.00
-                ticker_stklist_dtls.loc[:,'6M_value'] = 0.00
-                ticker_stklist_dtls.loc[:,'1Y_value'] = 0.00
-                ticker_stklist_dtls.loc[:,'5Y_value'] = 0.00
-                ticker_stklist_dtls.loc[:,'1W_FLG'] = 'N'
-                ticker_stklist_dtls.loc[:,'1M_FLG'] = 'N'
-                ticker_stklist_dtls.loc[:,'3M_FLG'] = 'N'
-                ticker_stklist_dtls.loc[:,'6M_FLG'] = 'N'
-                ticker_stklist_dtls.loc[:,'1Y_FLG'] = 'N'
-                ticker_stklist_dtls.loc[:,'5Y_FLG'] = 'N'
+                ticker_stklist_dtls.loc[:, 'Report'] = 'C'
+                ticker_stklist_dtls.loc[:, '1W_value'] = 0.00
+                ticker_stklist_dtls.loc[:, '1M_value'] = 0.00
+                ticker_stklist_dtls.loc[:, '3M_value'] = 0.00
+                ticker_stklist_dtls.loc[:, '6M_value'] = 0.00
+                ticker_stklist_dtls.loc[:, '1Y_value'] = 0.00
+                ticker_stklist_dtls.loc[:, '5Y_value'] = 0.00
+                ticker_stklist_dtls.loc[:, '1W_FLG'] = 'N'
+                ticker_stklist_dtls.loc[:, '1M_FLG'] = 'N'
+                ticker_stklist_dtls.loc[:, '3M_FLG'] = 'N'
+                ticker_stklist_dtls.loc[:, '6M_FLG'] = 'N'
+                ticker_stklist_dtls.loc[:, '1Y_FLG'] = 'N'
+                ticker_stklist_dtls.loc[:, '5Y_FLG'] = 'N'
             except SettingWithCopyWarning:
                 dbg('SettingWithCopyWarning')
             finally:
@@ -84,25 +85,25 @@ def find_cherries(all_data, StockList):
         m_ticker_stklist_dtls = ticker_stklist_dtls
         current_index = ticker_stklist_dtls.index
         for break_out in globals.breakout:
-            dbg('Y/M '+break_out[-1])
-            dbg('val '+break_out[:-1])
+            dbg('Y/M ' + break_out[-1])
+            dbg('val ' + break_out[:-1])
             if break_out[-1] == 'Y':
-                breakout_days = int(break_out[:-1])*globals.y_bwout
+                breakout_days = int(break_out[:-1]) * globals.y_bwout
                 breakout_name = break_out + "_value"
             elif break_out[-1] == 'M':
-                breakout_days = int(break_out[:-1])*globals.m_bwout
+                breakout_days = int(break_out[:-1]) * globals.m_bwout
                 breakout_name = break_out + "_value"
             elif break_out[-1] == 'W':
-                breakout_days = int(break_out[:-1])*globals.w_bwout
+                breakout_days = int(break_out[:-1]) * globals.w_bwout
                 breakout_name = break_out + "_value"
-            dbg('breakout days '+str(breakout_days))
-            w_pct_change = 0;
-            m_pct_change = 0;
-            dbg("breakout_days "+str(breakout_days))
-            w_pct_change = analyze_stock(ticker_data, breakout_days,'W')
-            m_pct_change = analyze_stock(ticker_data, breakout_days,'M')
-            dbg("w_pct change "+str(w_pct_change))
-            dbg("current_index " +str(current_index));
+            dbg('breakout days ' + str(breakout_days))
+            w_pct_change = 0
+            m_pct_change = 0
+            dbg("breakout_days " + str(breakout_days))
+            w_pct_change = analyze_stock(ticker_data, breakout_days, 'W')
+            m_pct_change = analyze_stock(ticker_data, breakout_days, 'M')
+            dbg("w_pct change " + str(w_pct_change))
+            dbg("current_index " + str(current_index))
             ticker_stklist_dtls.loc[current_index, breakout_name] = w_pct_change
             m_ticker_stklist_dtls.loc[current_index, breakout_name] = m_pct_change
         
@@ -112,14 +113,12 @@ def find_cherries(all_data, StockList):
         ticker_stklist_dtls.loc[ticker_stklist_dtls['1W_value'] > ticker_stklist_dtls['1Y_value'], '1Y_FLG'] = 'Y'
         ticker_stklist_dtls.loc[ticker_stklist_dtls['1W_value'] > ticker_stklist_dtls['5Y_value'], '5Y_FLG'] = 'Y'
         
-        
         m_ticker_stklist_dtls.loc[m_ticker_stklist_dtls['1M_value'] > m_ticker_stklist_dtls['3M_value'], '3M_FLG'] = 'Y'
         m_ticker_stklist_dtls.loc[m_ticker_stklist_dtls['1M_value'] > m_ticker_stklist_dtls['6M_value'], '6M_FLG'] = 'Y'
         m_ticker_stklist_dtls.loc[m_ticker_stklist_dtls['1M_value'] > m_ticker_stklist_dtls['1Y_value'], '1Y_FLG'] = 'Y'
         m_ticker_stklist_dtls.loc[m_ticker_stklist_dtls['1M_value'] > m_ticker_stklist_dtls['5Y_value'], '5Y_FLG'] = 'Y'
         
-        
         cherries_ticker_dtls = pd.concat([cherries_ticker_dtls, ticker_stklist_dtls])
-        
-    ##dbg("cherries list "+str(cherries_ticker_dtls))
+    
     return cherries_ticker_dtls
+
