@@ -30,8 +30,12 @@ def get_all_data(StockList):
     five_year_ago = today - timedelta(days=365*globals.noy)
     DListLbl=['Security Name','Status','Group','Face Value','ISIN No','Industry','Instrument','Sector Name','Industry New Name','Igroup Name','ISubgroup Name'] 
     ##StockList = pd.read_csv(str(globals.equity_list_path) + str(globals.equity_list_filename))
-
+    
+    i = 0
     for index, row in StockList.iterrows():
+        i=i+1
+        if i == 1000:
+            break
         stkSymbol = row['Security Id']+'.NS'
         five_year_data = get_stock_data(stkSymbol, five_year_ago, today)
         print("five_year_data")
