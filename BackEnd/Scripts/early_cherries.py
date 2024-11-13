@@ -4,16 +4,16 @@ from datetime import datetime, timedelta
 
 
 def analyze_stock(ticker_data, breakout_days, break_type):
-    if break_type not in ['CO', 'BA']:  # CO-Consecutive, BA-Break after
+    if break_type not in ['CO', 'BA']: #CO-Consecutive   BA-Break after
         raise ValueError(f"Invalid break type {break_type}. Must be 'CO' or 'BA'.")
-
+    
     if break_type == 'BA':
         # Monthly data
         if breakout_days <= 21:
             recent_data = ticker_data.iloc[-1]
             past_data = ticker_data.iloc[-breakout_days] if len(ticker_data) >= breakout_days else None
         else:
-            recent_data = ticker_data.iloc[-22] if len(ticker_data) >= (22) else None
+            recent_data = ticker_data.iloc[-22]
             past_data = ticker_data.iloc[-(breakout_days + 21)] if len(ticker_data) >= (breakout_days + 21) else None
     else:
         # Weekly data
@@ -23,13 +23,12 @@ def analyze_stock(ticker_data, breakout_days, break_type):
         else:
             recent_data = ticker_data.iloc[-6]
             past_data = ticker_data.iloc[-(breakout_days + 5)] if len(ticker_data) >= (breakout_days + 5) else None
-
+    
     # Only calculate pct_change if we have enough data
     if past_data is not None:
         pct_change = round(((recent_data['close'] - past_data['close']) / past_data['close']) * 100, 2)
         return pct_change
     return 0
-
 
 def process_ticker_data(ticker_data, ticker_stklist_dtls):
     """Process and update the stock list for a given ticker."""
@@ -52,7 +51,6 @@ def process_ticker_data(ticker_data, ticker_stklist_dtls):
 
     return ticker_stklist_dtls_copy
 
-
 def apply_flags(ticker_stklist_dtls):
     """Apply flags if one timeframe outperforms another."""
     ticker_stklist_dtls.loc[ticker_stklist_dtls['1W_value'] > ticker_stklist_dtls['1M_value'], '1M_FLG'] = 'Y'
@@ -61,17 +59,15 @@ def apply_flags(ticker_stklist_dtls):
     ticker_stklist_dtls.loc[ticker_stklist_dtls['1M_value'] > ticker_stklist_dtls['1Y_value'], '1Y_FLG'] = 'Y'
     ticker_stklist_dtls.loc[ticker_stklist_dtls['1M_value'] > ticker_stklist_dtls['5Y_value'], '5Y_FLG'] = 'Y'
 
-
 def get_breakout_days(break_out):
     """Determine the number of breakout days based on the period."""
     if break_out[-1] == 'Y':
-        return int(break_out[:-1]) * 21
+        return int(break_out[:-1]) * 365
     elif break_out[-1] == 'M':
         return int(break_out[:-1]) * 21
     elif break_out[-1] == 'W':
         return int(break_out[:-1]) * 5
     return 0
-
 
 def find_cherries(all_data, StockList, current_date):
     cherries_ticker_dtls = pd.DataFrame()
@@ -99,13 +95,8 @@ def find_cherries(all_data, StockList, current_date):
         # Apply flags based on breakout conditions
         apply_flags(ticker_stklist_dtls)
 
-        # Filter data for cherries
-        filtered_data = ticker_stklist_dtls[
-            (ticker_stklist_dtls['1M_value'] >= 30) &
-            ((ticker_stklist_dtls['5Y_FLG'] == 'Y') | (ticker_stklist_dtls['1Y_FLG'] == 'Y'))
-        ]
-
         # Concatenate the stock data for this ticker with the results
-        cherries_ticker_dtls = pd.concat([cherries_ticker_dtls, filtered_data])
+        if filtered_data = ticker_stklist_dtls[ticker_stklist_dtls['1M_value'] >= '30' & (ticker_stklist_dtls['5Y_FLG'] == 'Y' or ticker_stklist_dtls['1Y_FLG'] == 'Y')]:
+            cherries_ticker_dtls = pd.concat([cherries_ticker_dtls, filtered_data])
 
     return cherries_ticker_dtls
