@@ -33,7 +33,7 @@ def get_all_data(StockList):
 
     for index, row in StockList.iterrows():
         stkSymbol = row['Security Id']+'.NS'
-        if stkSymbol = 'RVNL.NS':
+        if stkSymbol == 'RVNL.NS':
             five_year_data = get_stock_data(stkSymbol, five_year_ago, today)
             if not five_year_data.empty:
                 ##five_year_data['Security Name'] = row['Security Name'];
