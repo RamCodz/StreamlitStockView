@@ -87,11 +87,6 @@ def display_stock_data_from_df(df, key_prefix=""):
                 '</div>', unsafe_allow_html=True
             )
 
-            # When a stock name is clicked, show additional details in an expander
-            if st.session_state.get("selected_stock") == ticker:
-                with st.expander(f"Details for {tick}"):
-                    display_stock_details(row)
-
     else:
         st.warning("No data available to display.")
 
@@ -141,3 +136,9 @@ tab_titles = {
 }
 
 create_tabs(tab_titles, stock_list_df)
+
+# When a stock name is clicked, show additional details in an expander
+if st.session_state.get("selected_stock") == ticker:
+    with st.expander(f"Details for {tick}"):
+        #display_stock_details(row)
+        st.write("testing...")
