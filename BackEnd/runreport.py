@@ -23,7 +23,7 @@ def process_stock_data(gv_sys_date):
     
     # Load stock list and data
     StockList = pd.read_csv(str(globals.equity_list_path) + str(globals.equity_list_filename))
-    all_data = get_all_data(StockList)
+    all_data = get_all_data(StockList, gv_sys_date)
     all_data = all_data.rename_axis('Date').reset_index()  # Assign first col name in df and make it a column
     all_data['Date'] = pd.to_datetime(all_data['Date'])
 
