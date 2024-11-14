@@ -112,7 +112,10 @@ def display_stock_data_from_df(df, key_prefix=""):
             <style>
             .middle-align {
                 display: flex;
-                align-items: flex-end;
+                align-items: center;
+            }
+            .middle-align input {
+                margin-bottom: 0;
             }
             </style>
             """, unsafe_allow_html=True
@@ -131,7 +134,7 @@ def display_stock_data_from_df(df, key_prefix=""):
             col1, col2, col3, col4, col5, col6, col7, col8, col9 = st.columns([0.2, 3, 1, 1, 1, 1, 1, 1, 0.6])
 
             with col1:
-                st.markdown(f'<div class="middle-align"><input type="checkbox" id="checkbox-{ticker}" /></div>', unsafe_allow_html=True)
+                st.markdown(f'<div class="middle-align">st.checkbox('', key=f"{key_prefix}_{ticker}", label_visibility="hidden")</div>', unsafe_allow_html=True)
                 show_details = st.checkbox('', key=f"{key_prefix}_{ticker}", label_visibility="hidden")
             with col2:
                 st.markdown(f'<div class="middle-align">{tick}</div>', unsafe_allow_html=True)  # Stock Name            
