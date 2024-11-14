@@ -13,7 +13,7 @@ def process_stock_data(gv_sys_date):
     # Convert date to the appropriate format
     current_directory = os.getcwd()
     globals.curr_dir = current_directory + "/"
-    globals.today = datetime.strptime(gv_sys_date, globals.dt_format)
+    globals.today = datetime.strptime(str(gv_sys_date), globals.dt_format)
     globals.stockview_filename = globals.stockview_filename.replace("*", str(globals.today))
     
     # Load stock list and data
