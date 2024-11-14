@@ -8,7 +8,7 @@ import plotly.graph_objs as go
 def get_stock_data(ticker, period="5y", interval="1d"):
     stock = yf.Ticker(str(ticker) + ".NS")  # Append .BO for BSE stocks
     return stock.history(period=period, interval=interval)
-    
+
 # Function to get color based on returns
 def get_color(value):
     if value > 0:
@@ -106,6 +106,18 @@ def display_stock_data_from_df(df, key_prefix=""):
         with col8:
             st.markdown("<b>5 Year</b>", unsafe_allow_html=True)  # Bold header
 
+        # Style for bottom alignment
+        st.markdown(
+            """
+            <style>
+            .bottom-align {
+                display: flex;
+                align-items: flex-end;
+            }
+            </style>
+            """, unsafe_allow_html=True
+        )
+
         # Iterate through the rows and display stock names with checkboxes
         for index, row in df.iterrows():
             ticker = row['Security Id']
@@ -121,19 +133,19 @@ def display_stock_data_from_df(df, key_prefix=""):
             with col1:
                 show_details = st.checkbox('', key=f"{key_prefix}_{ticker}", label_visibility="hidden")
             with col2:
-                st.write(tick)  # Stock Name            
+                st.markdown(f'<div class="bottom-align">{tick}</div>', unsafe_allow_html=True)  # Stock Name            
             with col3:
-                st.markdown(f'<div style="{colors[0]}">{row["1W_value"]}%</div>', unsafe_allow_html=True)            
+                st.markdown(f'<div style="{colors[0]}" class="bottom-align">{row["1W_value"]}%</div>', unsafe_allow_html=True)            
             with col4:
-                st.markdown(f'<div style="{colors[1]}">{row["1M_value"]}%</div>', unsafe_allow_html=True)
+                st.markdown(f'<div style="{colors[1]}" class="bottom-align">{row["1M_value"]}%</div>', unsafe_allow_html=True)
             with col5:
-                st.markdown(f'<div style="{colors[2]}">{row["3M_value"]}%</div>', unsafe_allow_html=True)
+                st.markdown(f'<div style="{colors[2]}" class="bottom-align">{row["3M_value"]}%</div>', unsafe_allow_html=True)
             with col6:
-                st.markdown(f'<div style="{colors[3]}">{row["6M_value"]}%</div>', unsafe_allow_html=True)
+                st.markdown(f'<div style="{colors[3]}" class="bottom-align">{row["6M_value"]}%</div>', unsafe_allow_html=True)
             with col7:
-                st.markdown(f'<div style="{colors[4]}">{row["1Y_value"]}%</div>', unsafe_allow_html=True)
+                st.markdown(f'<div style="{colors[4]}" class="bottom-align">{row["1Y_value"]}%</div>', unsafe_allow_html=True)
             with col8:
-                st.markdown(f'<div style="{colors[5]}">{row["5Y_value"]}%</div>', unsafe_allow_html=True)
+                st.markdown(f'<div style="{colors[5]}" class="bottom-align">{row["5Y_value"]}%</div>', unsafe_allow_html=True)
 
             # If checkbox is checked, display detailed information
             if show_details:
