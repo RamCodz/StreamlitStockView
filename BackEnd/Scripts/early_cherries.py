@@ -13,7 +13,7 @@ def analyze_stock(ticker_data, breakout_days, break_type):
             recent_data = ticker_data.iloc[-1]
             past_data = ticker_data.iloc[-breakout_days] if len(ticker_data) >= breakout_days else None
         else:
-            recent_data = ticker_data.iloc[-22]
+            recent_data = ticker_data.iloc[-22] if len(ticker_data) >= 22 else None
             past_data = ticker_data.iloc[-(breakout_days + 21)] if len(ticker_data) >= (breakout_days + 21) else None
     else:
         # Weekly data
