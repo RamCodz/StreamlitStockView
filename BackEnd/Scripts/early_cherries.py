@@ -1,10 +1,10 @@
 import pandas as pd
 import warnings
+import numpy as np
 from datetime import datetime, timedelta
 
-
 def analyze_stock(ticker_data, breakout_days, break_type):
-    if break_type not in ['CO', 'BA']: #CO-Consecutive   BA-Break after
+    if break_type not in ['CO', 'BA']: # CO-Consecutive, BA-Break after
         raise ValueError(f"Invalid break type {break_type}. Must be 'CO' or 'BA'.")
     
     if break_type == 'BA':
@@ -28,28 +28,24 @@ def analyze_stock(ticker_data, breakout_days, break_type):
     if past_data is not None:
         pct_change = round(((recent_data['close'] - past_data['close']) / past_data['close']) * 100, 2)
         return pct_change
-    return 0
+    return np.nan  # Return NaN if not enough data
 
 def process_ticker_data(ticker_data, ticker_stklist_dtls):
     """Process and update the stock list for a given ticker."""
-    ticker_stklist_dtls_copy = ticker_stklist_dtls.copy()
-
-    # Initialize all the fields to avoid warnings and ensure safe modification
-    ticker_stklist_dtls_copy.loc[:, 'Report'] = 'C'
-    ticker_stklist_dtls_copy.loc[:, '1W_value'] = 0.00
-    ticker_stklist_dtls_copy.loc[:, '1M_value'] = 0.00
-    ticker_stklist_dtls_copy.loc[:, '3M_value'] = 0.00
-    ticker_stklist_dtls_copy.loc[:, '6M_value'] = 0.00
-    ticker_stklist_dtls_copy.loc[:, '1Y_value'] = 0.00
-    ticker_stklist_dtls_copy.loc[:, '5Y_value'] = 0.00
-    ticker_stklist_dtls_copy.loc[:, '1W_FLG'] = 'N'
-    ticker_stklist_dtls_copy.loc[:, '1M_FLG'] = 'N'
-    ticker_stklist_dtls_copy.loc[:, '3M_FLG'] = 'N'
-    ticker_stklist_dtls_copy.loc[:, '6M_FLG'] = 'N'
-    ticker_stklist_dtls_copy.loc[:, '1Y_FLG'] = 'N'
-    ticker_stklist_dtls_copy.loc[:, '5Y_FLG'] = 'N'
-
-    return ticker_stklist_dtls_copy
+    ticker_stklist_dtls.loc[:, 'Report'] = 'C'
+    ticker_stklist_dtls.loc[:, '1W_value'] = 0.00
+    ticker_stklist_dtls.loc[:, '1M_value'] = 0.00
+    ticker_stklist_dtls.loc[:, '3M_value'] = 0.00
+    ticker_stklist_dtls.loc[:, '6M_value'] = 0.00
+    ticker_stklist_dtls.loc[:, '1Y_value'] = 0.00
+    ticker_stklist_dtls.loc[:, '5Y_value'] = 0.00
+    ticker_stklist_dtls.loc[:, '1W_FLG'] = 'N'
+    ticker_stklist_dtls.loc[:, '1M_FLG'] = 'N'
+    ticker_stklist_dtls.loc[:, '3M_FLG'] = 'N'
+    ticker_stklist_dtls.loc[:, '6M_FLG'] = 'N'
+    ticker_stklist_dtls.loc[:, '1Y_FLG'] = 'N'
+    ticker_stklist_dtls.loc[:, '5Y_FLG'] = 'N'
+    return ticker_stklist_dtls
 
 def apply_flags(ticker_stklist_dtls):
     """Apply flags if one timeframe outperforms another."""
@@ -81,6 +77,11 @@ def find_cherries(all_data, StockList, current_date):
         # Filter stock list based on ticker
         ticker_stklist_dtls = StockList[StockList['Security Id'] + '.NS' == ticker]
 
+        # Skip if no stock data found
+        if ticker_stklist_dtls.empty:
+            print(f"No stock data found for {ticker}")
+            continue
+
         # Process and initialize stock data
         ticker_stklist_dtls = process_ticker_data(ticker_data, ticker_stklist_dtls)
 
@@ -96,7 +97,7 @@ def find_cherries(all_data, StockList, current_date):
         apply_flags(ticker_stklist_dtls)
 
         # Concatenate the stock data for this ticker with the results
-        if ticker_stklist_dtls['1M_value'] >= '30' & (ticker_stklist_dtls['5Y_FLG'] == 'Y' or ticker_stklist_dtls['1Y_FLG'] == 'Y'):
+        if (ticker_stklist_dtls['1M_value'] >= 30) & ((ticker_stklist_dtls['5Y_FLG'] == 'Y') | (ticker_stklist_dtls['1Y_FLG'] == 'Y')):
             cherries_ticker_dtls = pd.concat([cherries_ticker_dtls, ticker_stklist_dtls])
 
     return cherries_ticker_dtls
