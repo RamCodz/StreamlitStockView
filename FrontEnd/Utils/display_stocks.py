@@ -106,11 +106,11 @@ def display_stock_data_from_df(df, key_prefix=""):
         with col8:
             st.markdown("<b>5 Year</b>", unsafe_allow_html=True)  # Bold header
 
-        # Style for bottom alignment
+        # Style for middle alignment
         st.markdown(
             """
             <style>
-            .bottom-align {
+            .middle-align {
                 display: flex;
                 align-items: flex-end;
             }
@@ -133,19 +133,19 @@ def display_stock_data_from_df(df, key_prefix=""):
             with col1:
                 show_details = st.checkbox('', key=f"{key_prefix}_{ticker}", label_visibility="hidden")
             with col2:
-                st.markdown(f'<div class="bottom-align">{tick}</div>', unsafe_allow_html=True)  # Stock Name            
+                st.markdown(f'<div class="middle-align">{tick}</div>', unsafe_allow_html=True)  # Stock Name            
             with col3:
-                st.markdown(f'<div style="{colors[0]}" class="bottom-align">{row["1W_value"]}%</div>', unsafe_allow_html=True)            
+                st.markdown(f'<div style="{colors[0]}" class="middle-align">{row["1W_value"]}%</div>', unsafe_allow_html=True)            
             with col4:
-                st.markdown(f'<div style="{colors[1]}" class="bottom-align">{row["1M_value"]}%</div>', unsafe_allow_html=True)
+                st.markdown(f'<div style="{colors[1]}" class="middle-align">{row["1M_value"]}%</div>', unsafe_allow_html=True)
             with col5:
-                st.markdown(f'<div style="{colors[2]}" class="bottom-align">{row["3M_value"]}%</div>', unsafe_allow_html=True)
+                st.markdown(f'<div style="{colors[2]}" class="middle-align">{row["3M_value"]}%</div>', unsafe_allow_html=True)
             with col6:
-                st.markdown(f'<div style="{colors[3]}" class="bottom-align">{row["6M_value"]}%</div>', unsafe_allow_html=True)
+                st.markdown(f'<div style="{colors[3]}" class="middle-align">{row["6M_value"]}%</div>', unsafe_allow_html=True)
             with col7:
-                st.markdown(f'<div style="{colors[4]}" class="bottom-align">{row["1Y_value"]}%</div>', unsafe_allow_html=True)
+                st.markdown(f'<div style="{colors[4]}" class="middle-align">{row["1Y_value"]}%</div>', unsafe_allow_html=True)
             with col8:
-                st.markdown(f'<div style="{colors[5]}" class="bottom-align">{row["5Y_value"]}%</div>', unsafe_allow_html=True)
+                st.markdown(f'<div style="{colors[5]}" class="middle-align">{row["5Y_value"]}%</div>', unsafe_allow_html=True)
 
             # If checkbox is checked, display detailed information
             if show_details:
