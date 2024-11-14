@@ -83,30 +83,30 @@ def display_stock_details(stock_data):
     else:
         st.error(f"No data found for {stock_data['Security Id']}. Please check the ticker symbol or try again later.")
 
-
-# Common function to display stock data with checkboxes
+# Function to display stock data with checkboxes
 def display_stock_data_from_df(df, key_prefix=""):
+    """Display stock data from DataFrame with checkboxes and color-coded returns."""
     if not df.empty:
-        # Aligning the header with columns
-        col1, col2, col3, col4, col5, col6, col7, col8, col9 = st.columns([0.2, 3, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6])
+        # Adjust column widths for better layout
+        col1, col2, col3, col4, col5, col6, col7, col8, col9 = st.columns([0.2, 3, 1, 1, 1, 1, 1, 1, 0.6])
 
         # Header row for the heatmap values (1W, 1M, 3M, 6M, 1Y, 5Y)
         with col1:
             st.write("")  # Empty space for the checkbox
         with col2:
-            st.write("Stock Name")
+            st.markdown("<b>Stock Name</b>", unsafe_allow_html=True)  # Bold header
         with col3:
-            st.write("1 Week")
+            st.markdown("<b>1 Week</b>", unsafe_allow_html=True)  # Bold header
         with col4:
-            st.write("1 Month")
+            st.markdown("<b>1 Month</b>", unsafe_allow_html=True)  # Bold header
         with col5:
-            st.write("3 Month")
+            st.markdown("<b>3 Month</b>", unsafe_allow_html=True)  # Bold header
         with col6:
-            st.write("6 Month")
+            st.markdown("<b>6 Month</b>", unsafe_allow_html=True)  # Bold header
         with col7:
-            st.write("1 Year")
+            st.markdown("<b>1 Year</b>", unsafe_allow_html=True)  # Bold header
         with col8:
-            st.write("5 Year")
+            st.markdown("<b>5 Year</b>", unsafe_allow_html=True)  # Bold header
 
         # Iterate through the rows and display stock names with checkboxes
         for index, row in df.iterrows():
@@ -118,7 +118,7 @@ def display_stock_data_from_df(df, key_prefix=""):
             colors = [get_color(value) for value in returns]
 
             # Create columns for each part of the row (checkbox, stock name, and data columns)
-            col1, col2, col3, col4, col5, col6, col7, col8, col9 = st.columns([0.2, 3, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6])
+            col1, col2, col3, col4, col5, col6, col7, col8, col9 = st.columns([0.2, 3, 1, 1, 1, 1, 1, 1, 0.6])
 
             with col1:
                 show_details = st.checkbox('', key=f"{key_prefix}_{ticker}", label_visibility="hidden")
