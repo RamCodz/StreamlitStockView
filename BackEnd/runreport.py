@@ -11,7 +11,7 @@ from BackEnd.Utils.creategitfiles import create_or_update_file
 
 def process_stock_data(gv_sys_date):
     # set the sys date manually for back testing
-    gv_sys_date = datetime.strptime(str('2022-11-18 05:45:31.767322'), globals.dt_format) #YYYY-MM-DD
+    gv_sys_date = '2022-11-18 05:45:31.767322'
     # Convert date to the appropriate format
     current_directory = os.getcwd()
     globals.curr_dir = current_directory + "/"
