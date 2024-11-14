@@ -18,7 +18,7 @@ except Exception as e:
     st.error(f"Error reading the file: {e}")
     stock_list_df = pd.DataFrame()
 
-cherries_stock_list = stock_list_df[stock_list_df['Report'] == 'C'].groupby(['Industry New Name','ISubgroup Name'])
+cherries_stock_list = stock_list_df[stock_list_df['Report'] == 'C'].sort_values(by=['Industry New Name','ISubgroup Name'], ascending=[True, True])
 
 tab_titles = {
     "5Y": "5 Year Breakout",
