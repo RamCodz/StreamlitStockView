@@ -15,7 +15,7 @@ def process_stock_data(gv_sys_date):
         print(type(gv_sys_date))
         
         # Ensure gv_sys_date is a string and convert it to datetime
-        gv_sys_date = datetime.strptime(str("2022-11-18"), "%Y-%m-%d")        
+        gv_sys_date = "2022-11-18"    
         print(f"Converted system date: {gv_sys_date}")
         print(type(gv_sys_date))
         
