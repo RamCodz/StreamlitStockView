@@ -13,12 +13,21 @@ try:
     stock_list_df = pd.read_csv(stock_list_file)
 except EmptyDataError:
     stock_list_df = pd.DataFrame()
+    st.warning("The CSV file is empty.")
 except Exception as e:
     st.error(f"Error reading the file: {e}")
-    stock_list_df = pd.DataFrame()
+    raise  # Reraise the exception to stop execution if there's an error
 
-cherries_stock_list = stock_list_df[stock_list_df['Report'] == 'C' & stock_list_df['5Y_FLG'] == 'Y' & stock_list_df['1Y_FLG'] == 'Y' & stock_list_df['6M_FLG'] == 'Y' & stock_list_df['3M_FLG'] == 'Y']
+# Filter cherries based on flags
+cherries_stock_list = stock_list_df[
+    (stock_list_df['Report'] == 'C') &
+    (stock_list_df['5Y_FLG'] == 'Y') &
+    (stock_list_df['1Y_FLG'] == 'Y') &
+    (stock_list_df['6M_FLG'] == 'Y') &
+    (stock_list_df['3M_FLG'] == 'Y')
+]
 
+# Tab titles for displaying
 tab_titles = {    
     "1W": "1 Week Breakout",
     "1M": "1 Month Breakout",
@@ -27,4 +36,5 @@ tab_titles = {
     "1Y": "1 Year Breakout"    
 }
 
+# Create the tabs and display data
 create_tabs(tab_titles, cherries_stock_list)
