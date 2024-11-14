@@ -94,19 +94,19 @@ def display_stock_data_from_df(df, key_prefix=""):
         with col1:
             st.write("")  # Empty space for the checkbox
         with col2:
-            st.write("Stock Name")
+            st.subheader(f"Stock Name")
         with col3:
-            st.write("1 Week")
+            st.subheader(f"1 Week")
         with col4:
-            st.write("1 Month")
+            st.subheader(f"1 Month")
         with col5:
-            st.write("3 Month")
+            st.subheader(f"3 Month")
         with col6:
-            st.write("6 Month")
+            st.subheader(f"6 Month")
         with col7:
-            st.write("1 Year")
+            st.subheader(f"1 Year")
         with col8:
-            st.write("5 Year")
+            st.subheader(f"5 Year")
 
         # Iterate through the rows and display stock names with checkboxes
         for index, row in df.iterrows():
