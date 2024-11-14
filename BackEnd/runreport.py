@@ -13,7 +13,7 @@ def process_stock_data(gv_sys_date):
     # set the sys date manually for back testing
     print("gv_sys_date")
     print(type(gv_sys_date))
-    gv_sys_date = '2022-11-18 05:45:31.767322'
+    gv_sys_date = "2022-11-18 05:45:31.767322"
     print(type(gv_sys_date))
     # Convert date to the appropriate format
     current_directory = os.getcwd()
