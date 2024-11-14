@@ -17,7 +17,7 @@ except Exception as e:
     st.error(f"Error reading the file: {e}")
     stock_list_df = pd.DataFrame()
 
-cherries_stock_list = stock_list_df[stock_list_df['Report'] == 'C']
+cherries_stock_list = stock_list_df[stock_list_df['Report'] == 'C' & stock_list_df['5Y_FLG'] == 'Y' & stock_list_df['1Y_FLG'] == 'Y' & stock_list_df['6M_FLG'] == 'Y' & stock_list_df['3M_FLG'] == 'Y']
 
 tab_titles = {    
     "1W": "1 Week Breakout",
