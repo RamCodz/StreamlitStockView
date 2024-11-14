@@ -96,8 +96,8 @@ def find_cherries(all_data, StockList, current_date):
         # Apply flags based on breakout conditions
         apply_flags(ticker_stklist_dtls)
 
-        # Concatenate the stock data for this ticker with the results
-        if (ticker_stklist_dtls['1M_value'] >= 30) & ((ticker_stklist_dtls['5Y_FLG'] == 'Y') | (ticker_stklist_dtls['1Y_FLG'] == 'Y')):
+        # Concatenate the stock data for this ticker with the results, after checking the conditions
+        if (ticker_stklist_dtls['1M_value'] >= 30).any() & ((ticker_stklist_dtls['5Y_FLG'] == 'Y') | (ticker_stklist_dtls['1Y_FLG'] == 'Y')).any():
             cherries_ticker_dtls = pd.concat([cherries_ticker_dtls, ticker_stklist_dtls])
 
     return cherries_ticker_dtls
