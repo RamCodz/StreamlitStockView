@@ -12,10 +12,12 @@ def process_stock_data(gv_sys_date):
     try:
         # Set the system date manually for back-testing
         print(f"Received system date: {gv_sys_date}")
+        print(type(gv_sys_date))
         
         # Ensure gv_sys_date is a string and convert it to datetime
-        gv_sys_date = "2022-11-18 05:45:31.767322"  # Manually setting for testing
+        gv_sys_date = datetime.strptime(str("2022-11-18 05:45:31.767322"), "%Y-%m-%d %H:%M:%S.%f")        
         print(f"Converted system date: {gv_sys_date}")
+        print(type(gv_sys_date))
         
         # Convert string to datetime object using the format from globals
         globals.today = datetime.strptime(str(gv_sys_date), globals.dt_format)  # Ensure globals.dt_format is defined
