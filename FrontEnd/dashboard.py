@@ -33,7 +33,8 @@ tab_titles = {
     "1M": "1 Month Breakout",
     "3M": "3 Month Breakout",
     "6M": "6 Month Breakout",
-    "1Y": "1 Year Breakout"    
+    "1Y": "1 Year Breakout",
+    "5Y": "5 Year Breakout"
 }
 
 # Create the tabs and display data
