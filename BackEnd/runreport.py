@@ -8,18 +8,12 @@ from BackEnd.Scripts.early_cherries import find_cherries
 from BackEnd.Scripts.fallen_gems import find_gems
 from BackEnd.Utils.creategitfiles import create_or_update_file
 
-def process_stock_data(gv_sys_date):
-    # Set the system date manually for back-testing
-    print(f"Received system date: {gv_sys_date}")
-    print(type(gv_sys_date))
-
+def process_stock_data:
     # Ensure gv_sys_date is a string and convert it to datetime
-    #gv_sys_date = "2022-11-18"    
-    print(f"Converted system date: {gv_sys_date}")
-    print(type(gv_sys_date))
-
+    #gv_sys_date = datetime.strptime("2022-11-18", globals.dt_format) 
+    gv_sys_date = datetime.now()
     # Convert string to datetime object using the format from globals
-    globals.today = datetime.strptime(str(gv_sys_date), globals.dt_format)  # Ensure globals.dt_format is defined
+    globals.today =  gv_sys_date # Ensure globals.dt_format is defined
     print(f"System date as datetime object: {globals.today}")
 
     # Set current directory and stockview filename
