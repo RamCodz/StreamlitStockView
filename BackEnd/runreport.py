@@ -8,7 +8,7 @@ from BackEnd.Scripts.early_cherries import find_cherries
 from BackEnd.Scripts.fallen_gems import find_gems
 from BackEnd.Utils.creategitfiles import create_or_update_file
 
-def process_stock_data:
+def process_stock_data():
     # Ensure gv_sys_date is a string and convert it to datetime
     #gv_sys_date = datetime.strptime("2022-11-18", globals.dt_format) 
     gv_sys_date = datetime.now().strftime(globals.dt_format)
