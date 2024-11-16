@@ -13,7 +13,7 @@ def process_stock_data():
     #gv_sys_date = datetime.strptime("2022-11-18", globals.dt_format) 
     gv_sys_date = datetime.now().strftime(globals.dt_format)
     # Convert string to datetime object using the format from globals
-    globals.today =  gv_sys_date # Ensure globals.dt_format is defined
+    globals.today =  str(gv_sys_date) # Ensure globals.dt_format is defined
     print(f"System date as datetime object: {globals.today}")
 
     # Set current directory and stockview filename
