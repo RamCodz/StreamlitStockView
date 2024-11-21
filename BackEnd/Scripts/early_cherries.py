@@ -1,3 +1,4 @@
+
 import pandas as pd
 import warnings
 from datetime import datetime, timedelta
@@ -69,10 +70,10 @@ def get_breakout_days(break_out):
         return int(break_out[:-1]) * 5
     return 0
 
-def find_cherries(all_data, StockList, current_date):
+def find_cherries(all_data, StockList):
     cherries_ticker_dtls = pd.DataFrame()
     unique_tickers = all_data['ticker'].unique()
-    current_date = pd.to_datetime(current_date)
+    current_date = pd.to_datetime(globals.today)
 
     for ticker in unique_tickers:
         ticker_data = all_data[all_data['ticker'] == ticker]
