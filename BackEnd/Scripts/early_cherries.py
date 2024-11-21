@@ -73,11 +73,9 @@ def get_breakout_days(break_out):
 def find_cherries(all_data, StockList):
     cherries_ticker_dtls = pd.DataFrame()
     unique_tickers = all_data['ticker'].unique()
-    current_date = pd.to_datetime(globals.today)
 
     for ticker in unique_tickers:
         ticker_data = all_data[all_data['ticker'] == ticker]
-        ticker_data = ticker_data[ticker_data['Date'] <= current_date]
 
         # Filter stock list based on ticker
         ticker_stklist_dtls = StockList[StockList['Security Id'] + '.NS' == ticker]
