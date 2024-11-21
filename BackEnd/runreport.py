@@ -10,16 +10,17 @@ from BackEnd.Utils.creategitfiles import create_or_update_file
 
 def process_stock_data():
     # Ensure gv_sys_date is a string and convert it to datetime
-    v_sys_date = datetime.strptime("2022-11-18", globals.dt_format)
-    print('v_sys_date')
-    print(type(v_sys_date))
-    gv_sys_date = datetime.now().strftime(globals.dt_format)
-    print('gv_sys_date')
-    print(type(gv_sys_date))
-    # Convert string to datetime object using the format from globals
-    globals.today =  str(gv_sys_date) # Ensure globals.dt_format is defined
-    print(f"System date as datetime object: {globals.today}")
+    gv_sys_date_str = datetime.now().strftime(globals.dt_format)
+    # gv_sys_date_str = datetime.strptime("2022-11-18", globals.dt_format)
+    print('gv_sys_date_str:', gv_sys_date_str) 
+    gv_sys_date = datetime.strptime(gv_sys_date_str, globals.dt_format) 
+    print('gv_sys_date:', gv_sys_date) 
+    print('Type of gv_sys_date:', type(gv_sys_date))
 
+    # Convert string to datetime object using the format from globals
+    globals.today =  gv_sys_date # Ensure globals.dt_format is defined
+    print(f"System date as datetime object: {globals.today}")
+    print(f"System date as datetime object: {type(globals.today)}")
     # Set current directory and stockview filename
     current_directory = os.getcwd()
     globals.curr_dir = current_directory + "/"
