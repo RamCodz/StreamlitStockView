@@ -12,6 +12,8 @@ def process_stock_data():
     # Ensure gv_sys_date is a string and convert it to datetime
     #gv_sys_date = datetime.strptime("2022-11-18", globals.dt_format) 
     gv_sys_date = datetime.now().strftime(globals.dt_format)
+    print('gv_sys_date')
+    print(gv_sys_date)
     # Convert string to datetime object using the format from globals
     globals.today =  str(gv_sys_date) # Ensure globals.dt_format is defined
     print(f"System date as datetime object: {globals.today}")
