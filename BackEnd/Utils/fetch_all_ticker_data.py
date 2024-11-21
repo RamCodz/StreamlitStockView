@@ -19,6 +19,8 @@ def get_stock_data(ticker, start_date, end_date):
 
 def get_all_data(StockList):
     all_data = pd.DataFrame()
+    print('inside get_all_data', globals.today)
+    print(type(globals.today))
     five_year_ago = globals.today - timedelta(days=365*globals.noy)
     DListLbl=['Security Name','Status','Group','Face Value','ISIN No','Industry','Instrument','Sector Name','Industry New Name','Igroup Name','ISubgroup Name'] 
     ##StockList = pd.read_csv(str(globals.equity_list_path) + str(globals.equity_list_filename))
