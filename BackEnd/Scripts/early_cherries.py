@@ -97,7 +97,7 @@ def find_cherries(all_data, StockList, current_date):
 
         # Filter data based on the 1M_value and flags
         filtered_data = ticker_stklist_dtls[
-            (ticker_stklist_dtls['1M_value'] >= 30) & 
+            (ticker_stklist_dtls['1M_value'] >= 15) & 
             ((ticker_stklist_dtls['5Y_FLG'] == 'Y') | (ticker_stklist_dtls['1Y_FLG'] == 'Y'))
         ]
 
