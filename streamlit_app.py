@@ -39,7 +39,7 @@ pg = st.navigation(pages=[dashboard_page, cherries_page, gems_page, sectors_page
 # Sidebar calendar input
 selected_date = st.sidebar.date_input("Pick a date", datetime.now())
 
-report_file_names = get_report_list.get_file_names(str(globals.data_filepath))
+file_names = get_report_list.get_file_names(str(globals.data_filepath))
 
 selected_file = st.sidebar.selectbox("Select a file", file_names)
 
