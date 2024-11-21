@@ -23,3 +23,5 @@ m_bwout = 21
 y_bwout = 21
 
 gems_pct_change = -15
+
+current_report_name = 'StockView_*.csv'
