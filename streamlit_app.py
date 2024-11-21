@@ -38,10 +38,7 @@ pg = st.navigation(pages=[dashboard_page, cherries_page, gems_page, sectors_page
 
 file_names = get_report_list.get_file_names(str(globals.data_filepath))
 
-selected_file = st.sidebar.selectbox("Select a file", file_names)
-
-if st.sidebar.button("Open Report"):
-    globals.current_report_name = selected_file
+globals.current_report_name = st.sidebar.selectbox("Select a file", file_names)
 
 # --Run navigation
 pg.run()
