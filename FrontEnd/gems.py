@@ -6,7 +6,7 @@ from FrontEnd.Utils import get_latest_report_data
 from FrontEnd.Utils.display_stocks import create_tabs
 
 # Main logic to read stock data and create tabs
-stock_list_file = str(globals.data_filepath) + get_latest_report_data.get_latest_file(str(globals.data_filepath))
+stock_list_file = str(globals.data_filepath) + str(globals.current_report_name)
 
 # Load stock data from CSV
 try:
