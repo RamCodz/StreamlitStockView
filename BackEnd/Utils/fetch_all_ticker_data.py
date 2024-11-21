@@ -17,10 +17,9 @@ def get_stock_data(ticker, start_date, end_date):
         dbg(f"Could not retrieve data for {ticker}: {e}")
         return pd.DataFrame()
 
-def get_all_data(StockList, current_date):
+def get_all_data(StockList):
     all_data = pd.DataFrame()
-    today = current_date
-    five_year_ago = today - timedelta(days=365*globals.noy)
+    five_year_ago = globals.today - timedelta(days=365*globals.noy)
     DListLbl=['Security Name','Status','Group','Face Value','ISIN No','Industry','Instrument','Sector Name','Industry New Name','Igroup Name','ISubgroup Name'] 
     ##StockList = pd.read_csv(str(globals.equity_list_path) + str(globals.equity_list_filename))
     
@@ -30,7 +29,7 @@ def get_all_data(StockList, current_date):
         if i == 5000:
             break
         stkSymbol = row['Security Id']+'.NS'
-        five_year_data = get_stock_data(stkSymbol, five_year_ago, today)
+        five_year_data = get_stock_data(stkSymbol, five_year_ago, globals.today)
 
         if not five_year_data.empty:
             ##five_year_data['Security Name'] = row['Security Name'];
