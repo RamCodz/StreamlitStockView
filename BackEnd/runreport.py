@@ -11,7 +11,7 @@ from BackEnd.Utils.creategitfiles import create_or_update_file
 def process_stock_data():
     # Ensure gv_sys_date is a string and convert it to datetime
     # gv_sys_date_str = datetime.now().strftime(globals.dt_format)
-    gv_sys_date_str = str("2022-11-18")
+    gv_sys_date_str = str("2022-11-17")
     print('gv_sys_date_str:', gv_sys_date_str) 
     gv_sys_date = datetime.strptime(gv_sys_date_str, globals.dt_format) 
     print('gv_sys_date:', gv_sys_date) 
@@ -26,7 +26,7 @@ def process_stock_data():
     globals.curr_dir = current_directory + "/"
     globals.stockview_filename = globals.stockview_filename.replace("*", str(gv_sys_date_str))
     print(f"Stockview filename: {globals.stockview_filename}")
-    a = 1/0
+    
     # Load stock list and data
     stock_list_path = str(globals.equity_list_path) + str(globals.equity_list_filename)
     StockList = pd.read_csv(stock_list_path)
