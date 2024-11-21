@@ -10,8 +10,8 @@ from BackEnd.Utils.creategitfiles import create_or_update_file
 
 def process_stock_data():
     # Ensure gv_sys_date is a string and convert it to datetime
-    # gv_sys_date_str = datetime.now().strftime(globals.dt_format)
-    gv_sys_date_str = str("2024-11-21")
+    gv_sys_date_str = datetime.now().strftime(globals.dt_format)
+    # gv_sys_date_str = str("2024-11-21")
     print('gv_sys_date_str:', gv_sys_date_str) 
     gv_sys_date = datetime.strptime(gv_sys_date_str, globals.dt_format) 
     print('gv_sys_date:', gv_sys_date) 
