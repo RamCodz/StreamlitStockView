@@ -8,7 +8,7 @@ from FrontEnd.Utils.display_stocks import create_tabs
 
 # Main logic to read stock data and create tabs
 stock_list_file = str(globals.data_filepath) + get_latest_report_data.get_latest_file(str(globals.data_filepath))
-
+st.write(globals.current_report_name)
 # Load stock data from CSV
 try:
     stock_list_df = pd.read_csv(stock_list_file)
