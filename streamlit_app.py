@@ -36,9 +36,6 @@ st.set_page_config(layout="wide")
 # --Navigation setup
 pg = st.navigation(pages=[dashboard_page, cherries_page, gems_page, sectors_page, watchlist_page])
 
-# Sidebar calendar input
-selected_date = st.sidebar.date_input("Pick a date", datetime.now())
-
 file_names = get_report_list.get_file_names(str(globals.data_filepath))
 
 selected_file = st.sidebar.selectbox("Select a file", file_names)
