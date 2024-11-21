@@ -10,8 +10,8 @@ from BackEnd.Utils.creategitfiles import create_or_update_file
 
 def process_stock_data():
     # Ensure gv_sys_date is a string and convert it to datetime
-    gv_sys_date_str = datetime.now().strftime(globals.dt_format)
-    # gv_sys_date_str = str("2022-11-17")
+    # gv_sys_date_str = datetime.now().strftime(globals.dt_format)
+    gv_sys_date_str = str("2024-11-21")
     print('gv_sys_date_str:', gv_sys_date_str) 
     gv_sys_date = datetime.strptime(gv_sys_date_str, globals.dt_format) 
     print('gv_sys_date:', gv_sys_date) 
@@ -43,7 +43,7 @@ def process_stock_data():
     print(f"Filtered data for date {globals.today}: {all_data.shape[0]} records")
 
     # Find cherries (and optionally gems)
-    cherries_ticker_dtls = find_cherries(all_data, StockList, globals.today)
+    cherries_ticker_dtls = find_cherries(all_data, StockList)
     # Uncomment to include gems if needed:
     # gems_ticker_dtls = find_gems(all_data, StockList)
     
