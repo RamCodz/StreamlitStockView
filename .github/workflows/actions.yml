@@ -11,6 +11,8 @@ jobs:
     steps:
       - name: Checkout repo content
         uses: actions/checkout@v3  # Checkout the repository content to GitHub runner
+        with:
+          ref: main  # Explicitly check out the 'main' branch (if that's where requirements.txt is)
 
   setup_python:
     runs-on: ubuntu-latest
@@ -26,11 +28,12 @@ jobs:
     needs: setup_python  # This job depends on the setup_python job
     steps:
       - name: List files in the repository
-        run: ls -al
+        run: ls -al  # List files to verify that requirements.txt is present
+      
       - name: Install Python packages
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          pip install -r requirements.txt  # Install dependencies from requirements.txt
 
   run_backend_code:
     runs-on: ubuntu-latest
