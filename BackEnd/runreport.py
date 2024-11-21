@@ -24,7 +24,7 @@ def process_stock_data():
     # Set current directory and stockview filename
     current_directory = os.getcwd()
     globals.curr_dir = current_directory + "/"
-    globals.stockview_filename = globals.stockview_filename.replace("*", str(globals.today))
+    globals.stockview_filename = globals.stockview_filename.replace("*", str(gv_sys_date_str))
     print(f"Stockview filename: {globals.stockview_filename}")
 
     # Load stock list and data
@@ -32,7 +32,7 @@ def process_stock_data():
     StockList = pd.read_csv(stock_list_path)
     
     # Fetch all stock data based on the loaded stock list and today's date
-    all_data = get_all_data(StockList)
+    all_data = get_all_data(StockList
     
     # Ensure that the data is in proper format and contains a 'Date' column
     all_data = all_data.rename_axis('Date').reset_index()  # Assign the first column name in df and make it a column
