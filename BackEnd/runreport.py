@@ -2,7 +2,6 @@ import pandas as pd
 from datetime import datetime, timedelta
 import os
 import time
-from BackEnd.Utils.debug import debug
 from BackEnd.Utils import globals
 from BackEnd.Utils.fetch_all_ticker_data import get_all_data
 from BackEnd.Scripts.early_cherries import find_cherries
@@ -117,5 +116,4 @@ def process_stock_data():
         print(f"Time taken for step-7: {time.time() - start_time:.2f} seconds")
         
     except Exception as e:
-        debug(f"An error occurred while processing stock data: {e}")
         raise
