@@ -1,44 +1,42 @@
-from yahoo_fin import stock_info as si
 import pandas as pd
-from datetime import datetime, timedelta
+from datetime import timedelta
+from yahoo_fin import stock_info as si
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from BackEnd.Utils import globals
-from BackEnd.Utils.debug import debug
 
-def dbg(msg):
-    debug("fetch_all_ticker_data-->"+str(msg))
-    
-def get_stock_data(ticker, start_date, end_date):  
+MAX_TICKERS = 1000  # Maximum number of tickers to process
+MAX_WORKERS = 5  # Number of threads to use
+
+def get_stock_data(ticker, start_date, end_date):
+    """Fetch historical stock data for a given ticker."""
     try:
-        # Get historical data
-        historical_data = si.get_data(ticker, start_date=start_date, end_date=end_date, interval='1d')
-
-        return historical_data
-    except Exception as e:
-        dbg(f"Could not retrieve data for {ticker}: {e}")
+        return si.get_data(ticker, start_date=start_date, end_date=end_date, interval='1d')
+    except Exception:
         return pd.DataFrame()
 
-def get_all_data(StockList):
+def fetch_ticker_data(ticker, start_date, end_date):
+    """Wrapper function to fetch data for a single ticker and add a ticker column."""
+    data = get_stock_data(ticker, start_date, end_date)
+    if not data.empty:
+        data['ticker'] = ticker
+    return data
+
+def get_all_data(stock_list):
+    """Fetch historical data for all tickers in the stock list using parallel processing."""
     all_data = pd.DataFrame()
-    print('inside get_all_data', globals.today)
-    print(type(globals.today))
-    five_year_ago = globals.today - timedelta(days=365*globals.noy)
-    DListLbl=['Security Name','Status','Group','Face Value','ISIN No','Industry','Instrument','Sector Name','Industry New Name','Igroup Name','ISubgroup Name'] 
-    ##StockList = pd.read_csv(str(globals.equity_list_path) + str(globals.equity_list_filename))
+    five_year_ago = globals.today - timedelta(days=365 * globals.noy)
     
-    i = 0
-    for index, row in StockList.iterrows():
-        i=i+1
-        if i == 1000:
-            break
-        stkSymbol = row['Security Id']+'.NS'
-        five_year_data = get_stock_data(stkSymbol, five_year_ago, globals.today)
-
-        if not five_year_data.empty:
-            ##five_year_data['Security Name'] = row['Security Name'];
-            ##for k in range(len(DListLbl)):
-            ##five_year_data[DListLbl[k]] = row[DListLbl[k]]
-            all_data = pd.concat([all_data, five_year_data])
-
-    return all_data
+    with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
+        futures = []
+        for i, row in enumerate(stock_list.iterrows(), start=1):
+            if i > MAX_TICKERS:
+                break
+            stk_symbol = row[1]['Security Id'] + '.NS'
+            futures.append(executor.submit(fetch_ticker_data, stk_symbol, five_year_ago, globals.today))
         
-##get_all_data()
+        for future in as_completed(futures):
+            data = future.result()
+            if not data.empty:
+                all_data = pd.concat([all_data, data], ignore_index=True)
+    
+    return all_data
