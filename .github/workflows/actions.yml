@@ -24,7 +24,7 @@ jobs:
           pip install -r requirements.txt
       
       - name: Run Backend code
-        run: python -c "from BackEnd.runreport import process_stock_data; from datetime import datetime; process_stock_data()"
+        run: python -c "from BackEnd.runreport import process_stock_data; process_stock_data()"
         env:
          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Expose GITHUB_TOKEN to the Python script
 
