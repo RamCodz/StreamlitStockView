@@ -82,11 +82,11 @@ def create_or_update_file(path, content, message="Update file via Streamlit", br
     }
     if sha:
         data["sha"] = sha
-
+    print('delete old files')
+    delete_old_files(url)
     response = requests.put(url, json=data, headers=headers)
     if response.status_code in (201, 200):
         print("File created or updated successfully.")
     else:
         print(f"Error creating/updating file: {response.status_code} - {response.json()}")
         
-    delete_old_files(url)
