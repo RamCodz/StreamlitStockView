@@ -43,7 +43,9 @@ def delete_file(file_path, sha):
 
 def delete_old_files(base_url):
     """Find and delete old CSV files from the GitHub repository."""
+    print('base_url', base_url)
     files = list_files_in_repo(base_url)
+    print(files)
     for file in files:
         if isinstance(file, dict) and file.get("name").endswith(".csv"):
             try:
@@ -87,4 +89,4 @@ def create_or_update_file(path, content, message="Update file via Streamlit", br
     else:
         print(f"Error creating/updating file: {response.status_code} - {response.json()}")
         
-    # delete_old_files(url)
+    delete_old_files(url)
