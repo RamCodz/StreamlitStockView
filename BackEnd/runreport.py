@@ -87,8 +87,8 @@ def process_stock_data():
         # Step-3: Get the historical data for all the tickers
         start_time = time.time()
         all_data = get_all_data(StockList)
-        print(all_data)
-        all_data['Date'] = pd.to_datetime(all_data['Date'])
+        all_data = all_data.rename_axis('Date').reset_index()  # Assign the first column name in df and make it a column
+        all_data['Date'] = pd.to_datetime(all_data['Date'])  # Convert 'Date' column to datetime
         print(f"Time taken for step-3: {time.time() - start_time:.2f} seconds")
         
         # Step-4: Calculate the returns over mentioned periods
@@ -117,6 +117,3 @@ def process_stock_data():
     except Exception as e:
         debug(f"An error occurred while processing stock data: {e}")
         raise
-
-# Example usage
-# process_stock_data()
