@@ -101,7 +101,7 @@ def process_stock_data():
         
         # Step-5: Find the cherries
         start_time = time.time()
-        cherries_ticker_dtls = find_cherries(calculated_ticker_dtls, all_data)
+        cherries_ticker_dtls = find_cherries(calculated_ticker_dtls)
         print(f"Time taken for step-5: {time.time() - start_time:.2f} seconds")
         
         # Step-6: Find the gems (currently commented out)
