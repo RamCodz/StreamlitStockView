@@ -10,24 +10,27 @@ from BackEnd.Scripts.fallen_gems import find_gems
 from BackEnd.Utils.creategitfiles import create_or_update_file
 
 def analyze_stock(ticker_data, breakout_days, break_type):
-    if break_type not in ['CO', 'BA']:
+    if break_type not in ['CO', 'BA']: #CO-Consecutive   BA-Break after
         raise ValueError(f"Invalid break type {break_type}. Must be 'CO' or 'BA'.")
-
+    
     if break_type == 'BA':
-        if breakout_days > 21 and len(ticker_data) >= 22:
-            recent_data = ticker_data.iloc[-22]
-            past_data = ticker_data.iloc[-(breakout_days + 21)]
-        else:
+        # Monthly data
+        if breakout_days <= 21:
             recent_data = ticker_data.iloc[-1]
-            past_data = ticker_data.iloc[-breakout_days]
+            past_data = ticker_data.iloc[-breakout_days] if len(ticker_data) >= breakout_days else None
+        else:
+            recent_data = ticker_data.iloc[-22] if len(ticker_data) >= 22 else None
+            past_data = ticker_data.iloc[-(breakout_days + 21)] if len(ticker_data) >= (breakout_days + 21) else None
     else:
-        if breakout_days > 5 and len(ticker_data) >= (breakout_days + 5):
-            recent_data = ticker_data.iloc[-6]
-            past_data = ticker_data.iloc[-(breakout_days + 5)]
-        else:
+        # Weekly data
+        if breakout_days == 5:
             recent_data = ticker_data.iloc[-1]
-            past_data = ticker_data.iloc[-breakout_days]
-
+            past_data = ticker_data.iloc[-breakout_days] if len(ticker_data) >= breakout_days else None
+        else:
+            recent_data = ticker_data.iloc[-6]
+            past_data = ticker_data.iloc[-(breakout_days + 5)] if len(ticker_data) >= (breakout_days + 5) else None
+    
+    # Only calculate pct_change if we have enough data
     if past_data is not None:
         pct_change = round(((recent_data['close'] - past_data['close']) / past_data['close']) * 100, 2)
         return pct_change
