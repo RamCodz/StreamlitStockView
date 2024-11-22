@@ -1,7 +1,8 @@
 import pandas as pd
 from datetime import datetime, timedelta
 import os
-from BackEnd.Utils.debug import debug  # Ensure this is set up properly for logging
+import time
+from BackEnd.Utils.debug import debug
 from BackEnd.Utils import globals
 from BackEnd.Utils.fetch_all_ticker_data import get_all_data
 from BackEnd.Scripts.early_cherries import find_cherries
@@ -13,11 +14,19 @@ def analyze_stock(ticker_data, breakout_days, break_type):
         raise ValueError(f"Invalid break type {break_type}. Must be 'CO' or 'BA'.")
 
     if break_type == 'BA':
-        recent_data = ticker_data.iloc[-22] if breakout_days > 21 and len(ticker_data) >= 22 else ticker_data.iloc[-1]
-        past_data = ticker_data.iloc[-(breakout_days + 21)] if breakout_days > 21 and len(ticker_data) >= (breakout_days + 21) else ticker_data.iloc[-breakout_days]
+        if breakout_days > 21 and len(ticker_data) >= 22:
+            recent_data = ticker_data.iloc[-22]
+            past_data = ticker_data.iloc[-(breakout_days + 21)]
+        else:
+            recent_data = ticker_data.iloc[-1]
+            past_data = ticker_data.iloc[-breakout_days]
     else:
-        recent_data = ticker_data.iloc[-6] if breakout_days > 5 else ticker_data.iloc[-1]
-        past_data = ticker_data.iloc[-(breakout_days + 5)] if breakout_days > 5 and len(ticker_data) >= (breakout_days + 5) else ticker_data.iloc[-breakout_days]
+        if breakout_days > 5 and len(ticker_data) >= (breakout_days + 5):
+            recent_data = ticker_data.iloc[-6]
+            past_data = ticker_data.iloc[-(breakout_days + 5)]
+        else:
+            recent_data = ticker_data.iloc[-1]
+            past_data = ticker_data.iloc[-breakout_days]
 
     if past_data is not None:
         pct_change = round(((recent_data['close'] - past_data['close']) / past_data['close']) * 100, 2)
@@ -44,11 +53,7 @@ def calculate_returns(all_data, StockList):
 
     for ticker in unique_tickers:
         ticker_data = all_data[all_data['ticker'] == ticker]
-
-        # Filter stock list based on ticker
         ticker_stklist_dtls = StockList[StockList['Security Id'] + '.NS' == ticker]
-
-        # Process and initialize stock data
         ticker_stklist_dtls = process_ticker_data(ticker_data, ticker_stklist_dtls)
 
         for break_out in ['1W', '1M', '3M', '6M', '1Y', '5Y']:
@@ -61,28 +66,56 @@ def calculate_returns(all_data, StockList):
     return pd.concat(ticker_dfs, ignore_index=True)
 
 def process_stock_data():
+
     try:
+        # Step-1: Set/read the global variables
+        start_time = time.time()
         gv_sys_date_str = datetime.now().strftime(globals.dt_format)
-	# gv_sys_date_str = str("2024-11-21")
+        # gv_sys_date_str = str("2024-11-21")
         globals.today = datetime.strptime(gv_sys_date_str, globals.dt_format)
-        globals.curr_dir = os.getcwd() + "/"
+        current_directory = os.getcwd()
+        globals.curr_dir = current_directory + "/"
         globals.stockview_filename = globals.stockview_filename.replace("*", gv_sys_date_str)
-
         stock_list_path = os.path.join(globals.equity_list_path, globals.equity_list_filename)
+        print(f"Time taken for step-1: {time.time() - start_time:.2f} seconds")
+        
+        # Step-2: Read the stock ticker details from inbound file
+        start_time = time.time()
         StockList = pd.read_csv(stock_list_path)
-
+        print(f"Time taken for step-2: {time.time() - start_time:.2f} seconds")
+        
+        # Step-3: Get the historical data for all the tickers
+        start_time = time.time()
         all_data = get_all_data(StockList)
         all_data['Date'] = pd.to_datetime(all_data['Date'])
-        all_data = all_data[all_data['Date'] <= globals.today]
-
+        print(f"Time taken for step-3: {time.time() - start_time:.2f} seconds")
+        
+        # Step-4: Calculate the returns over mentioned periods
+        start_time = time.time()
         calculated_ticker_dtls = calculate_returns(all_data, StockList)
-        cherries_ticker_dtls = find_cherries(calculated_ticker_dtls)
-        #gems_ticker_dtls = find_gems(calculated_ticker_dtls)
-        #final_df = pd.concat([cherries_ticker_dtls, gems_ticker_dtls])
+        print(f"Time taken for step-4: {time.time() - start_time:.2f} seconds")
+        
+        # Step-5: Find the cherries
+        start_time = time.time()
+        cherries_ticker_dtls = find_cherries(calculated_ticker_dtls, all_data)
+        print(f"Time taken for step-5: {time.time() - start_time:.2f} seconds")
+        
+        # Step-6: Find the gems (currently commented out)
+        # start_time = time.time()
+        # gems_ticker_dtls = find_gems(calculated_ticker_dtls)
+        # final_df = pd.concat([cherries_ticker_dtls, gems_ticker_dtls])
+        # print(f"Time taken for step-6: {time.time() - start_time:.2f} seconds")
+        
+        # Step-7: Create the report file     
+        start_time = time.time()
         final_df = cherries_ticker_dtls
         output_file = os.path.join(globals.data_filepath, globals.stockview_filename)
         create_or_update_file(output_file, final_df)
-        print(f"Report generated successfully and saved at: {output_file}")
+        print(f"Time taken for step-7: {time.time() - start_time:.2f} seconds")
+        
     except Exception as e:
         debug(f"An error occurred while processing stock data: {e}")
         raise
+
+# Example usage
+# process_stock_data()
