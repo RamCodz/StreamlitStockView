@@ -58,17 +58,20 @@ def delete_old_files(base_url):
             except (IndexError, ValueError) as e:
                 print(f"Could not parse date from filename {file['name']}: {e}")
 
-def create_or_update_file(path, content, message="Update file via Streamlit", branch="main"):
+def create_or_delete_file(output_path, file_name, content, message="Update file via Streamlit", branch="main"):
     """Create or update a file in the GitHub repository."""
+    
+    path = os.path.join(output_path, file_name)
     if len(GITHUB_TOKEN) < 100:
         message = "Update file via Schedule"
-    url = f"https://api.github.com/repos/RamCodz/StreamlitStockView/contents/{path}"
+    create_url = f"https://api.github.com/repos/RamCodz/StreamlitStockView/contents/{path}"
+    delete_url = f"https://api.github.com/repos/RamCodz/StreamlitStockView/contents/{output_path}"
     headers = {
         "Authorization": f"token {GITHUB_TOKEN}",
         "Accept": "application/vnd.github.v3+json"
     }
 
-    response = requests.get(url, headers=headers)
+    response = requests.get(create_url, headers=headers)
     sha = response.json().get("sha") if response.status_code == 200 else None
     
     csv_buffer = StringIO()
@@ -82,11 +85,13 @@ def create_or_update_file(path, content, message="Update file via Streamlit", br
     }
     if sha:
         data["sha"] = sha
-    print('delete old files')
+        
+    print('delete old files')    
+    delete_old_files(delete_url)
     
-    response = requests.put(url, json=data, headers=headers)
+    response = requests.put(create_url, json=data, headers=headers)
     if response.status_code in (201, 200):
-        print("File created or updated successfully.")
+        print("File created or deleted successfully.")
     else:
         print(f"Error creating/updating file: {response.status_code} - {response.json()}")
-        
+       
