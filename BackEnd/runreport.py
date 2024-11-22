@@ -7,7 +7,7 @@ from BackEnd.Utils import globals
 from BackEnd.Utils.fetch_all_ticker_data import get_all_data
 from BackEnd.Scripts.early_cherries import find_cherries
 from BackEnd.Scripts.fallen_gems import find_gems
-from BackEnd.Utils.creategitfiles import create_or_update_file
+from BackEnd.Utils.creategitfiles import create_or_delete_file
 
 def analyze_stock(ticker_data, breakout_days, break_type):
     if break_type not in ['CO', 'BA']: #CO-Consecutive   BA-Break after
@@ -113,8 +113,7 @@ def process_stock_data():
         # Step-7: Create the report file     
         start_time = time.time()
         final_df = cherries_ticker_dtls
-        output_file = os.path.join(globals.data_filepath, globals.stockview_filename)
-        create_or_update_file(output_file, final_df)
+        create_or_delete_file(globals.data_filepath, globals.stockview_filename, final_df)
         print(f"Time taken for step-7: {time.time() - start_time:.2f} seconds")
         
     except Exception as e:
