@@ -28,7 +28,7 @@ def get_all_data(StockList):
     i = 0
     for index, row in StockList.iterrows():
         i=i+1
-        if i == 50:
+        if i == 1000:
             break
         stkSymbol = row['Security Id']+'.NS'
         five_year_data = get_stock_data(stkSymbol, five_year_ago, globals.today)
