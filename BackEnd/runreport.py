@@ -47,7 +47,7 @@ def process_ticker_data(ticker_data, ticker_stklist_dtls):
     return ticker_stklist_dtls_copy
 
 def get_breakout_days(break_out):
-    return int(break_out[:-1]) * {'Y': 365, 'M': 21, 'W': 5}[break_out[-1]]
+    return int(break_out[:-1]) * {'Y': 252, 'M': 21, 'W': 5}[break_out[-1]]
 
 def calculate_returns(all_data, StockList):
     ticker_dfs = []
