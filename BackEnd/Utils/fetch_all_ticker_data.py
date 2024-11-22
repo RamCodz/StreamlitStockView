@@ -4,7 +4,7 @@ from yahoo_fin import stock_info as si
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from BackEnd.Utils import globals
 
-MAX_TICKERS = 500  # Maximum number of tickers to process
+MAX_TICKERS = 5000  # Maximum number of tickers to process
 MAX_WORKERS = 5  # Number of threads to use
 
 def get_stock_data(ticker, start_date, end_date):
