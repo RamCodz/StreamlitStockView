@@ -11,7 +11,7 @@ def apply_flags(ticker_stklist_dtls):
 
 def find_cherries(calculated_ticker_dtls, all_data):
     filtered_data_list = []
-
+    print(calculated_ticker_dtls)
     for ticker in calculated_ticker_dtls['ticker'].unique():
         ticker_data = all_data[all_data['ticker'] == ticker]
         ticker_dtls = calculated_ticker_dtls[calculated_ticker_dtls['ticker'] == ticker]
