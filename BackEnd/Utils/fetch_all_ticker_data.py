@@ -1,3 +1,4 @@
+import os
 import pandas as pd
 from datetime import timedelta
 from yahoo_fin import stock_info as si
@@ -5,7 +6,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from BackEnd.Utils import globals
 
 MAX_TICKERS = 5000  # Maximum number of tickers to process
-MAX_WORKERS = 5  # Number of threads to use
+MAX_WORKERS = os.cpu_count()  # Number of threads to use
 
 def get_stock_data(ticker, start_date, end_date):
     """Fetch historical stock data for a given ticker."""
@@ -25,7 +26,7 @@ def get_all_data(stock_list):
     """Fetch historical data for all tickers in the stock list using parallel processing."""
     all_data = pd.DataFrame()
     five_year_ago = globals.today - timedelta(days=365 * globals.noy)
-    
+    print('MAX_WORKERS', MAX_WORKERS)
     with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
         futures = []
         for i, row in enumerate(stock_list.iterrows(), start=1):
