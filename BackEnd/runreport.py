@@ -77,9 +77,9 @@ def process_stock_data():
 
         calculated_ticker_dtls = calculate_returns(all_data, StockList)
         cherries_ticker_dtls = find_cherries(calculated_ticker_dtls)
-        gems_ticker_dtls = find_gems(calculated_ticker_dtls)
-        final_df = pd.concat([cherries_ticker_dtls, gems_ticker_dtls])
-
+        #gems_ticker_dtls = find_gems(calculated_ticker_dtls)
+        #final_df = pd.concat([cherries_ticker_dtls, gems_ticker_dtls])
+        final_df = cherries_ticker_dtls
         output_file = os.path.join(globals.data_filepath, globals.stockview_filename)
         create_or_update_file(output_file, final_df)
         print(f"Report generated successfully and saved at: {output_file}")
