@@ -43,15 +43,12 @@ def delete_file(file_path, sha):
 
 def delete_old_files(base_url):
     """Find and delete old CSV files from the GitHub repository."""
-    print('base_url', base_url)
     files = list_files_in_repo(base_url)
-    print(files)
+    
     for file in files:
         if isinstance(file, dict) and file.get("name").endswith(".csv"):
             try:
-                print('file', file)
                 file_date_str = file["name"].split("_")[1].split(".")[0]
-                print('file_date_str', file_date_str)
                 file_date = datetime.strptime(file_date_str, "%Y-%m-%d")
                 if file_date < THRESHOLD_DATE:
                     delete_file(file["path"], file["sha"])
@@ -85,8 +82,7 @@ def create_or_delete_file(output_path, file_name, content, message="Update file 
     }
     if sha:
         data["sha"] = sha
-        
-    print('delete old files')    
+       
     delete_old_files(delete_url)
     
     response = requests.put(create_url, json=data, headers=headers)
