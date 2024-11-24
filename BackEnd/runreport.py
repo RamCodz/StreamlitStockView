@@ -5,7 +5,7 @@ import time
 from BackEnd.Utils import globals
 from BackEnd.Utils.fetch_all_ticker_data import get_all_data
 from BackEnd.Scripts.early_cherries import find_cherries
-#from BackEnd.Scripts.fallen_gems import find_gems
+from BackEnd.Scripts.fallen_gems import find_gems
 from BackEnd.Utils.creategitfiles import create_or_delete_file
 
 def analyze_stock(ticker_data, breakout_days, break_type):
