@@ -42,7 +42,7 @@ def process_ticker_data(ticker_data, ticker_stklist_dtls):
     for field in fields:
         ticker_stklist_dtls_copy[f'{field}_value'] = 0.00
         ticker_stklist_dtls_copy[f'{field}_FLG'] = 'N'
-    ticker_stklist_dtls_copy['Report'] = 'C'
+    ticker_stklist_dtls_copy['Report'] = ''
 
     return ticker_stklist_dtls_copy
 
@@ -104,10 +104,10 @@ def process_stock_data():
         print(f"Time taken for step-5: {time.time() - start_time:.2f} seconds")
         
         # Step-6: Find the gems (currently commented out)
-        # start_time = time.time()
-        # gems_ticker_dtls = find_gems(calculated_ticker_dtls)
-        # final_df = pd.concat([cherries_ticker_dtls, gems_ticker_dtls])
-        # print(f"Time taken for step-6: {time.time() - start_time:.2f} seconds")
+        start_time = time.time()
+        gems_ticker_dtls = find_gems(calculated_ticker_dtls)
+        final_df = pd.concat([cherries_ticker_dtls, gems_ticker_dtls])
+        print(f"Time taken for step-6: {time.time() - start_time:.2f} seconds")
         
         # Step-7: Create the report file     
         start_time = time.time()
