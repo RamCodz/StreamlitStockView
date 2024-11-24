@@ -33,7 +33,7 @@ def analyze_stock(ticker_data, breakout_days, break_type):
     if past_data is not None:
         pct_change = round(((recent_data['close'] - past_data['close']) / past_data['close']) * 100, 2)
         return pct_change
-    return 0
+    return None
 
 def process_ticker_data(ticker_data, ticker_stklist_dtls):
     ticker_stklist_dtls_copy = ticker_stklist_dtls.copy()
