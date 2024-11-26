@@ -68,7 +68,6 @@ def calculate_returns(all_data, StockList):
     return pd.concat(ticker_dfs, ignore_index=True)
 
 def process_stock_data():
-
     try:
         # Step-1: Set/read the global variables
         start_time = time.time()
