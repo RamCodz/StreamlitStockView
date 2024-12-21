@@ -1,19 +1,7 @@
 import pandas as pd
 import os
 
-def mark_occurrences(input_dataframe, folder_path, report_value, flag_column):
-    """
-    Process files in the folder to calculate occurrences of stocks and update the provided DataFrame.
-
-    Parameters:
-        folder_path (str): Path to the folder containing CSV files.
-        report_value (str): Value in the "report" column to filter by.
-        flag_column (str): Column name representing the flag.
-        input_dataframe (pd.DataFrame): The input DataFrame to update with occurrence counts.
-
-    Returns:
-        pd.DataFrame: The updated DataFrame with an added "Occurrence" column.
-    """
+def mark_occurrences(input_dataframe, folder_path):
     # Initialize an empty DataFrame to hold data from all files
     all_data = pd.DataFrame()
 
@@ -27,7 +15,7 @@ def mark_occurrences(input_dataframe, folder_path, report_value, flag_column):
             all_data = pd.concat([all_data, data], ignore_index=True)
 
     # Filter records with the specified report and flag values
-    filtered_data = all_data[(all_data['report'] == report_value) & (all_data[flag_column] == 'Y')]
+    filtered_data = all_data[(all_data['report'] == 'C') & (all_data['1Y_FLG'] == 'Y')]
 
     # Count occurrences of each stock
     occurrence_counts = filtered_data["Security Id"].value_counts().reset_index()
