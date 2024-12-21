@@ -113,7 +113,7 @@ def process_stock_data():
         start_time = time.time()
         marked_df = mark_occurrences(final_df, globals.data_filepath)
         marked_df['Report Date'] = gv_sys_date_str
-        log_execution_time("step-7", start_time)
+        print(f"Time taken for step-7: {time.time() - start_time:.2f} seconds")
         
         # Step-8: Create the report file     
         start_time = time.time()
