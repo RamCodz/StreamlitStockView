@@ -15,7 +15,7 @@ def mark_occurrences(input_dataframe, folder_path):
             all_data = pd.concat([all_data, data], ignore_index=True)
 
     # Filter records with the specified report and flag values
-    filtered_data = all_data[(all_data['report'] == 'C') & (all_data['1Y_FLG'] == 'Y')]
+    filtered_data = all_data[(all_data['Report'] == 'C') & (all_data['1Y_FLG'] == 'Y')]
 
     # Count occurrences of each stock
     occurrence_counts = filtered_data["Security Id"].value_counts().reset_index()
