@@ -6,6 +6,7 @@ from BackEnd.Utils import globals
 from BackEnd.Utils.fetch_all_ticker_data import get_all_data
 from BackEnd.Scripts.early_cherries import find_cherries
 from BackEnd.Scripts.fallen_gems import find_gems
+from BackEnd.Scripts.dashboard_data import mark_occurrences
 from BackEnd.Utils.creategitfiles import create_or_delete_file
 
 def analyze_stock(ticker_data, breakout_days, break_type):
@@ -107,11 +108,16 @@ def process_stock_data():
         gems_ticker_dtls = find_gems(calculated_ticker_dtls)
         final_df = pd.concat([cherries_ticker_dtls, gems_ticker_dtls])
         print(f"Time taken for step-6: {time.time() - start_time:.2f} seconds")
-        
-        # Step-7: Create the report file     
+  
+        # Step-7: mark the occurrences for dashboard
         start_time = time.time()
         final_df = cherries_ticker_dtls
-        create_or_delete_file(globals.data_filepath, globals.stockview_filename, final_df)
+        marked_df = mark_occurrences(final_df, globals.data_filepath)
+        print(f"Time taken for step-7: {time.time() - start_time:.2f} seconds")
+        
+        # Step-8: Create the report file     
+        start_time = time.time()
+        create_or_delete_file(globals.data_filepath, globals.stockview_filename, marked_df)
         print(f"Time taken for step-7: {time.time() - start_time:.2f} seconds")
         
     except Exception as e:
