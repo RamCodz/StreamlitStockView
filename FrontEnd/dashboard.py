@@ -29,6 +29,6 @@ alias_names = {
 #dashboard_stock_list = dashboard_stock_list.rename(columns=alias_names)
 
 # Display data in Streamlit with the alias names, without the index
-st.header('Turn around')
+st.subheader('Turn around')
 st.write(dashboard_stock_list)
 #st.write(dashboard_stock_list['Security Name', 'Industry New Name'', 'Occurrence'])
