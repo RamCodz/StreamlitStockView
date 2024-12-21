@@ -24,4 +24,7 @@ def mark_occurrences(input_dataframe, folder_path):
     # Merge occurrence counts back to the input DataFrame
     updated_dataframe = input_dataframe.merge(occurrence_counts, on="Security Id", how='left')
 
+    # Fill NaN values with 0 and convert to integer
+    updated_dataframe['Occurrence'] = updated_dataframe['Occurrence'].fillna(0).astype(int)
+
     return updated_dataframe
