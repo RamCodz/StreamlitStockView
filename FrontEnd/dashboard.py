@@ -30,4 +30,4 @@ alias_names = {
 
 # Display data in Streamlit with the alias names, without the index
 st.subheader('Turn around')
-st.write(dashboard_stock_list['Security Name', 'Industry New Name', 'Occurrence'])
+st.write(dashboard_stock_list[['Security Name', 'Industry New Name', 'Occurrence']])
