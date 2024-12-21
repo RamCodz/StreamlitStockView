@@ -60,7 +60,11 @@ def display_stock_details(stock_data):
                 side='right'
             ),
             template="plotly_dark",  # Change template as needed for dark or light themes
-            showlegend=True
+            showlegend=True,
+            dragmode=False,  # Disables zoom and pan interactions
+            autosize=True,
+            xaxis=dict(fixedrange=True),  # Prevent zooming on the x-axis
+            yaxis=dict(fixedrange=True),  # Prevent zooming on the y-axis
         )
 
         # Create three columns to display additional information (e.g., PE and PB ratios)
