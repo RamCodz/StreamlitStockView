@@ -4,6 +4,7 @@ import yfinance as yf
 from pandas.errors import EmptyDataError
 import plotly.graph_objs as go
 
+@st.cache_data
 # Function to get the stock data
 def get_stock_data(ticker, period="5y", interval="1d"):
     stock = yf.Ticker(str(ticker) + ".NS")  # Append .BO for BSE stocks
