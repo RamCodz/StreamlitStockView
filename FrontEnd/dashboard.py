@@ -7,8 +7,8 @@ from FrontEnd.Utils.display_stocks import create_tabs
 
 
 # Main logic to read stock data and create tabs
-stock_list_file = str(globals.data_filepath) + str(globals.current_report_name)
-
+stock_list_file = str(globals.data_filepath) + "/" + str(globals.current_report_name)  # Make sure there's a separator
+st.write(stock_list_file)
 # Load stock data from CSV
 try:
     stock_list_df = pd.read_csv(stock_list_file)
@@ -18,7 +18,9 @@ except Exception as e:
     st.error(f"Error reading the file: {e}")
     stock_list_df = pd.DataFrame()
 
-dashboard_stock_list = stock_list_df[stock_list_df['Occurrence'] > 0].sort_values(by=['Industry New Name','ISubgroup Name'], ascending=[True, True])
+# Filter the DataFrame
+dashboard_stock_list = stock_list_df[stock_list_df['Occurrence'] > 0].sort_values(by=['Industry New Name', 'ISubgroup Name'], ascending=[True, True])
 
+# Display data in Streamlit
 st.header('Turn around')
-st.write(dashboard_stock_list['Security Name', 'Face Value', 'Industry New Name', 'Igroup Name', 'Occurrence'])
+st.write(dashboard_stock_list[['Security Name', 'Face Value', 'Industry New Name', 'Igroup Name', 'Occurrence']])
