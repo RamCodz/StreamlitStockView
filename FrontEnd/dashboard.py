@@ -26,20 +26,17 @@ if not stock_list_df.empty:
     # Define alias names for columns
     alias_names = {
         'Security Name': 'Stock Name',
-        'Industry New Name': 'Industry',
+        'Industry New Name': 'Industry Name',
         'Occurrence': 'Occurrence Count'
     }
 
     # Rename the columns
     dashboard_stock_list = dashboard_stock_list.rename(columns=alias_names)
 
-    # Check the column names to confirm renaming
-    st.write("Columns in DataFrame after renaming:", dashboard_stock_list.columns)
-
     # Display data in Streamlit with the alias names, without the index
     st.subheader('Turn around')
     try:
-        st.write(dashboard_stock_list[['Stock Name', 'Industry', 'Occurrence Count']])
+        st.write(dashboard_stock_list[['Stock Name', 'Industry Name', 'Occurrence Count']])
     except KeyError as e:
         st.write(f"KeyError: {e}. Check if the columns are correctly renamed.")
 else:
