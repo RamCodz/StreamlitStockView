@@ -41,6 +41,6 @@ if not stock_list_df.empty:
     try:
         st.write(dashboard_stock_list[['Stock Name', 'Industry', 'Occurrence Count']])
     except KeyError as e:
-        st.error(f"KeyError: {e}. Check if the columns are correctly renamed.")
+        st.write(f"KeyError: {e}. Check if the columns are correctly renamed.")
 else:
     st.warning("No data available to display.")
