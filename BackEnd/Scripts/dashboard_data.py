@@ -1,60 +1,39 @@
 import pandas as pd
 import os
-from datetime import datetime
 
-# Define the folder where your outbound files are stored
-outbound_folder = "path/to/Outbound"
+def mark_occurrences(input_dataframe, folder_path, report_value, flag_column):
+    """
+    Process files in the folder to calculate occurrences of stocks and update the provided DataFrame.
 
-# Function to read all the CSV files in the outbound folder
-def read_files(folder):
-    all_files = [os.path.join(folder, f) for f in os.listdir(folder) if f.endswith('.csv')]
-    data = pd.concat([pd.read_csv(f) for f in all_files], ignore_index=True)
-    return data
+    Parameters:
+        folder_path (str): Path to the folder containing CSV files.
+        report_value (str): Value in the "report" column to filter by.
+        flag_column (str): Column name representing the flag.
+        input_dataframe (pd.DataFrame): The input DataFrame to update with occurrence counts.
 
-# Read the data from all files
-df = read_files(outbound_folder)
+    Returns:
+        pd.DataFrame: The updated DataFrame with an added "Occurrence" column.
+    """
+    # Initialize an empty DataFrame to hold data from all files
+    all_data = pd.DataFrame()
 
-# Convert the date column to datetime (if it exists in your dataset)
-df['date'] = pd.to_datetime(df['date'], errors='coerce')
+    # Read all files from the folder
+    for file_name in os.listdir(folder_path):
+        if file_name.endswith('.csv'):
+            file_path = os.path.join(folder_path, file_name)
+            # Read the CSV file
+            data = pd.read_csv(file_path)
+            # Append to the main DataFrame
+            all_data = pd.concat([all_data, data], ignore_index=True)
 
-# Filter the data by report type ('C' and 'G')
-df_c = df[df['report_type'] == 'C']
-df_g = df[df['report_type'] == 'G']
+    # Filter records with the specified report and flag values
+    filtered_data = all_data[(all_data['report'] == report_value) & (all_data[flag_column] == 'Y')]
 
-# Count occurrences of each stock for both report types
-stock_counts_c = df_c['stock_name'].value_counts()
-stock_counts_g = df_g['stock_name'].value_counts()
+    # Count occurrences of each stock
+    occurrence_counts = filtered_data["Security Id"].value_counts().reset_index()
+    occurrence_counts.columns = ["Security Id", 'Occurrence']
 
-# Combine the counts into one DataFrame
-stock_counts = pd.DataFrame({
-    'count_C': stock_counts_c,
-    'count_G': stock_counts_g
-}).fillna(0)
+    # Merge occurrence counts back to the input DataFrame
+    updated_dataframe = input_dataframe.merge(occurrence_counts, on="Security Id", how='left')
 
-# Function to check if stock appeared continuously for 10 days
-def find_continuous_stocks(df, threshold=10):
-    continuous_stocks = []
-    for stock in df['stock_name'].unique():
-        stock_data = df[df['stock_name'] == stock].sort_values('date')
-        consecutive_days = 0
-        for i in range(1, len(stock_data)):
-            if (stock_data['date'].iloc[i] - stock_data['date'].iloc[i-1]).days == 1:
-                consecutive_days += 1
-            else:
-                consecutive_days = 0
-            if consecutive_days >= threshold - 1:  # 10 days threshold
-                continuous_stocks.append(stock)
-                break
-    return continuous_stocks
-
-# Find stocks with continuous appearances for 10 days in each report type
-continuous_c = find_continuous_stocks(df_c)
-continuous_g = find_continuous_stocks(df_g)
-
-# Combine the continuous stocks results
-continuous_stocks = list(set(continuous_c + continuous_g))
-
-# Display the results
-print("Stock Counts by Report Type:")
-print(stock_counts)
-print(f"\nStocks with continuous appearances for 10 days: {continuous_stocks}")
+    return updated_dataframe
