@@ -2,13 +2,10 @@ import streamlit as st
 import pandas as pd
 from pandas.errors import EmptyDataError
 from BackEnd.Utils import globals
-from FrontEnd.Utils import get_latest_report_data
-from FrontEnd.Utils.display_stocks import create_tabs
-
 
 # Main logic to read stock data and create tabs
 stock_list_file = str(globals.data_filepath) + "/" + str(globals.current_report_name)  # Make sure there's a separator
-st.write(stock_list_file)
+
 # Load stock data from CSV
 try:
     stock_list_df = pd.read_csv(stock_list_file)
@@ -21,6 +18,17 @@ except Exception as e:
 # Filter the DataFrame
 dashboard_stock_list = stock_list_df[stock_list_df['Occurrence'] > 0].sort_values(by=['Industry New Name', 'ISubgroup Name'], ascending=[True, True])
 
-# Display data in Streamlit
+# Define alias names for columns
+alias_names = {
+    'Security Name': 'Stock Name',
+    'Face Value': 'Face Value',
+    'Industry New Name': 'Industry',
+    'Occurrence': 'Occurrence Count'
+}
+
+# Rename the columns
+dashboard_stock_list = dashboard_stock_list.rename(columns=alias_names)
+
+# Display data in Streamlit with the alias names, without the index
 st.header('Turn around')
-st.write(dashboard_stock_list[['Security Name', 'Face Value', 'Industry New Name', 'Igroup Name', 'Occurrence']])
+st.dataframe(dashboard_stock_list[['Stock Name', 'Face Value', 'Industry', 'Occurrence Count']], hide_index=True)
