@@ -1,44 +1,47 @@
 import streamlit as st
+from datetime import datetime, timedelta
 from BackEnd import runreport
 from BackEnd.Utils import globals
 from FrontEnd.Utils import get_report_list
-from datetime import datetime
 
-# ---Page setup
-dashboard_page = st.Page(
-    page="FrontEnd/dashboard.py",
-    title="Dashboard",
-    icon=":material/dashboard:",
-    default=True
-)
-cherries_page = st.Page(
-    page="FrontEnd/cherries.py",
-    title="Early Cherries",
-    icon=":material/account_circle:"
-)
-gems_page = st.Page(
-    page="FrontEnd/gems.py",
-    title="Fallen Gems",
-    icon=":material/account_circle:"
-)
-sectors_page = st.Page(
-    page="FrontEnd/sectors.py",
-    title="Sector Stars",
-    icon=":material/account_circle:"
-)
-watchlist_page = st.Page(
-    page="FrontEnd/watchlist.py",
-    title="Watchlist",
-    icon=":material/account_circle:"
-)
-st.set_page_config(layout="wide")
+# Page configuration
+st.set_page_config(page_title="Stock Dashboard", layout="wide")
 
-# --Navigation setup
-pg = st.navigation(pages=[dashboard_page, cherries_page, gems_page, sectors_page, watchlist_page])
+# Sidebar for navigation
+pages = {
+    "Dashboard": "dashboard",
+    "Early Cherries": "cherries",
+    "Fallen Gems": "gems",
+    "Sector Stars": "sectors",
+    "Watchlist": "watchlist",
+}
 
-file_names = get_report_list.get_file_names(str(globals.data_filepath))
+selected_page = st.sidebar.radio("Navigation", list(pages.keys()))
 
-globals.current_report_name = st.sidebar.selectbox("Select the report", file_names)
+# Sidebar for date selection (last 30 days)
+today = datetime.today()
+min_date = today - timedelta(days=30)
+max_date = today
 
-# --Run navigation
-pg.run()
+selected_date = st.sidebar.date_input(
+    "Select a date",
+    min_value=min_date,
+    max_value=max_date,
+    value=today,
+    help="Select a date within the last 30 days"
+)
+
+# Pass the selected date to the global variable or session state
+globals.current_report_date = selected_date
+
+# Render selected page
+if selected_page == "Dashboard":
+    # Include dashboard logic here
+elif selected_page == "Early Cherries":
+    # Include Early Cherries logic here
+elif selected_page == "Fallen Gems":
+    # Include Fallen Gems logic here
+elif selected_page == "Sector Stars":
+    # Include Sector Stars logic here
+elif selected_page == "Watchlist":
+    # Include Watchlist logic here
