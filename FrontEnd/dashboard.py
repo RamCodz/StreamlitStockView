@@ -31,4 +31,4 @@ dashboard_stock_list = dashboard_stock_list.rename(columns=alias_names)
 
 # Display data in Streamlit with the alias names, without the index
 st.header('Turn around')
-st.dataframe(dashboard_stock_list[['Stock Name', 'Face Value', 'Industry', 'Occurrence Count']], hide_index=True)
+st.write(dashboard_stock_list[['Stock Name', 'Face Value', 'Industry', 'Occurrence Count']].to_string(index=False))
