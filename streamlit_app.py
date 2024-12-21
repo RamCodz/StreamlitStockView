@@ -4,21 +4,39 @@ from BackEnd import runreport
 from BackEnd.Utils import globals
 from FrontEnd.Utils import get_report_list
 
-# Page configuration
-st.set_page_config(page_title="Stock Dashboard", layout="wide")
+# ---Page setup
+dashboard_page = st.Page(
+    page="FrontEnd/dashboard.py",
+    title="Dashboard",
+    icon=":material/dashboard:",
+    default=True
+)
+cherries_page = st.Page(
+    page="FrontEnd/cherries.py",
+    title="Early Cherries",
+    icon=":material/account_circle:"
+)
+gems_page = st.Page(
+    page="FrontEnd/gems.py",
+    title="Fallen Gems",
+    icon=":material/account_circle:"
+)
+sectors_page = st.Page(
+    page="FrontEnd/sectors.py",
+    title="Sector Stars",
+    icon=":material/account_circle:"
+)
+watchlist_page = st.Page(
+    page="FrontEnd/watchlist.py",
+    title="Watchlist",
+    icon=":material/account_circle:"
+)
+st.set_page_config(layout="wide")
 
-# Sidebar for navigation
-pages = {
-    "Dashboard": "dashboard",
-    "Early Cherries": "cherries",
-    "Fallen Gems": "gems",
-    "Sector Stars": "sectors",
-    "Watchlist": "watchlist",
-}
+# --Navigation setup
+pg = st.navigation(pages=[dashboard_page, cherries_page, gems_page, sectors_page, watchlist_page])
 
-selected_page = st.sidebar.radio("Navigation", list(pages.keys()))
-
-# Sidebar for date selection (last 30 days)
+# Date selection logic
 today = datetime.today()
 min_date = today - timedelta(days=30)
 max_date = today
@@ -31,17 +49,11 @@ selected_date = st.sidebar.date_input(
     help="Select a date within the last 30 days"
 )
 
-# Pass the selected date to the global variable or session state
-globals.current_report_date = selected_date
+# Format the selected date as a string in the desired format
+formatted_date = selected_date.strftime("%Y-%m-%d")
 
-# Render selected page
-if selected_page == "Dashboard":
-    # Include dashboard logic here
-elif selected_page == "Early Cherries":
-    # Include Early Cherries logic here
-elif selected_page == "Fallen Gems":
-    # Include Fallen Gems logic here
-elif selected_page == "Sector Stars":
-    # Include Sector Stars logic here
-elif selected_page == "Watchlist":
-    # Include Watchlist logic here
+# Update the global variable with the selected report name
+globals.current_report_name = f"StockView_{formatted_date}.csv"
+
+# --Run navigation
+pg.run()
