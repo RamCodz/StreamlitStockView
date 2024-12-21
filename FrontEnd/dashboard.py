@@ -16,7 +16,7 @@ except Exception as e:
     stock_list_df = pd.DataFrame()
 
 # Filter the DataFrame
-dashboard_stock_list = stock_list_df[stock_list_df['Occurrence'] > 0].sort_values(by=['Industry New Name', 'ISubgroup Name'], ascending=[True, True])
+dashboard_stock_list = stock_list_df[stock_list_df['Occurrence'] > 0].sort_values(by=['Occurrence'], ascending=True)
 
 # Define alias names for columns
 alias_names = {
@@ -26,8 +26,8 @@ alias_names = {
 }
 
 # Rename the columns
-#dashboard_stock_list = dashboard_stock_list.rename(columns=alias_names)
+dashboard_stock_list = dashboard_stock_list.rename(columns=alias_names)
 
 # Display data in Streamlit with the alias names, without the index
 st.subheader('Turn around')
-st.write(dashboard_stock_list[['Security Name', 'Industry New Name', 'Occurrence']].sort_values(by='Occurrence', ascending=True)
+st.write(dashboard_stock_list[['Stock Name', 'Industry', 'Occurrence Count']])
