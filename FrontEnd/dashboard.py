@@ -21,7 +21,6 @@ st.write(dashboard_stock_list)
 # Define alias names for columns
 alias_names = {
     'Security Name': 'Stock Name',
-    'Face Value': 'Face Value',
     'Industry New Name': 'Industry',
     'Occurrence': 'Occurrence Count'
 }
