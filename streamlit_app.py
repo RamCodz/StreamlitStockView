@@ -55,5 +55,9 @@ formatted_date = selected_date.strftime("%Y-%m-%d")
 # Update the global variable with the selected report name
 globals.current_report_name = f"StockView_{formatted_date}.csv"
 
-# --Run navigation
-pg.run()
+# Check if the selected date is Sunday (6) or Monday (0)
+if selected_date.weekday() in (0, 6):  # 0 is Monday, 6 is Sunday
+    st.sidebar.error("Invalid date: Sundays and Mondays are not allowed. Please select another date.")
+else:
+    # --Run navigation
+    pg.run()
