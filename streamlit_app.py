@@ -36,17 +36,26 @@ st.set_page_config(layout="wide")
 # --Navigation setup
 pg = st.navigation(pages=[dashboard_page, cherries_page, gems_page, sectors_page, watchlist_page])
 
-# Date selection logic
+# Get today's date and calculate the range for the last 30 days
 today = datetime.today()
-min_date = today - timedelta(days=30)
-max_date = today
+thirty_days_ago = today - timedelta(days=30)
 
-selected_date = st.sidebar.date_input(
-    "Select a date",
-    min_value=min_date,
-    max_value=max_date,
-    value=today,
-    help="Select a date within the last 30 days"
+# Generate valid dates (last 30 days excluding Sundays and Mondays)
+valid_dates = [
+    thirty_days_ago + timedelta(days=i)
+    for i in range(31)
+    if (thirty_days_ago + timedelta(days=i)).weekday() not in (0, 6)  # Exclude Sunday (6) and Monday (0)
+]
+
+# Convert valid dates to strings for display
+valid_date_strings = [date.strftime('%Y-%m-%d') for date in valid_dates]
+
+# Streamlit dropdown
+st.sidebar.title("Date Picker")
+selected_date = st.sidebar.selectbox(
+    "Pick a valid date:",
+    valid_date_strings,
+    help="Only dates within the last 30 days (excluding Sundays and Mondays) are selectable."
 )
 
 # Format the selected date as a string in the desired format
