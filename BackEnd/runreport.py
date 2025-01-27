@@ -106,8 +106,8 @@ def process_stock_data():
         # Step-6: Find the gems (currently commented out)
         start_time = time.time()
         gems_ticker_dtls = find_gems(calculated_ticker_dtls)
-        #final_df = pd.concat([cherries_ticker_dtls, gems_ticker_dtls])
-        final_df = cherries_ticker_dtls
+        final_df = pd.concat([cherries_ticker_dtls, gems_ticker_dtls])
+        #final_df = cherries_ticker_dtls
         print(f"Time taken for step-6: {time.time() - start_time:.2f} seconds")
   
         # Step-7: mark the occurrences for dashboard
