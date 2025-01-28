@@ -11,7 +11,7 @@ def find_gems(calculated_ticker_dtls):
 
     # Filter data based on the 1W, 1M, and 3M flags
     filtered_data = calculated_ticker_dtls[
-        (calculated_ticker_dtls['1W_FLG'] == 'Y') | (calculated_ticker_dtls['1M_FLG'] == 'Y') | (calculated_ticker_dtls['3M_FLG'] == 'Y')
+        (calculated_ticker_dtls['1W_FLG'] == 'Y') | (calculated_ticker_dtls['1M_FLG'] == 'Y') | (calculated_ticker_dtls['3M_FLG'] == 'Y') | (calculated_ticker_dtls['6M_FLG'] == 'Y') | (calculated_ticker_dtls['1Y_FLG'] == 'Y')
     ]
     filtered_data['Report'] = 'G'
     return filtered_data
