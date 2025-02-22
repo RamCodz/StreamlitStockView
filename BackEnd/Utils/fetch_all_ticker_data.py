@@ -1,45 +1,49 @@
 import os
 import pandas as pd
 from datetime import timedelta
-import yfinance as yf
+from yahooquery import Ticker
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from BackEnd.Utils import globals
 
 MAX_TICKERS = 5000  # Maximum number of tickers to process
-MAX_WORKERS = os.cpu_count()  # Number of threads to use
+MAX_WORKERS = min(os.cpu_count(), 10)  # Limit to 10 threads to avoid API blocking
 
-def get_stock_data(ticker, start_date, end_date):
-    """Fetch historical stock data for a given ticker."""
+def fetch_batch_data(tickers, start_date, end_date):
+    """Fetch historical data for a batch of tickers using yahooquery."""
     try:
-        stock = yf.Ticker(ticker)
-        data = stock.history(start=start_date, end=end_date)
-        return data
-    except Exception:
+        stock_data = Ticker(tickers).history(start=start_date, end=end_date)
+        
+        if stock_data.empty:
+            return pd.DataFrame()
+
+        if isinstance(stock_data.index, pd.MultiIndex):
+            stock_data.reset_index(inplace=True)  # Convert MultiIndex to columns
+
+        stock_data.rename(columns={"symbol": "ticker"}, inplace=True)  # Standardize column name
+        return stock_data
+    except Exception as e:
+        print(f"Error fetching data for batch {tickers}: {e}")
         return pd.DataFrame()
 
-def fetch_ticker_data(ticker, start_date, end_date):
-    """Wrapper function to fetch data for a single ticker and add a ticker column."""
-    data = get_stock_data(ticker, start_date, end_date)
-    if not data.empty:
-        data['ticker'] = ticker
-    return data
-
 def get_all_data(stock_list):
-    """Fetch historical data for all tickers in the stock list using parallel processing."""
+    """Fetch historical data for all tickers in the stock list using parallel batch processing."""
     all_data = pd.DataFrame()
     five_year_ago = globals.today - timedelta(days=365 * globals.noy)
-    print('MAX_WORKERS', MAX_WORKERS)
+    
+    # Create list of tickers
+    tickers = [(row[1]['Security Id'] + '.NS') for i, row in enumerate(stock_list.iterrows(), start=1) if i <= MAX_TICKERS]
+    
+    # Split tickers into batches of 50 to avoid API overload
+    batch_size = 50
+    ticker_batches = [tickers[i:i + batch_size] for i in range(0, len(tickers), batch_size)]
+    
+    print('MAX_WORKERS:', MAX_WORKERS)
+    
     with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
-        futures = []
-        for i, row in enumerate(stock_list.iterrows(), start=1):
-            if i > MAX_TICKERS:
-                break
-            stk_symbol = row[1]['Security Id'] + '.NS'
-            futures.append(executor.submit(fetch_ticker_data, stk_symbol, five_year_ago, globals.today))
-        
+        futures = {executor.submit(fetch_batch_data, batch, five_year_ago, globals.today): batch for batch in ticker_batches}
+
         for future in as_completed(futures):
             data = future.result()
-            print(data)
             if not data.empty:
                 all_data = pd.concat([all_data, data], ignore_index=True)
     
