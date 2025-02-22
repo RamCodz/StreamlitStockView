@@ -37,6 +37,7 @@ def get_all_data(stock_list):
         
         for future in as_completed(futures):
             data = future.result()
+            print(data)
             if not data.empty:
                 all_data = pd.concat([all_data, data], ignore_index=True)
     
