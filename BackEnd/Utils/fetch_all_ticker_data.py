@@ -1,7 +1,7 @@
 import os
 import pandas as pd
 from datetime import timedelta
-from yahoo_fin import stock_info as si
+import yfinance as yf
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from BackEnd.Utils import globals
 
@@ -11,7 +11,9 @@ MAX_WORKERS = os.cpu_count()  # Number of threads to use
 def get_stock_data(ticker, start_date, end_date):
     """Fetch historical stock data for a given ticker."""
     try:
-        return si.get_data(ticker, start_date=start_date, end_date=end_date, interval='1d')
+        stock = yf.Ticker(ticker)
+        data = stock.history(start=start_date, end=end_date)
+        return data
     except Exception:
         return pd.DataFrame()
 
