@@ -71,7 +71,6 @@ def calculate_returns(all_data, StockList):
 def get_matching_stocks():
     current_directory = os.getcwd()
     globals.curr_dir = current_directory + "/"
-    globals.stockview_filename = globals.stockview_filename.replace("*", gv_sys_date_str)
     equity_path = os.path.join(globals.equity_list_path, globals.equity_list_filename)
     equity_path_ns = os.path.join(globals.equity_list_path, globals.equity_list_filename_ns)
 
@@ -95,6 +94,7 @@ def process_stock_data():
         gv_sys_date_str = datetime.now().strftime(globals.dt_format)
         # gv_sys_date_str = str("2024-11-21")
         globals.today = datetime.strptime(gv_sys_date_str, globals.dt_format)
+        globals.stockview_filename = globals.stockview_filename.replace("*", gv_sys_date_str)
         print(f"Time taken for step-1: {time.time() - start_time:.2f} seconds")
         
         # Step-2: Read the stock ticker details from inbound file
