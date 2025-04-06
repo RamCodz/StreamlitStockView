@@ -1,31 +1,39 @@
 import os
 import pandas as pd
 from datetime import timedelta
-from yahoo_fin import stock_info as si
+import yfinance as yf
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from BackEnd.Utils import globals
 
-MAX_TICKERS = 5000  # Maximum number of tickers to process
-MAX_WORKERS = os.cpu_count()  # Number of threads to use
+MAX_TICKERS = 5000
+MAX_WORKERS = os.cpu_count()
+
+# Patch User-Agent once to avoid connection issues
+import requests
+yf.shared._requests = requests.Session()
+yf.shared._requests.headers.update({'User-Agent': 'Mozilla/5.0'})
 
 def get_stock_data(ticker, start_date, end_date):
-    """Fetch historical stock data for a given ticker."""
+    """Fetch historical stock data for a given ticker using yfinance."""
     try:
-        return si.get_data(ticker, start_date=start_date, end_date=end_date, interval='1d')
+        df = yf.download(ticker, start=start_date, end=end_date, interval='1d', progress=False, threads=False)
+        return df
     except Exception:
         return pd.DataFrame()
 
 def fetch_ticker_data(ticker, start_date, end_date):
-    """Wrapper function to fetch data for a single ticker and add a ticker column."""
+    """Fetch data for a single ticker and add the ticker column."""
     data = get_stock_data(ticker, start_date, end_date)
     if not data.empty:
+        data = data.reset_index()
         data['ticker'] = ticker
     return data
 
 def get_all_data(stock_list):
-    """Fetch historical data for all tickers in the stock list using parallel processing."""
+    """Fetch historical data for all tickers using multithreading."""
     all_data = pd.DataFrame()
     five_year_ago = globals.today - timedelta(days=365 * globals.noy)
+
     print('MAX_WORKERS', MAX_WORKERS)
     with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
         futures = []
