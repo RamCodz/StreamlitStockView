@@ -67,6 +67,26 @@ def calculate_returns(all_data, StockList):
         ticker_dfs.append(ticker_stklist_dtls)
     
     return pd.concat(ticker_dfs, ignore_index=True)
+    
+def get_matching_stocks():
+    current_directory = os.getcwd()
+    globals.curr_dir = current_directory + "/"
+    globals.stockview_filename = globals.stockview_filename.replace("*", gv_sys_date_str)
+    equity_path = os.path.join(globals.equity_list_path, globals.equity_list_filename)
+    equity_path_ns = os.path.join(globals.equity_list_path, globals.equity_list_filename_ns)
+
+    # Read the files
+    equity_df = pd.read_csv(equity_path)
+    equity_ns_df = pd.read_csv(equity_path_ns)
+
+    # Ensure both columns exist
+    if 'Security Id' not in equity_df.columns or 'SYMBOL' not in equity_ns_df.columns:
+        raise KeyError("Required columns not found in input files.")
+
+    # Perform the match: Security Id in Equity.csv vs SYMBOL in Equity_NS.csv
+    matching_df = equity_df[equity_df['Security Id'].isin(equity_ns_df['SYMBOL'])]
+
+    return matching_df
 
 def process_stock_data():
     try:
@@ -75,15 +95,12 @@ def process_stock_data():
         gv_sys_date_str = datetime.now().strftime(globals.dt_format)
         # gv_sys_date_str = str("2024-11-21")
         globals.today = datetime.strptime(gv_sys_date_str, globals.dt_format)
-        current_directory = os.getcwd()
-        globals.curr_dir = current_directory + "/"
-        globals.stockview_filename = globals.stockview_filename.replace("*", gv_sys_date_str)
-        stock_list_path = os.path.join(globals.equity_list_path, globals.equity_list_filename)
         print(f"Time taken for step-1: {time.time() - start_time:.2f} seconds")
         
         # Step-2: Read the stock ticker details from inbound file
         start_time = time.time()
-        StockList = pd.read_csv(stock_list_path)
+        StockList = get_matching_stocks()
+        print(StockList)
         print(f"Time taken for step-2: {time.time() - start_time:.2f} seconds")
         
         # Step-3: Get the historical data for all the tickers
